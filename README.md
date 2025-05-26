@@ -1,24 +1,24 @@
-# README
+# OpenAI Chat Integration
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is an **educational pet project** built to explore and learn how to integrate OpenAI's API with a Ruby on Rails web application.
 
-Things you may want to cover:
+## 🚀 Goal
 
-* Ruby version
+The main goal is to get familiar with integrating OpenAI's services (such as ChatGPT) into a real-world app, handle form submissions, and display dynamic responses.
 
-* System dependencies
+## ✨ Features
 
-* Configuration
+- Simple web UI using Tailwind CSS
+- Form to send a message to OpenAI Chat
+- Displays both user input and AI response
+- Rails + OpenAI integration example
 
-* Database creation
+## 📦 Stack
 
-* Database initialization
+- Ruby on Rails
+- Tailwind CSS
+- OpenAI API
 
-* How to run the test suite
+## 📄 License
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+MIT
