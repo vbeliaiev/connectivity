@@ -12,7 +12,15 @@
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+
+    <main class="container mx-auto mt-10 px-5 flex flex-col">
+
+      <header class="flex mb-10">
+      <%= link_to root_path do  %>
+        <h1 class="font-bold text-4xl">Hello GPT Rails</h1>
+      <% end %>
+        
+      </header>
       <%= yield %>
     </main>
   </body>

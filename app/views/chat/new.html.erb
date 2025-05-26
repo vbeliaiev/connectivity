@@ -1,26 +1,32 @@
-<h1 class="text-3xl font-bold mb-6 text-gray-800">Chat with GPT</h1>
-
-<%= form_with url: "/chat", method: :post, local: true, data: {turbo: false},  class: "space-y-4" do %>
-  <div>
-    <%= label_tag :message, "Your request:", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= text_area_tag :message, params[:message], rows: 4, class: "w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+<div class="w-full">
+  <div class="flex justify-between items-center">
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">Chat with GPT</h1>
+    <%= link_to "Go to notes", notes_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
   </div>
 
-  <%= submit_tag "Send", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" %>
-<% end %>
 
-<% if @user_input.present? %>
-  <hr class="my-8 border-t border-gray-300">
-
-  <div class="space-y-4">
+  <%= form_with url: "/chat", method: :post, local: true, data: {turbo: false},  class: "space-y-4" do %>
     <div>
-      <h3 class="text-lg font-semibold text-gray-800">You:</h3>
-      <p class="bg-gray-100 p-3 rounded text-gray-700 whitespace-pre-line"><%= @user_input %></p>
+        <%= label_tag :message, "Your request:", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= text_area_tag :message, params[:message], rows: 4, class: "w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" %>
     </div>
 
-    <div>
-      <h3 class="text-lg font-semibold text-gray-800">GPT:</h3>
-      <p class="bg-blue-50 p-3 rounded text-gray-800 whitespace-pre-line"><%= @response %></p>
+    <%= submit_tag "Send", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" %>
+    <% end %>
+
+    <% if @user_input.present? %>
+    <hr class="my-8 border-t border-gray-300">
+
+    <div class="space-y-4">
+        <div>
+        <h3 class="text-lg font-semibold text-gray-800">You:</h3>
+        <p class="bg-gray-100 p-3 rounded text-gray-700 whitespace-pre-line"><%= @user_input %></p>
+        </div>
+
+        <div>
+        <h3 class="text-lg font-semibold text-gray-800">GPT:</h3>
+        <p class="bg-blue-50 p-3 rounded text-gray-800 whitespace-pre-line"><%= @response %></p>
+        </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
+</div>
