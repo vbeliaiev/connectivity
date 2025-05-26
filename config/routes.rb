@@ -8,4 +8,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "notes#index"
+
+  get  "/chat", to: "chat#new"
+  post "/chat", to: "chat#create"
 end
