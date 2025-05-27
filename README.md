@@ -1,4 +1,4 @@
-# OpenAI Chat Integration
+# Connectivity
 
 This is an **educational pet project** built to explore and learn how to integrate OpenAI's API with a Ruby on Rails web application.
 

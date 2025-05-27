@@ -6,20 +6,19 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
-
+    <%= favicon_link_tag 'favicon.png' %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
 
-    <main class="container mx-auto mt-10 px-5 flex flex-col">
+    <main class="container mx-auto mt-2 px-5 flex flex-col">
 
-      <header class="flex mb-10">
-      <%= link_to root_path do  %>
-        <h1 class="font-bold text-4xl">Connectivity</h1>
-      <% end %>
-        
+      <header class="flex justify-center mb-5">
+        <%= link_to root_path do  %>
+          <%= image_tag 'connectivity_logo.png', class: 'h-24' %>
+        <% end %>
       </header>
       <%= yield %>
     </main>

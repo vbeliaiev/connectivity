@@ -1,7 +1,7 @@
 require 'openai'
 
 class CreateNote < OpenAI::BaseModel
-  required :content, String, doc: "Content of the note"
+  required :page, String, doc: "Content of the note"
 end
 
 
@@ -9,16 +9,31 @@ class ChatController < ApplicationController
     def new
       @response = nil
     end
+
   
     def create
       user_input = params[:message]
   
       client = OpenAI::Client.new(api_key: Rails.application.credentials[:openai_key])
+      system_role = <<~TEXT
+        You are an assistant. Use the CreateNote function if you need to create a note.
+
+        When using the CreateNote function, if the note includes any formatting (such as bold text, italics, lists, links, or other rich content), format the `page` field using Action Text-compatible HTML (as used by the Trix editor).
+
+        If formatting is needed, wrap the content in a `<div class="trix-content">...</div>` and use standard inline HTML tags for structure:
+        - `<strong>` for bold
+        - `<em>` for italic
+        - `<ul>` / `<ol>` / `<li>` for lists
+        - `<a href="...">...</a>` for links
+
+        Do **not** include `<action-text-attachment>` or images unless explicitly instructed.  
+        Ensure clean and semantically correct HTML inside the wrapper. Use consistent spacing and indentation.
+      TEXT
 
       response = client.chat.completions.create(
         model: "gpt-4",
         messages: [
-        { role: "system", content: "You are an assistant. Use the CreateNote function if you need to create a note." },
+        { role: "system", content: system_role },
         { role: "user", content: user_input }
         ],
         tools: [CreateNote],
@@ -33,7 +48,7 @@ class ChatController < ApplicationController
         when 'CreateNote'
           arguments = JSON.parse(function.arguments)
           note = Note.create(arguments)
-          @response = "Note with arguments: #{arguments} is created. ID: #{note.id}"
+          @response = "Note with arguments is created. ID: #{note.id}"
         else
           puts 'undefined'
         end

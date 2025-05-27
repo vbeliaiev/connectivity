@@ -8,7 +8,7 @@ class NotesController < ApplicationController
  
     if query
       query_embedding = EmbeddingGenerator.generate(query)
-      @notes = Note.semantic_search(query_embedding, top: 2)
+      @notes = Note.semantic_search(query_embedding, top: 3)
     else
       @notes = Note.all
     end
@@ -74,6 +74,6 @@ class NotesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def note_params
-      params.require(:note).permit(:content)
+      params.require(:note).permit(:content, :page)
     end
 end
