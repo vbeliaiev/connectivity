@@ -3,7 +3,16 @@ class NotesController < ApplicationController
 
   # GET /notes or /notes.json
   def index
-    @notes = Note.all
+
+    query = params[:query]
+ 
+    if query
+      query_embedding = EmbeddingGenerator.generate(query)
+      @notes = Note.semantic_search(query_embedding, top: 2)
+    else
+      @notes = Note.all
+    end
+    
   end
 
   # GET /notes/1 or /notes/1.json

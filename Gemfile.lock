@@ -139,6 +139,8 @@ GEM
     minitest (5.25.5)
     msgpack (1.8.0)
     mutex_m (0.3.0)
+    neighbor (0.5.2)
+      activerecord (>= 7)
     net-imap (0.5.8)
       date
       net-protocol
@@ -296,6 +298,7 @@ DEPENDENCIES
   debug
   importmap-rails
   jbuilder
+  neighbor
   openai (~> 0.4.1)
   pg (~> 1.1)
   pry-rails
