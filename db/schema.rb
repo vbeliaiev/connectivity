@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_28_173456) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_28_212408) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -60,6 +60,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_28_173456) do
     t.vector "embedding", limit: 1536
     t.bigint "parent_id"
     t.string "title"
+    t.integer "position"
     t.index ["parent_id"], name: "index_nodes_on_parent_id"
   end
 

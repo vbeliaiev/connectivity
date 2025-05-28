@@ -46,7 +46,7 @@ class ChatController < ApplicationController
         function = tool_calls.first.function
         case function.name
         when 'CreateNote'
-          arguments = JSON.parse(function.arguments)
+          arguments = JSON.parse(function.arguments).merge(parent: Node.generic_folder)
           note = Note.create(arguments)
           @response = "Note with arguments is created. ID: #{note.id}"
         else

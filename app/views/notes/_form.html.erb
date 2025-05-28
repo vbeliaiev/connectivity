@@ -11,6 +11,15 @@
     </div>
   <% end %>
 
+<div class="my-5">
+  <%= form.collection_select :parent_id, Folder.all, :id, :title,
+        { prompt: "Select parent Folder" },
+        {
+          class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1"
+        } %>
+</div>
+
+
   <div class="my-5">
     <%= form.label :page %>
     <%= form.rich_text_area :page, class: '' %>

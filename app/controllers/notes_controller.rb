@@ -5,7 +5,7 @@ class NotesController < ApplicationController
   def index
 
     query = params[:query]
-    @folders = Folder.all
+    @folders = Folder.ordered
     if query
       query_embedding = EmbeddingGenerator.generate(query)
       @notes = Note.semantic_search(query_embedding, top: 3)
@@ -74,6 +74,6 @@ class NotesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def note_params
-      params.require(:note).permit(:content, :page)
+      params.require(:note).permit(:content, :page, :parent_id)
     end
 end
