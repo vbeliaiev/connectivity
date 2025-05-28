@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_27_150146) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_28_164408) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -53,11 +53,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_27_150146) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "notes", force: :cascade do |t|
-    t.string "note_type"
+  create_table "nodes", force: :cascade do |t|
+    t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.vector "embedding", limit: 1536
+    t.bigint "parent_id"
+    t.index ["parent_id"], name: "index_nodes_on_parent_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
