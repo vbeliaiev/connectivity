@@ -5,7 +5,7 @@ class NotesController < ApplicationController
   def index
 
     query = params[:query]
- 
+    @folders = Folder.all
     if query
       query_embedding = EmbeddingGenerator.generate(query)
       @notes = Note.semantic_search(query_embedding, top: 3)

@@ -1,0 +1,3 @@
+class Folder < Node
+end
+  

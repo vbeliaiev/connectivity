@@ -13,29 +13,46 @@
     <%= submit_tag "Search", class: "bg-blue-600 text-white px-4 py-2 hover:bg-blue-700" %>
   </div>
 <% end %>
-
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-2xl">Yaay! We have some notes for You :)</h1>
-    <div class="flex space-x-2">
-      <%= link_to "Chat", chat_path, class: "rounded-md px-3.5 py-2.5 bg-green-600 hover:bg-blue-500 text-white block font-medium" %>
-      <%= link_to "New note", new_note_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+</div>
+<div class="container flex">
+  <div class='w-1/4 pr-7'>
+    <h1 class="font-bold text-2xl">Folders</h1>
+    <div id="folders" class="min-w-full divide-y divide-gray-200 space-y-2 my-5">
+      <% if @folders.present? %>
+        <% @folders.each do |folder| %>
+          <div class="flex flex-col sm:flex-row justify-between items-center">
+            <%= render folder %>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="text-center my-10">No folders found.</p>
+      <% end %>
     </div>
   </div>
+  <div class="w-3/4">
+    <div class="flex justify-between items-center">
+      <h1 class="font-bold text-2xl">Yaay! We have some notes for You :)</h1>
+      <div class="flex space-x-2">
+        <%= link_to "Chat", chat_path, class: "rounded-md px-3.5 py-2.5 bg-green-600 hover:bg-blue-500 text-white block font-medium" %>
+        <%= link_to "New note", new_note_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+      </div>
+    </div>
 
-  <div id="notes" class="min-w-full divide-y divide-gray-200 space-y-5">
-    <% if @notes.any? %>
-      <% @notes.each do |note| %>
-        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-          <%= render note %>
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
-            <%= link_to "Show", note, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= link_to "Edit", edit_note_path(note), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= button_to "Destroy", note, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+    <div id="notes" class="min-w-full divide-y divide-gray-200 space-y-5">
+      <% if @notes.any? %>
+        <% @notes.each do |note| %>
+          <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
+            <%= render note %>
+            <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
+              <%= link_to "Show", note, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+              <%= link_to "Edit", edit_note_path(note), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+              <%= button_to "Destroy", note, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+            </div>
           </div>
-        </div>
+        <% end %>
+      <% else %>
+        <p class="text-center my-10">No notes found.</p>
       <% end %>
-    <% else %>
-      <p class="text-center my-10">No notes found.</p>
-    <% end %>
+    </div>
   </div>
 </div>
