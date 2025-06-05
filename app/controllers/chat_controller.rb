@@ -30,12 +30,13 @@ class ChatController < ApplicationController
         Ensure clean and semantically correct HTML inside the wrapper. Use consistent spacing and indentation.
       TEXT
 
+      session[:chat_history] ||= [{ role: "system", content: system_role }]
+      session[:chat_history] << { role: "user", content: user_input }
+
+
       response = client.chat.completions.create(
         model: "gpt-4",
-        messages: [
-        { role: "system", content: system_role },
-        { role: "user", content: user_input }
-        ],
+        messages: session[:chat_history],
         tools: [CreateNote],
         temperature: 0.7
       )
@@ -56,8 +57,13 @@ class ChatController < ApplicationController
         @response = response.choices.first.message.content
       end
 
+      session[:chat_history] << { role: "assistant", content: @response }
+
       @user_input = user_input
   
+      session[:chat_history].map(&:stringify_keys!)
+      session[:chat_history] = session[:chat_history].last(10) if session[:chat_history].size > 10
+
       render :new
     end    
   end

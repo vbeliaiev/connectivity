@@ -12,21 +12,25 @@
     </div>
 
     <%= submit_tag "Send", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" %>
-    <% end %>
+  <% end %>
+    <% if session[:chat_history]&.excluding { |message| message[:role] == "system" }&.any? %>
+      <hr class="my-8 border-t border-gray-300">
 
-    <% if @user_input.present? %>
-    <hr class="my-8 border-t border-gray-300">
-
-    <div class="space-y-4">
-        <div>
-        <h3 class="text-lg font-semibold text-gray-800">You:</h3>
-        <p class="bg-gray-100 p-3 rounded text-gray-700 whitespace-pre-line"><%= @user_input %></p>
-        </div>
-
-        <div>
-        <h3 class="text-lg font-semibold text-gray-800">GPT:</h3>
-        <p class="bg-blue-50 p-3 rounded text-gray-800 whitespace-pre-line"><%= @response %></p>
-        </div>
-    </div>
+      <div class="space-y-4">
+        <% session[:chat_history].reverse_each do |message| %>
+          <% next unless ['user', 'assistant'].include?(message['role']) %>
+          <% if message['role'] == 'user' %>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">You:</h3>
+            <p class="bg-gray-100 p-3 rounded text-gray-700 whitespace-pre-line"><%= message['content'] %></p>
+            </div>
+          <% else %>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">GPT:</h3>
+              <p class="bg-blue-50 p-3 rounded text-gray-800 whitespace-pre-line"><%= message['content'] %></p>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
   <% end %>
 </div>

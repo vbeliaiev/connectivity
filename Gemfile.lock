@@ -181,7 +181,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.8-x86_64-linux-musl)
       racc (~> 1.4)
-    openai (0.4.1)
+    openai (0.6.0)
       connection_pool
     pg (1.5.9)
     pp (0.6.2)
@@ -317,7 +317,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   neighbor
-  openai (~> 0.4.1)
+  openai (~> 0.6.0)
   pg (~> 1.1)
   pry-rails
   puma (>= 5.0)
