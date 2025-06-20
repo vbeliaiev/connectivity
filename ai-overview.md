@@ -227,14 +227,17 @@ graph TD
 ## Testing
 
 - **Testing Frameworks:**
-  - Unit/Integration: Capybara, Selenium-WebDriver (gems present)
-  - No test or spec directory found in the codebase
+  - RSpec is used for testing, with FactoryBot for test data generation.
+  - Request specs are used to test controllers and endpoints.
+  - The project does **not** use the `rails-controller-testing` gem, so tests do not use `assigns` or `render_template` matchers.
+  - Instead, tests check for response status (e.g., `have_http_status(:ok)`) and for expected content in the response body.
+  - No test or spec directories for Minitest are present.
 
 - **Running Tests:**
-  [Requires manual input; no test runner scripts found]
+  - Run all specs with: `bundle exec rspec`
 
 - **Test Coverage:**
-  [Information not found in codebase]
+  - [Information not found in codebase: No coverage tools (e.g., SimpleCov) or CI integration detected.]
 
 ---
 

@@ -73,4 +73,9 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  config.generators do |g|
+    g.test_framework :rspec, fixture: false
+    g.fixture_replacement :factory_bot, dir: "spec/factories"
+  end
 end

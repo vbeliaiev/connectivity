@@ -1,7 +1,7 @@
 class Note < Node
   has_rich_text :page
 
-  before_save :generate_embedding
+  before_save :generate_embedding, unless: -> { Rails.env.test? }
 
   scope :semantic_search, ->(query_embedding, top: 5) {
     order(Arel.sql("embedding <#> '[#{query_embedding.join(',')}]'")).limit(top)
