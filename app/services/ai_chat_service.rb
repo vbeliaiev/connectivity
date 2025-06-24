@@ -34,13 +34,7 @@ class AiChatService
     chat_history ||= [{ role: "system", content: SYSTEM_ROLE }]
     chat_history << { role: "user", content: user_input }
 
-    ai_response = client.chat.completions.create(
-      model: "gpt-4",
-      messages: chat_history,
-      tools: [CreateNote],
-      temperature: 0.7
-    )
-
+    ai_response = get_ai_response(chat_history)
 
     tool_calls = ai_response.choices.first.message.tool_calls
 
@@ -62,6 +56,15 @@ class AiChatService
   private
 
   attr_reader :client
+
+  def get_ai_response(chat_history)
+    client.chat.completions.create(
+      model: "gpt-4",
+      messages: chat_history,
+      tools: [CreateNote],
+      temperature: 0.7
+    )
+  end
 
   def perform_tool_call(function)
     case function.name
