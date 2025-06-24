@@ -241,6 +241,13 @@ graph TD
 
 ---
 
+## Testing Best Practices
+
+- Use request specs for end-to-end controller testing and avoid controller specs unless absolutely necessary.
+- **Do not use the `action-controller-testing` gem**: It is not well maintained and may not be compatible with recent Rails versions. Prefer request specs and feature specs for controller-related tests.
+
+---
+
 ## UI Framework
 
 - **Framework/Library:**
