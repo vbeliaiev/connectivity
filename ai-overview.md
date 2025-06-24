@@ -1,3 +1,7 @@
+# AI Project Overview
+
+**All code in this project must be written and generated exclusively in English, regardless of the language used in communication with the agent (e.g., Russian, French, etc.).**
+
 ## Project Overview
 
 - **Project Name:** Connectivity
@@ -229,9 +233,6 @@ graph TD
 - **Testing Frameworks:**
   - RSpec is used for testing, with FactoryBot for test data generation.
   - Request specs are used to test controllers and endpoints.
-  - The project does **not** use the `rails-controller-testing` gem, so tests do not use `assigns` or `render_template` matchers.
-  - Instead, tests check for response status (e.g., `have_http_status(:ok)`) and for expected content in the response body.
-  - No test or spec directories for Minitest are present.
 
 - **Running Tests:**
   - Run all specs with: `bundle exec rspec`
@@ -241,10 +242,19 @@ graph TD
 
 ---
 
-## Testing Best Practices
-
+## Testing Guidelines
+- The project does **not** use the `rails-controller-testing` gem, so tests do not use `assigns` or `render_template` matchers.
+- Instead, tests check for response status (e.g., `have_http_status(:ok)`) and for expected content in the response body.
+- No test or spec directories for Minitest are present.
+- Use RSpec for all tests and organize them by type (services, models, requests, etc.).
+- Mock only external dependencies (e.g., OpenAI, HTTP clients) and use real database records for models.
+- Prefer `expect(...).to receive(...)` over `allow(...).to receive(...)` for critical mocks.
+- Use descriptive `context` and `it` blocks for clarity.
+- Always test error scenarios and edge cases.
+- Stub AI/external service calls at the service boundary, not deep internals.
+- Keep tests fast, isolated, and maintainable.
+- Update tests with every code change affecting business logic.
 - Use request specs for end-to-end controller testing and avoid controller specs unless absolutely necessary.
-- **Do not use the `action-controller-testing` gem**: It is not well maintained and may not be compatible with recent Rails versions. Prefer request specs and feature specs for controller-related tests.
 
 ---
 
