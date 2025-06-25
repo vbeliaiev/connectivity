@@ -2,9 +2,8 @@ require 'rails_helper'
 
 RSpec.describe NotesController, type: :request do
   describe 'GET /notes' do
+    let!(:notes) { create_list(:note, 3) }
     context 'when query is nil' do
-      let!(:notes) { create_list(:note, 3) }
-
       it 'returns a successful response and displays note page body' do
         get notes_path
         expect(response).to have_http_status(:ok)
@@ -15,8 +14,16 @@ RSpec.describe NotesController, type: :request do
     end
 
     context 'when query is present (semantic search branch)' do
-      it 'is pending implementation for semantic search' do
-        skip 'TODO: Add a test for the semantic search branch (when query is present)'
+      let(:search_query) { 'Italian food' }
+      let(:search_query_embedding) { 'Italian food - Embedding' }
+
+      it 'builds embedding vector, call semantic search and renders the page successfully' do
+        expect(EmbeddingGenerator).to receive(:generate).with(search_query).and_return(search_query_embedding)
+        expect(Note).to receive(:semantic_search).with(search_query_embedding, top: described_class::SEMANTIC_SEARCH_ITEMS_COUNT).and_return(notes)
+
+        get notes_path, params: { query: 'Italian food' }
+
+        expect(response).to have_http_status(:ok)
       end
     end
   end

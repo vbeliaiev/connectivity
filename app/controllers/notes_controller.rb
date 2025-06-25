@@ -1,18 +1,18 @@
 class NotesController < ApplicationController
   before_action :set_note, only: %i[ show edit update destroy ]
-
+  SEMANTIC_SEARCH_ITEMS_COUNT = 3
   # GET /notes or /notes.json
   def index
-
     query = params[:query]
     @folders = Folder.ordered
+
     if query
       query_embedding = EmbeddingGenerator.generate(query)
-      @notes = Note.semantic_search(query_embedding, top: 3)
+      @notes = Note.semantic_search(query_embedding, top: SEMANTIC_SEARCH_ITEMS_COUNT)
     else
       @notes = Note.all
     end
-    
+
   end
 
   # GET /notes/1 or /notes/1.json
