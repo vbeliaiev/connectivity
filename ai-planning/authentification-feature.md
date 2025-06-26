@@ -67,20 +67,14 @@ This checklist guides a developer through implementing a minimum user authentica
 
 ## 11. Testing
 - [ ] Test the full authentication flow:
-    - [ ] Sign up (with and without display_name).
-    - [ ] Email confirmation (ensure user cannot log in before confirming).
-    - [ ] Login/logout.
-    - [ ] Forgot password/reset password.
-    - [ ] Privacy policy modal and acceptance.
-    - [ ] Profile updates (display_name, password).
-    - [ ] Attempted email change (ensure prompt is shown).
-- [ ] Test email delivery in development (letter_opener) and production (Google SMTP, if possible).
-- [ ] Test responsiveness and appearance of all authentication views.
-
-## 12. Deployment
-- [ ] Ensure Google SMTP credentials are set in production environment variables.
-- [ ] Ensure all migrations are run in production.
-- [ ] Verify that the root route and authentication flows work as expected after deployment.
+    - [x] Sign up (with and without display_name).
+    - [x] Email confirmation (ensure user cannot log in before confirming).
+    - [x] Login/logout.
+    - [x] Forgot password/reset password.
+    - [x] Privacy policy modal and acceptance.
+    - [x] Profile updates (display_name, password).
+    - [x] Attempted email change (ensure prompt is shown).
+- [x] Test email delivery in development (letter_opener).
 
 ---
 

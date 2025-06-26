@@ -20,6 +20,12 @@
           <%= image_tag 'connectivity_logo.png', class: 'h-24' %>
         <% end %>
       </header>
+      <% if notice %>
+        <div class="mb-4 p-2 bg-green-100 text-green-800 rounded text-center"> <%= notice %> </div>
+      <% end %>
+      <% if alert %>
+        <div class="mb-4 p-2 bg-red-100 text-red-800 rounded text-center"> <%= alert %> </div>
+      <% end %>
       <%= yield %>
     </main>
   </body>

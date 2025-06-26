@@ -58,6 +58,13 @@ RSpec.describe 'Authentication', type: :request do
       delete destroy_user_session_path
       expect(response).to redirect_to(root_path)
     end
+
+    it 'does not allow login before email confirmation' do
+      unconfirmed_user = FactoryBot.create(:user, password: password)
+      post user_session_path, params: { user: { email: unconfirmed_user.email, password: password } }
+      follow_redirect!
+      expect(response.body).to include('You have to confirm your email address before continuing')
+    end
   end
 
   describe 'Forgot password/reset password' do
