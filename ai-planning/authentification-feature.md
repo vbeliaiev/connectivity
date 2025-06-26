@@ -5,17 +5,17 @@ This checklist guides a developer through implementing a minimum user authentica
 ---
 
 ## 1. Gem and Dependency Setup
-- [ ] Add `devise` gem to the Gemfile (if not present).
-- [ ] Add `letter_opener` gem to the development and test groups in the Gemfile.
-- [ ] Run `bundle install`.
-- [ ] Install Tailwind CSS if not already present (verify integration with Rails views).
+- [x] Add `devise` gem to the Gemfile (if not present).
+- [x] Add `letter_opener` gem to the development and test groups in the Gemfile.
+- [x] Run `bundle install`.
+- [x] Install Tailwind CSS if not already present (verify integration with Rails views).
 
 ## 2. Devise Installation
-- [ ] Run `rails generate devise:install`.
-- [ ] Follow Devise post-install instructions:
-    - [ ] Set up default URL options in `config/environments/development.rb` and `config/environments/production.rb`.
-    - [ ] Ensure flash messages are not required (per spec).
-    - [ ] Configure root route in `config/routes.rb` if not already set.
+- [x] Run `rails generate devise:install`.
+- [x] Follow Devise post-install instructions:
+    - [x] Set up default URL options in `config/environments/development.rb` and `config/environments/production.rb`.
+    - [x] Ensure flash messages are not required (per spec).
+    - [x] Configure root route in `config/routes.rb` if not already set.
 
 ## 3. User Model
 - [ ] Generate the User model: `rails generate devise User display_name:string`
