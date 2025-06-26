@@ -54,7 +54,7 @@ This checklist guides a developer through implementing a minimum user authentica
 - [x] Ensure the modal is accessible from the sign-up form.
 
 ## 8. Email Templates
-- [ ] Add the project logo to the default Devise email templates (confirmation, password reset).
+- [x] Add the project logo to the default Devise email templates (confirmation, password reset).
 - [ ] Do not otherwise customize email content.
 
 ## 9. User Profile Management

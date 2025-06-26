@@ -65,6 +65,7 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
+  config.assets.digest = false
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
@@ -82,4 +83,6 @@ Rails.application.configure do
     g.test_framework :rspec, fixture: false
     g.fixture_replacement :factory_bot, dir: "spec/factories"
   end
+
+  config.action_mailer.asset_host = 'http://localhost:3000'
 end
