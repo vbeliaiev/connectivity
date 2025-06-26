@@ -14,6 +14,7 @@
       <div>
         <%= f.label :email, class: "sr-only" %>
         <%= f.email_field :email, autocomplete: "email", disabled: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 bg-gray-100 text-gray-500 focus:outline-none sm:text-sm", title: "Contact administrator to change your email" %>
+        <p class="text-xs text-red-500 mt-1">To change your email, please contact the administrator.</p>
       </div>
       <div>
         <%= f.label :password, class: "sr-only" %>
