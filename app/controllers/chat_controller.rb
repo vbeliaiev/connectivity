@@ -6,7 +6,7 @@ class ChatController < ApplicationController
     end
 
     def create
-      AiChatService.new.call(params[:message], session[:chat_history]).then do |result|
+      AiChatService.new.call(params[:message], chat_history: session[:chat_history], current_user:).then do |result|
         if result.success?
           session[:chat_history] = result.value!
         else

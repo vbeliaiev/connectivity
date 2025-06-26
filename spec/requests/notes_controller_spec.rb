@@ -48,6 +48,7 @@ RSpec.describe NotesController, type: :request do
   end
 
   describe 'POST /notes' do
+    let(:current_user) { create(:user) }
     let(:folder) { create(:folder) }
     let(:note_body) { FFaker::Lorem.paragraph }
     let(:valid_params) do
@@ -59,6 +60,8 @@ RSpec.describe NotesController, type: :request do
         }
       }
     end
+
+    before { current_user.confirm; sign_in current_user }
 
     it 'creates a note and displays its page body' do
       post notes_path, params: valid_params

@@ -8,10 +8,14 @@ RSpec.describe AiChatService, type: :service do
   let(:service) { described_class.new }
   let(:user_input) { 'Test input' }
   let(:chat_history) { nil }
+  let(:current_user) { create(:user) }
 
   before do
     allow(Rails.application).to receive(:credentials).and_return({ openai_key: 'test-key' })
+    current_user.confirm
   end
+
+  subject { service.call(user_input, chat_history: chat_history, current_user: current_user) }
 
   describe '#call' do
     context 'when AI returns a tool call' do
@@ -28,7 +32,7 @@ RSpec.describe AiChatService, type: :service do
       end
 
       it 'creates a note with the correct page body' do
-        expect { service.call(user_input, chat_history) }.to change(Note, :count).by(1)
+        expect { subject }.to change(Note, :count).by(1)
         expect(Note.last.page.body.to_plain_text).to eq('Note content')
       end
     end
@@ -45,9 +49,8 @@ RSpec.describe AiChatService, type: :service do
       end
 
       it 'returns the plain message in a success result' do
-        result = service.call(user_input, chat_history)
-        expect(result).to be_success
-        expect(result.value!.last['content']).to eq('Just a plain message from AI.')
+        expect(subject).to be_success
+        expect(subject.value!.last['content']).to eq('Just a plain message from AI.')
       end
     end
 
@@ -57,9 +60,9 @@ RSpec.describe AiChatService, type: :service do
       end
 
       it 'returns a failure result with the error message' do
-        result = service.call(user_input, chat_history)
-        expect(result).to be_failure
-        expect(result.failure).to eq('AI error!')
+
+        expect(subject).to be_failure
+        expect(subject.failure).to eq('AI error!')
       end
     end
   end

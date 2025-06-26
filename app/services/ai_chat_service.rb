@@ -30,7 +30,7 @@ class AiChatService
     @client = OpenAI::Client.new(api_key: Rails.application.credentials[:openai_key])
   end
 
-  def call(user_input, chat_history = nil)
+  def call(user_input, chat_history: nil, current_user:)
     chat_history ||= [{ role: "system", content: SYSTEM_ROLE }]
     chat_history << { role: "user", content: user_input }
 
@@ -39,7 +39,7 @@ class AiChatService
     tool_calls = ai_response.choices.first.message.tool_calls
 
     if tool_calls.present?
-      response = tool_calls.first.function.then { |fn| perform_tool_call(fn) }
+      response = tool_calls.first.function.then { |fn| perform_tool_call(fn, current_user:) }
     else
       response = ai_response.choices.first.message.content
     end
@@ -66,10 +66,14 @@ class AiChatService
     )
   end
 
-  def perform_tool_call(function)
+  def perform_tool_call(function, current_user:)
     case function.name
     when 'CreateNote'
-      arguments = JSON.parse(function.arguments).merge(parent: Node.generic_folder)
+      note_relations = { parent: Node.generic_folder_for(current_user.id),
+                         author: current_user,
+                         organisation: current_user.current_organisation }
+      arguments = JSON.parse(function.arguments).merge(note_relations)
+
       note = Note.create(arguments)
 
       "Note with arguments is created. ID: #{note.id}"

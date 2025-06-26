@@ -33,6 +33,7 @@ RSpec.describe FoldersController, type: :request do
   end
 
   describe 'POST /folders' do
+    let(:current_user) { create(:user) }
     let(:folder_title) { FFaker::Lorem.word }
     let(:valid_params) do
       {
@@ -41,6 +42,8 @@ RSpec.describe FoldersController, type: :request do
         }
       }
     end
+
+    before { current_user.confirm; sign_in current_user }
 
     it 'creates a folder and displays its title' do
       post folders_path, params: valid_params

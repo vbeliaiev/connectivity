@@ -12,21 +12,21 @@ This document outlines the step-by-step implementation plan.
 
 ### Phase 1: Database Schema & Migrations
 
-- [ ] **Task 1.1: Create `Organisation` Model File and Migration**
-  - [ ] Run migration: `rails g model Organisation name:string`
-  - [ ] Modify migration to add `null: false` and a unique index on `name`.
+- [x] **Task 1.1: Create `Organisation` Model File and Migration**
+  - [x] Run migration: `rails g model Organisation name:string`
+  - [x] Modify migration to add `null: false` and a unique index on `name`.
 
-- [ ] **Task 1.2: Create `OrganisationsUser` Model File and Migration**
-  - [ ] Run migration: `rails g model OrganisationsUser user:references organisation:references role:integer`
-  - [ ] Modify migration to add `null: false`, a default `role`, and a unique index on `[:user_id, :organisation_id]`.
+- [x] **Task 1.2: Create `OrganisationsUser` Model File and Migration**
+  - [x] Run migration: `rails g model OrganisationsUser user:references organisation:references role:integer`
+  - [x] Modify migration to add `null: false`, a default `role`, and a unique index on `[:user_id, :organisation_id]`.
 
-- [ ] **Task 1.3: Create Migration to Update `User` Model**
-  - [ ] Run migration: `rails g migration AddCurrentOrganisationToUsers current_organisation:references`
+- [x] **Task 1.3: Create Migration to Update `User` Model**
+  - [x] Run migration: `rails g migration AddCurrentOrganisationToUsers current_organisation:references`
 
-- [ ] **Task 1.4: Create Migrations to Update `Folder` and `Note` Models**
-  - [ ] Run migrations to add `organisation:references` and `visibility:integer` to `folders` and `notes`.
-  - [ ] Add `null: false` constraints and a default `visibility` to migrations.
-  - [ ] Create a data migration to backfill the `organisation_id` for all existing folders and notes.
+- [x] **Task 1.4: Create Migrations to Update `Folder` and `Note` Models**
+  - [x] Run migrations to add `organisation:references` and `visibility:integer` to `nodes` (STI parent of folders and notes).
+  - [x] Add `null: false` constraints and a default `visibility` to migrations.
+  - [ ] ~~Create a data migration to backfill the `organisation_id` for all existing folders and notes.~~ (skipped)
         - **Logic**: Find the user with email `vladislav.belyaev.93@gmail.com`.
         - Ensure this user has a personal organisation.
         - Update all existing `Folders` and `Notes` to belong to this specific user's personal organisation.
@@ -39,21 +39,21 @@ This document outlines the step-by-step implementation plan.
 ### Phase 2: Backend Logic, Policies & Tests
 *Note: For model tests, prefer using `shoulda-matchers`. When you add/update logic for a model or policy, add/update the related test at the same time.*
 
-- [ ] **Task 2.1: `Organisation` Model Logic & Tests**
-  - [ ] In `app/models/organisation.rb`, add associations and validations.
-  - [ ] **Tests (`spec/models/organisation_spec.rb`):** Test validations and associations (use `shoulda-matchers` for validations and associations).
+- [x] **Task 2.1: `Organisation` Model Logic & Tests**
+  - [x] In `app/models/organisation.rb`, add associations and validations.
+  - [x] **Tests (`spec/models/organisation_spec.rb`):** Test validations and associations (use `shoulda-matchers` for validations and associations).
 
-- [ ] **Task 2.2: `OrganisationsUser` Model Logic & Tests**
-  - [ ] In `app/models/organisations_user.rb`, add associations and the `role` enum.
-  - [ ] **Tests (`spec/models/organisations_user_spec.rb`):** Test associations, enum, and validations (use `shoulda-matchers` for associations, validations, and enums).
+- [x] **Task 2.2: `OrganisationsUser` Model Logic & Tests**
+  - [x] In `app/models/organisations_user.rb`, add associations and the `role` enum.
+  - [x] **Tests (`spec/models/organisations_user_spec.rb`):** Test associations, enum, and validations (use `shoulda-matchers` for associations, validations, and enums).
 
-- [ ] **Task 2.3: `User` Model Logic & Tests**
-  - [ ] In `app/models/user.rb`, add associations and the `after_create` callback.
-  - [ ] **Tests (`spec/models/user_spec.rb`):** Test associations (use `shoulda-matchers` for associations) and the callback.
+- [x] **Task 2.3: `User` Model Logic & Tests**
+  - [x] In `app/models/user.rb`, add associations and the `after_create` callback.
+  - [x] **Tests (`spec/models/user_spec.rb`):** Test associations (use `shoulda-matchers` for associations) and the callback.
 
-- [ ] **Task 2.4: `Folder` & `Note` Model Logic & Tests**
-  - [ ] In `app/models/folder.rb` and `app/models/note.rb`, add associations and the `visibility` enum.
-  - [ ] **Tests (`spec/models/folder_spec.rb`, `spec/models/note_spec.rb`):** Test the association and enum (use `shoulda-matchers` for associations and enums).
+- [x] **Task 2.4: `Folder` & `Note` Model Logic & Tests**
+  - [x] In `app/models/folder.rb` and `app/models/note.rb`, add associations and the `visibility` enum.
+  - [x] **Tests (`spec/models/folder_spec.rb`, `spec/models/note_spec.rb`):** Test the association and enum (use `shoulda-matchers` for associations and enums).
 
 - [ ] **Task 2.5: Pundit Policies & Tests**
   - [ ] Generate policies: `rails g pundit:policy organisation`, `folder`, `note`.

@@ -21,7 +21,7 @@ class FoldersController < ApplicationController
 
   # POST /folders or /folders.json
   def create
-    @folder = Folder.new(folder_params)
+    @folder = Folder.new(folder_params.merge(author: current_user, organisation: current_user.current_organisation))
 
     respond_to do |format|
       if @folder.save

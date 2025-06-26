@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_26_093850) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_26_165157) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -61,7 +61,31 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_26_093850) do
     t.bigint "parent_id"
     t.string "title"
     t.integer "position"
+    t.bigint "organisation_id", null: false
+    t.integer "visibility_level", default: 0, null: false
+    t.bigint "user_id", null: false
+    t.index ["organisation_id"], name: "index_nodes_on_organisation_id"
     t.index ["parent_id"], name: "index_nodes_on_parent_id"
+    t.index ["user_id"], name: "index_nodes_on_user_id"
+  end
+
+  create_table "organisations", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "personal", default: false
+    t.index ["name"], name: "index_organisations_on_name", unique: true
+  end
+
+  create_table "organisations_users", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "organisation_id", null: false
+    t.integer "role", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organisation_id"], name: "index_organisations_users_on_organisation_id"
+    t.index ["user_id", "organisation_id"], name: "index_organisations_users_on_user_id_and_organisation_id", unique: true
+    t.index ["user_id"], name: "index_organisations_users_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -77,11 +101,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_26_093850) do
     t.string "display_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "current_organisation_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["current_organisation_id"], name: "index_users_on_current_organisation_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "nodes", "organisations"
+  add_foreign_key "nodes", "users"
+  add_foreign_key "organisations_users", "organisations"
+  add_foreign_key "organisations_users", "users"
 end

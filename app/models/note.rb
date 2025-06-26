@@ -1,6 +1,8 @@
 class Note < Node
   has_rich_text :page
 
+  belongs_to :organisation
+
   before_save :generate_embedding, unless: -> { Rails.env.test? }
 
   scope :semantic_search, ->(query_embedding, top: 5) {

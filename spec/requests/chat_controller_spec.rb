@@ -3,6 +3,9 @@ require 'dry/monads'
 
 RSpec.describe ChatController, type: :request do
   include Dry::Monads[:result]
+  let(:current_user) { create(:user) }
+
+  before { current_user.confirm; sign_in current_user }
 
   describe 'GET /chat' do
     it 'returns a successful response and displays the chat form' do
@@ -34,7 +37,7 @@ RSpec.describe ChatController, type: :request do
 
         post chat_path, params: { message: 'Hello' }
 
-        expect(ai_chat_service_double).to have_received(:call).with('Hello', chat_history)
+        expect(ai_chat_service_double).to have_received(:call).with('Hello', chat_history:, current_user:)
         expect(session_double[:chat_history]).to eq(new_chat_history)
         expect(flash[:warn]).to be_nil
         expect(response).to have_http_status(:ok)
@@ -56,7 +59,7 @@ RSpec.describe ChatController, type: :request do
 
         post chat_path, params: { message: 'Hello' }
 
-        expect(ai_chat_service_double).to have_received(:call).with('Hello', chat_history)
+        expect(ai_chat_service_double).to have_received(:call).with('Hello', chat_history:, current_user:)
         expect(session_double[:chat_history]).to eq(chat_history)
         expect(flash[:warn]).to eq(error_message)
         expect(response).to have_http_status(:ok)
