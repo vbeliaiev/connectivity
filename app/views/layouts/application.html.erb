@@ -11,10 +11,17 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+    <main class="container mx-auto mt-2 px-5 flex flex-col w-full">
+      <header class="flex justify-end py-2 space-x-4 w-full">
+      <% if user_signed_in? %>
+        <%= link_to "My Account", edit_user_registration_path, class: "text-base font-medium text-gray-500 hover:text-gray-900" %>
+        <%= button_to "Log out", destroy_user_session_path, method: :delete, class: "text-base font-medium text-gray-500 hover:text-gray-900" %>
 
-    <main class="container mx-auto mt-2 px-5 flex flex-col">
-
+        <% else %>
+        <%= link_to "Sign in", new_user_session_path, class: "text-base font-medium text-gray-500 hover:text-gray-900" %>
+        <%= link_to "Sign up", new_user_registration_path, class: "text-base font-medium text-gray-500 hover:text-gray-900" %>
+      <% end %>
+    </header>
       <header class="flex justify-center mb-5">
         <%= link_to root_path do  %>
           <%= image_tag 'connectivity_logo.png', class: 'h-24' %>
