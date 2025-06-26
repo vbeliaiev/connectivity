@@ -18,12 +18,12 @@ This checklist guides a developer through implementing a minimum user authentica
     - [x] Configure root route in `config/routes.rb` if not already set.
 
 ## 3. User Model
-- [ ] Generate the User model: `rails generate devise User display_name:string`
-- [ ] Add `confirmable` and `recoverable` modules to the User model.
-- [ ] Run the migration to create the users table.
-- [ ] Add `:confirmable` and `:recoverable` to the Devise modules in `user.rb`.
-- [ ] Add logic to set `display_name` to `email.split('@').first` if left blank on registration (model callback or Devise parameter sanitizer).
-- [ ] Ensure only `display_name`, `email`, and password fields are present (no extra fields).
+- [x] Generate the User model: `rails generate devise User display_name:string`
+- [x] Add `confirmable` and `recoverable` modules to the User model.
+- [x] Run the migration to create the users table.
+- [x] Add `:confirmable` and `:recoverable` to the Devise modules in `user.rb`.
+- [x] Add logic to set `display_name` to `email.split('@').first` if left blank on registration (model callback or Devise parameter sanitizer).
+- [x] Ensure only `display_name`, `email`, and password fields are present (no extra fields).
 
 ## 4. Devise Configuration
 - [ ] In `config/initializers/devise.rb`, set:
