@@ -45,8 +45,8 @@ This checklist guides a developer through implementing a minimum user authentica
 - [x] Update Devise views to use the standalone layout.
 - [x] Add the project logo and favicon to the layout (reuse existing assets).
 - [x] Style all Devise views (sign in, sign up, forgot password, confirmation) with default Tailwind CSS classes and colors.
-- [ ] Add a privacy policy link/button to the sign-up form that opens a modal window.
-- [ ] Add a required checkbox for privacy policy acceptance on the sign-up form (user cannot register without checking it).
+- [x] Add a privacy policy link/button to the sign-up form that opens a modal window.
+- [x] Add a required checkbox for privacy policy acceptance on the sign-up form (user cannot register without checking it).
 
 ## 7. Privacy Policy Modal
 - [ ] Create a simple modal component for the privacy policy (can be a partial or a stimulus controller).

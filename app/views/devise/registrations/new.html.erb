@@ -25,6 +25,17 @@
       </div>
     </div>
 
+    <div class="flex items-center mt-4">
+      <button type="button" id="privacy-policy-link" class="text-xs text-indigo-600 hover:underline focus:outline-none" onclick="alert('Privacy Policy modal coming soon!')">
+        View Privacy Policy
+      </button>
+    </div>
+
+    <div class="flex items-center mt-2">
+      <%= check_box_tag :privacy_policy, '1', false, required: true, class: "mr-2" %>
+      <%= label_tag :privacy_policy, "I accept the Privacy Policy", class: "text-xs text-gray-700" %>
+    </div>
+
     <% if @minimum_password_length %>
       <p class="mt-2 text-xs text-gray-500">
         <%= @minimum_password_length %> characters minimum
