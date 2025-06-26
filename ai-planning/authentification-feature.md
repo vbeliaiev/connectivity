@@ -49,9 +49,9 @@ This checklist guides a developer through implementing a minimum user authentica
 - [x] Add a required checkbox for privacy policy acceptance on the sign-up form (user cannot register without checking it).
 
 ## 7. Privacy Policy Modal
-- [ ] Create a simple modal component for the privacy policy (can be a partial or a stimulus controller).
-- [ ] Write a default privacy policy (brief, clear, and generic).
-- [ ] Ensure the modal is accessible from the sign-up form.
+- [x] Create a simple modal component for the privacy policy (can be a partial or a stimulus controller).
+- [x] Write a default privacy policy (brief, clear, and generic).
+- [x] Ensure the modal is accessible from the sign-up form.
 
 ## 8. Email Templates
 - [ ] Add the project logo to the default Devise email templates (confirmation, password reset).

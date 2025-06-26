@@ -26,7 +26,7 @@
     </div>
 
     <div class="flex items-center mt-4">
-      <button type="button" id="privacy-policy-link" class="text-xs text-indigo-600 hover:underline focus:outline-none" onclick="alert('Privacy Policy modal coming soon!')">
+      <button type="button" id="privacy-policy-link" class="text-xs text-indigo-600 hover:underline focus:outline-none">
         View Privacy Policy
       </button>
     </div>
@@ -51,3 +51,18 @@
     <%= render "devise/shared/links" %>
   </div>
 </div>
+
+<%= render 'devise/registrations/privacy_policy_modal' %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var link = document.getElementById('privacy-policy-link');
+    var modal = document.getElementById('privacy-policy-modal');
+    if (link && modal) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        modal.classList.remove('hidden');
+      });
+    }
+  });
+</script>
