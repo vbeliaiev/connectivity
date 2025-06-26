@@ -63,7 +63,7 @@ This checklist guides a developer through implementing a minimum user authentica
 - [x] If a user attempts to change their email, display a prompt instructing them to contact the administrator (do not allow email changes in the UI).
 
 ## 10. Redirects
-- [ ] Configure Devise to redirect users to the root page after login, logout, sign up, and password reset.
+- [x] Configure Devise to redirect users to the root page after login, logout, sign up, and password reset.
 
 ## 11. Testing
 - [ ] Test the full authentication flow:
