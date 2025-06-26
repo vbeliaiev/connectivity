@@ -40,10 +40,10 @@ This checklist guides a developer through implementing a minimum user authentica
 - [x] Ensure all Devise routes are available (registrations, sessions, confirmations, passwords).
 
 ## 6. Views and Layouts
-- [ ] Run `rails generate devise:views` to generate Devise views.
-- [ ] Create a standalone layout for authentication views (e.g., `app/views/layouts/auth.html.erb`).
-- [ ] Update Devise views to use the standalone layout.
-- [ ] Add the project logo and favicon to the layout (reuse existing assets).
+- [x] Run `rails generate devise:views` to generate Devise views.
+- [x] Create a standalone layout for authentication views (e.g., `app/views/layouts/auth.html.erb`).
+- [x] Update Devise views to use the standalone layout.
+- [x] Add the project logo and favicon to the layout (reuse existing assets).
 - [ ] Style all Devise views (sign in, sign up, forgot password, confirmation) with default Tailwind CSS classes and colors.
 - [ ] Add a privacy policy link/button to the sign-up form that opens a modal window.
 - [ ] Add a required checkbox for privacy policy acceptance on the sign-up form (user cannot register without checking it).
