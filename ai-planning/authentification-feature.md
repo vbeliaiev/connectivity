@@ -26,18 +26,18 @@ This checklist guides a developer through implementing a minimum user authentica
 - [x] Ensure only `display_name`, `email`, and password fields are present (no extra fields).
 
 ## 4. Devise Configuration
-- [ ] In `config/initializers/devise.rb`, set:
-    - [ ] `config.mailer_sender` to a valid email address.
-    - [ ] Session timeout to a long duration (e.g., 2 weeks).
-    - [ ] Remove or comment out `:lockable`, `:omniauthable`, and other unused modules.
-    - [ ] Set password length to Devise default (6+ characters).
-- [ ] Configure `config/environments/production.rb` to use Google SMTP for ActionMailer.
-- [ ] Configure `config/environments/development.rb` and `test.rb` to use `letter_opener` for ActionMailer.
+- [x] In `config/initializers/devise.rb`, set:
+    - [x] `config.mailer_sender` to a valid email address.
+    - [x] Session timeout to a long duration (e.g., 2 weeks).
+    - [x] Remove or comment out `:lockable`, `:omniauthable`, and other unused modules.
+    - [x] Set password length to Devise default (6+ characters).
+- [x] Configure `config/environments/production.rb` to use Google SMTP for ActionMailer.
+- [x] Configure `config/environments/development.rb` and `test.rb` to use `letter_opener` for ActionMailer.
 
 ## 5. Routes
-- [ ] Use `devise_for :users` in `config/routes.rb`.
-- [ ] Set root route to the desired controller/action (e.g., `root to: 'home#index'`).
-- [ ] Ensure all Devise routes are available (registrations, sessions, confirmations, passwords).
+- [x] Use `devise_for :users` in `config/routes.rb`.
+- [x] Set root route to the desired controller/action (e.g., `root to: 'home#index'`).
+- [x] Ensure all Devise routes are available (registrations, sessions, confirmations, passwords).
 
 ## 6. Views and Layouts
 - [ ] Run `rails generate devise:views` to generate Devise views.
