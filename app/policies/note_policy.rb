@@ -4,6 +4,7 @@ class NotePolicy < ApplicationPolicy
   end
 
   def update?
+    return false unless user
     # Check if user is owner of the note
     if user.notes.include?(record)
       return true
@@ -20,10 +21,12 @@ class NotePolicy < ApplicationPolicy
   end
 
   def destroy?
+    return false unless user
     update?
   end
 
   def create?
+    return false unless user
     org_user = user.organisations_users.find_by(organisation_id: user.current_organisation.id)
     org_user.present?
   end
@@ -31,6 +34,7 @@ class NotePolicy < ApplicationPolicy
 
   def show?
     return true if record.public_visibility?
+    return false unless user
     user.organisations_users.where(organisation_id: record.organisation.id).any?
   end
 
