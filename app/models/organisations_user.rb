@@ -4,5 +4,8 @@ class OrganisationsUser < ApplicationRecord
 
   validates :user_id, uniqueness: { scope: :organisation_id }
   validates :role, presence: true
-  enum role: { member: 0, moderator: 1, admin: 2 }
+  enum role: { member: 0, moderator: 1, admin: 2, owner: 3 }
+
+
+
 end

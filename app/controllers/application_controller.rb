@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include Pundit::Authorization
   # Devise: Redirect to root after login, logout, sign up, and password reset
   def after_sign_in_path_for(resource)
     root_path

@@ -50,6 +50,7 @@ gem "image_processing", "~> 1.2"
 gem "devise"
 gem "openai", "~> 0.6.0"
 gem "neighbor"
+gem "pundit"
 
 gem 'dry-monads'
 
@@ -76,4 +77,5 @@ group :test do
   gem 'factory_bot_rails'
   gem 'shoulda-matchers'
   gem 'ffaker'
+  gem 'pundit-matchers'
 end

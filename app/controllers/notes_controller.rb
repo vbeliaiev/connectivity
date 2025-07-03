@@ -46,6 +46,8 @@ class NotesController < ApplicationController
 
   # PATCH/PUT /notes/1 or /notes/1.json
   def update
+
+    authorize(@note)
     respond_to do |format|
       if @note.update(note_params)
         format.html { redirect_to @note, notice: "Note was successfully updated." }
