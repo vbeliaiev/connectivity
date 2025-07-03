@@ -15,7 +15,7 @@ RSpec.describe AiChatService, type: :service do
     current_user.confirm
   end
 
-  subject { service.call(user_input, chat_history: chat_history, current_user: current_user) }
+  subject { service.call(user_input, chat_history:, current_user:) }
 
   describe '#call' do
     context 'when AI returns a tool call' do

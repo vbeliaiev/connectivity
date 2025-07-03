@@ -1,7 +1,6 @@
 class User < ApplicationRecord
   before_save :set_display_name, if: -> { display_name.blank? }
   after_create :personal_organisation
-  after_create :set_current_organisation
 
   has_many :organisations_users, dependent: :destroy
   has_many :organisations, through: :organisations_users
@@ -15,8 +14,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable
 
 
-  def set_current_organisation
-    self.current_organisation ||= personal_organisation
+  def current_organisation
+    super || personal_organisation
   end
   def personal_organisation
     personal_organisation = Organisation.joins(:organisations_users).find_by(organisations_users: { user_id: id }, organisations: { personal: true })

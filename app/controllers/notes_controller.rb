@@ -30,7 +30,8 @@ class NotesController < ApplicationController
 
   # POST /notes or /notes.json
   def create
-    @note = Note.new(note_params.merge(author: current_user, organisation: current_user.current_organisation))
+    @note = Note.new(note_params.merge(author: current_user,
+                                       organisation: current_user.current_organisation))
 
     respond_to do |format|
       if @note.save
