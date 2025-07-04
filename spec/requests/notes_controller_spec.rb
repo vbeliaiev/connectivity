@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe NotesController, type: :request do
+  let(:current_user) { create(:user) }
+  before { current_user.confirm; sign_in current_user }
   describe 'GET /notes' do
-    let!(:notes) { create_list(:note, 3) }
+    let!(:notes) { create_list(:note, 3, visibility_level: :public_visibility) }
     context 'when query is nil' do
       it 'returns a successful response and displays note page body' do
         get notes_path
@@ -29,7 +31,7 @@ RSpec.describe NotesController, type: :request do
   end
 
   describe 'GET /notes/:id' do
-    let!(:note) { create(:note) }
+    let!(:note) { create(:note, visibility_level: :public_visibility) }
 
     it 'returns a successful response and displays the note content' do
       get note_path(note)
@@ -48,7 +50,6 @@ RSpec.describe NotesController, type: :request do
   end
 
   describe 'POST /notes' do
-    let(:current_user) { create(:user) }
     let(:folder) { create(:folder) }
     let(:note_body) { FFaker::Lorem.paragraph }
     let(:valid_params) do
@@ -61,8 +62,6 @@ RSpec.describe NotesController, type: :request do
       }
     end
 
-    before { current_user.confirm; sign_in current_user }
-
     it 'creates a note and displays its page body' do
       post notes_path, params: valid_params
       note = Note.order(:created_at).last
@@ -73,7 +72,7 @@ RSpec.describe NotesController, type: :request do
   end
 
   describe 'PATCH /notes/:id' do
-    let!(:note) { create(:note) }
+    let!(:note) { create(:note, author: current_user) }
     let(:new_body) { FFaker::Lorem.paragraph }
     let(:update_params) do
       {
@@ -93,7 +92,7 @@ RSpec.describe NotesController, type: :request do
   end
 
   describe 'DELETE /notes/:id' do
-    let!(:note) { create(:note) }
+    let!(:note) { create(:note, author: current_user) }
 
     it 'destroys the note and redirects to index, note content is not present' do
       delete note_path(note)

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe NotePolicy do
+describe NodePolicy do
   let!(:user) { create(:user) }
 
   subject { described_class }

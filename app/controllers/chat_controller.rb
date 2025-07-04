@@ -1,19 +1,23 @@
-
-
 class ChatController < ApplicationController
-    def new
-      @response = nil
-    end
+  after_action :verify_pundit_authorization
 
-    def create
-      AiChatService.new.call(params[:message], chat_history: session[:chat_history], current_user:).then do |result|
-        if result.success?
-          session[:chat_history] = result.value!
-        else
-          flash[:warn] = result.failure
-        end
-      end
+  def new
+    authorize(nil, policy_class: ChatPolicy)
 
-      render :new
-    end
+    @response = nil
   end
+
+  def create
+    authorize(nil, policy_class: ChatPolicy)
+
+    AiChatService.new.call(params[:message], chat_history: session[:chat_history], current_user:).then do |result|
+      if result.success?
+        session[:chat_history] = result.value!
+      else
+        flash[:warn] = result.failure
+      end
+    end
+
+    render :new
+  end
+end

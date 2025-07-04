@@ -4,7 +4,7 @@ RSpec.describe OrganisationsUser, type: :model do
   it { should belong_to(:user) }
   it { should belong_to(:organisation) }
 
-  it { should define_enum_for(:role).with_values(member: 0, moderator: 1, admin: 2) }
+  it { should define_enum_for(:role).with_values(member: 0, moderator: 1, admin: 2, owner: 3) }
   it { should validate_presence_of(:role) }
 
   context 'validate uniqueness' do

@@ -1,9 +1,12 @@
 class User < ApplicationRecord
   has_many :organisations_users, dependent: :destroy
   has_many :organisations, through: :organisations_users
-  belongs_to :current_organisation, class_name: 'Organisation', foreign_key: 'current_organisation_id', optional: true
+
   has_many :folders
   has_many :notes
+  has_many :nodes # node == note || folder
+
+  belongs_to :current_organisation, class_name: 'Organisation', foreign_key: 'current_organisation_id', optional: true
 
   before_save :set_display_name, if: -> { display_name.blank? }
   after_create :personal_organisation

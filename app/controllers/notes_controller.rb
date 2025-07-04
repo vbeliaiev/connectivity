@@ -77,14 +77,6 @@ class NotesController < ApplicationController
 
   private
 
-  def verify_pundit_authorization
-    if action_name == "index"
-      verify_policy_scoped
-    else
-      verify_authorized
-    end
-  end
-
   # Use callbacks to share common setup or constraints between actions.
   def set_note
     @note = Note.find(params[:id])

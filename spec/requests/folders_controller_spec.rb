@@ -1,8 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe FoldersController, type: :request do
+  let(:current_user) { create(:user) }
+  before { current_user.confirm; sign_in current_user }
+
   describe 'GET /folders' do
-    let!(:folders) { create_list(:folder, 3) }
+    let!(:folders) { create_list(:folder, 3, visibility_level: :public_visibility) }
 
     it 'returns a successful response and displays folder titles' do
       get folders_path
@@ -14,7 +17,7 @@ RSpec.describe FoldersController, type: :request do
   end
 
   describe 'GET /folders/:id' do
-    let!(:folder) { create(:folder) }
+    let!(:folder) { create(:folder, visibility_level: :public_visibility) }
 
     it 'returns a successful response and displays the folder title' do
       get folder_path(folder)
@@ -55,7 +58,7 @@ RSpec.describe FoldersController, type: :request do
   end
 
   describe 'PATCH /folders/:id' do
-    let!(:folder) { create(:folder) }
+    let!(:folder) { create(:folder, author: current_user) }
     let(:new_title) { FFaker::Lorem.word }
     let(:update_params) do
       {
@@ -75,7 +78,7 @@ RSpec.describe FoldersController, type: :request do
   end
 
   describe 'DELETE /folders/:id' do
-    let!(:folder) { create(:folder) }
+    let!(:folder) { create(:folder, title: DateTime.current.to_i.to_s, author: current_user) }
 
     it 'destroys the folder and redirects to index, folder title is not present' do
       delete folder_path(folder)
