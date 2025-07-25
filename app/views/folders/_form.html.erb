@@ -11,6 +11,17 @@
     </div>
   <% end %>
 
+  <% if @parent %>
+    <%= form.hidden_field :parent_id, value: @parent.id %>
+  <% else %>
+    <div class="my-5">
+      <%= form.collection_select :parent_id, @policy_scope, :id, :title,
+        { prompt: "Select parent Folder" },
+        { class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1" } %>
+    </div>
+  <% end %>
+
+
   <div class="my-5">
     <%= form.label :title %>
     <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": folder.errors[:title].none?, "border-red-400 focus:outline-red-600": folder.errors[:title].any?}] %>

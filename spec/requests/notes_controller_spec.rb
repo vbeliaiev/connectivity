@@ -2,9 +2,17 @@ require 'rails_helper'
 
 RSpec.describe NotesController, type: :request do
   let(:current_user) { create(:user) }
-  before { current_user.confirm; sign_in current_user }
+  let(:current_user_org) { create(:organisation) }
+
+  before do
+    current_user.confirm
+    current_user.update(current_organisation_id: current_user_org.id)
+    create(:organisations_user, user: current_user, organisation: current_user_org)
+    sign_in current_user
+  end
+
   describe 'GET /notes' do
-    let!(:notes) { create_list(:note, 3, visibility_level: :public_visibility) }
+    let!(:notes) { create_list(:note, 3, visibility_level: :public_visibility, organisation: current_user_org) }
     context 'when query is nil' do
       it 'returns a successful response and displays note page body' do
         get notes_path
@@ -21,7 +29,8 @@ RSpec.describe NotesController, type: :request do
 
       it 'builds embedding vector, call semantic search and renders the page successfully' do
         expect(EmbeddingGenerator).to receive(:generate).with(search_query).and_return(search_query_embedding)
-        expect(Note).to receive(:semantic_search).with(search_query_embedding, top: described_class::SEMANTIC_SEARCH_ITEMS_COUNT).and_return(notes)
+        searched_notes = Note.where(id: notes.map(&:id))
+        expect(Note).to receive(:semantic_search).with(search_query_embedding, top: described_class::SEMANTIC_SEARCH_ITEMS_COUNT).and_return(searched_notes)
 
         get notes_path, params: { query: 'Italian food' }
 
@@ -50,7 +59,7 @@ RSpec.describe NotesController, type: :request do
   end
 
   describe 'POST /notes' do
-    let(:folder) { create(:folder) }
+    let(:folder) { create(:folder, organisation: current_user_org) }
     let(:note_body) { FFaker::Lorem.paragraph }
     let(:valid_params) do
       {
@@ -65,7 +74,7 @@ RSpec.describe NotesController, type: :request do
     it 'creates a note and displays its page body' do
       post notes_path, params: valid_params
       note = Note.order(:created_at).last
-      expect(response).to redirect_to(note_path(note))
+      expect(response).to redirect_to(folder_path(note.parent))
       follow_redirect!
       expect(response.body).to include(note.page.body.to_plain_text)
     end
@@ -96,7 +105,7 @@ RSpec.describe NotesController, type: :request do
 
     it 'destroys the note and redirects to index, note content is not present' do
       delete note_path(note)
-      expect(response).to redirect_to(notes_path)
+      expect(response).to redirect_to(root_path)
       follow_redirect!
       expect(Note.exists?(note.id)).to be_falsey
       expect(response.body).not_to include(note.page.body.to_plain_text)

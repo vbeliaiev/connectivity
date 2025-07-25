@@ -1,0 +1,49 @@
+<header class="flex justify-between py-2 space-x-4 w-full">
+  <% if user_signed_in? %>
+    <div class="container flex">
+      <div class="">
+        <div class="relative inline-block">
+          <button id="select-organisation-menu-button" onclick="toggleMenu()" type="button" aria-expanded="true" aria-haspopup="true" class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50">
+            <%= current_user.current_organisation.name %>
+            <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="-mr-1 size-5 text-gray-400">
+              <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+            </svg>
+          </button>
+
+          <div role="menu" tabindex="-1" aria-labelledby="menu-button" aria-orientation="vertical" id="select-organisation-dropdown-menu" class="hidden absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden">
+            <div role="none" class="py-1">
+              <% current_user.organisations.each do |organisation| %>
+                <%= button_to organisation.name, set_current_organisation_users_path(organisation_id: organisation.id), method: :post, data: { turbo: false }, class: "block px-4 py-2 text-sm text-gray-700" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container flex justify-end">
+      <%= link_to "My Account", edit_user_registration_path, class: "text-base font-medium text-gray-500 hover:text-gray-900 pr-3" %>
+      <%= button_to "Log out", destroy_user_session_path, method: :delete, class: "text-base font-medium text-gray-500 hover:text-gray-900" %>
+    </div>
+  <% else %>
+    <div class="container flex justify-end">
+      <%= link_to "Sign in", new_user_session_path, class: "text-base font-medium text-gray-500 hover:text-gray-900 mr-3" %>
+      <%= link_to "Sign up", new_user_registration_path, class: "text-base font-medium text-gray-500 hover:text-gray-900" %>
+    <div>
+  <% end %>
+</header>
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById('select-organisation-dropdown-menu');
+    menu.classList.toggle('hidden');
+  }
+
+  document.addEventListener('click', function (event) {
+    const button = document.getElementById('select-organisation-menu-button');
+    const menu = document.getElementById('select-organisation-dropdown-menu');
+
+    if (!button.contains(event.target) && !menu.contains(event.target)) {
+      menu.classList.add('hidden');
+    }
+  });
+</script>

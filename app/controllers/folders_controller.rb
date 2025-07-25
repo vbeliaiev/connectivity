@@ -3,79 +3,76 @@ class FoldersController < ApplicationController
 
   before_action :set_folder, only: %i[ show edit update destroy ]
 
-  # GET /folders or /folders.json
-  def index
-    @folders = policy_scope(Folder)
-  end
-
-  # GET /folders/1 or /folders/1.json
   def show
     authorize @folder
+    @child_notes = @folder.child_notes(params[:notes_page])
+    @child_folders = @folder.child_folders(params[:folders_page])
   end
 
-  # GET /folders/new
   def new
     @folder = Folder.new
     authorize @folder
+
+    set_parent_or_parent_scope
   end
 
-  # GET /folders/1/edit
   def edit
     authorize @folder
+    @policy_scope = policy_scope(Folder)
   end
 
-  # POST /folders or /folders.json
   def create
     @folder = Folder.new(folder_params.merge(author: current_user,
                                              organisation: current_user.current_organisation))
 
     authorize @folder
-    respond_to do |format|
-      if @folder.save
-        format.html { redirect_to @folder, notice: "Folder was successfully created." }
-        format.json { render :show, status: :created, location: @folder }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @folder.errors, status: :unprocessable_entity }
-      end
+
+
+    if @folder.save
+      redirect_to @folder, notice: "Folder was successfully created."
+    else
+      set_parent_or_parent_scope
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /folders/1 or /folders/1.json
   def update
     authorize @folder
 
-    respond_to do |format|
-      if @folder.update(folder_params)
-        format.html { redirect_to @folder, notice: "Folder was successfully updated." }
-        format.json { render :show, status: :ok, location: @folder }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @folder.errors, status: :unprocessable_entity }
-      end
+    if @folder.update(folder_params)
+      redirect_to @folder, notice: "Folder was successfully updated."
+    else
+      @policy_scope = policy_scope(Folder)
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /folders/1 or /folders/1.json
   def destroy
     authorize @folder
 
-    @folder.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to folders_path, status: :see_other, notice: "Folder was successfully destroyed." }
-      format.json { head :no_content }
+    if @folder.destroy!
+      redirect_path = @folder.parent_id ? folder_path(@folder.parent_id) : root_path
+      redirect_to redirect_path, notice: "Folder was successfully destroyed."
+    else
+      redirect_to folder_path(@folder), alert: 'Folder was not destroyed. Please try angain and notify administrator.'
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_folder
-      @folder = Folder.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def folder_params
-      params.require(:folder).permit(:title)
+  def set_parent_or_parent_scope
+    if params[:parent_id]
+      @parent = policy_scope(Folder).find(params[:parent_id])
+    else
+      @policy_scope = policy_scope(Folder)
     end
+  end
+
+  def set_folder
+    @folder = Folder.find(params[:id])
+  end
+
+  def folder_params
+    params.require(:folder).permit(:title, :parent_id)
+  end
 end
