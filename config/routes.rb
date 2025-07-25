@@ -5,8 +5,12 @@ Rails.application.routes.draw do
     passwords: 'users/passwords',
     confirmations: 'users/confirmations'
   }
-  resources :folders
+  resources :folders, except: [:index]
   resources :notes
+  
+  resources :users, only: [] do
+    post :set_current_organisation, on: :collection  
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

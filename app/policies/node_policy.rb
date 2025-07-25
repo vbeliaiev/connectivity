@@ -49,8 +49,9 @@ class NodePolicy < ApplicationPolicy
     def resolve
       return scope.public_visibility unless user
 
-      joined_scope = scope.joins(:organisation).joins('LEFT JOIN organisations_users ON organisations.id = organisations_users.organisation_id')
-      joined_scope.where(organisations_users: { user_id: user.id }).or(scope.public_visibility)
+      scope.joins(:organisation).where(organisation: { id: user.current_organisation_id })
+      #joined_scope = scope.joins(:organisation).joins('LEFT JOIN organisations_users ON organisations.id = organisations_users.organisation_id')
+      #joined_scope.where(organisations_users: { user_id: user.id }).or(scope.public_visibility)
     end
 
     private

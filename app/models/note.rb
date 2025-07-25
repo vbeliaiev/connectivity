@@ -3,7 +3,7 @@ class Note < Node
 
   belongs_to :organisation
 
-  before_save :generate_embedding, unless: -> { Rails.env.test? }
+  before_save :generate_embedding, unless: -> { Rails.env.test? || Rails.env.development? }
 
   scope :semantic_search, ->(query_embedding, top: 5) {
     order(Arel.sql("embedding <#> '[#{query_embedding.join(',')}]'")).limit(top)

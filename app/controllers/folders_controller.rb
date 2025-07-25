@@ -3,6 +3,7 @@ class FoldersController < ApplicationController
 
   before_action :set_folder, only: %i[ show edit update destroy ]
 
+  # TODO: Destroy this action
   # GET /folders or /folders.json
   def index
     @folders = policy_scope(Folder)
@@ -16,12 +17,14 @@ class FoldersController < ApplicationController
   # GET /folders/new
   def new
     @folder = Folder.new
+    @parent = Folder.find(params[:parent_id]) if params[:parent_id] # TODO check with the policy scope 
     authorize @folder
   end
 
   # GET /folders/1/edit
   def edit
     authorize @folder
+
   end
 
   # POST /folders or /folders.json
@@ -63,7 +66,7 @@ class FoldersController < ApplicationController
     @folder.destroy!
 
     respond_to do |format|
-      format.html { redirect_to folders_path, status: :see_other, notice: "Folder was successfully destroyed." }
+      format.html { redirect_to @folder.parent_id ? folder_path(@folder.parent_id) : root_path , status: :see_other, notice: "Folder was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -76,6 +79,6 @@ class FoldersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def folder_params
-      params.require(:folder).permit(:title)
+      params.require(:folder).permit(:title, :parent_id) # TODO: Check parent folder permissions
     end
 end

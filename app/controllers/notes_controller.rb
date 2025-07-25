@@ -7,8 +7,8 @@ class NotesController < ApplicationController
   # GET /notes or /notes.json
   def index
     query = params[:query]
-    @folders = Folder.ordered
 
+    @folders = FolderPolicy::Scope.new(current_user, Folder.all).resolve.where(parent: nil).ordered
     if query
       query_embedding = EmbeddingGenerator.generate(query)
       @notes = policy_scope(Note).semantic_search(query_embedding, top: SEMANTIC_SEARCH_ITEMS_COUNT)
@@ -26,6 +26,7 @@ class NotesController < ApplicationController
   # GET /notes/new
   def new
     @note = Note.new
+    @parent = Folder.find(params[:parent_id]) if params[:parent_id]
     authorize @note
   end
 
@@ -41,7 +42,7 @@ class NotesController < ApplicationController
     authorize @note
     respond_to do |format|
       if @note.save
-        format.html { redirect_to @note, notice: "Note was successfully created." }
+        format.html { redirect_to @note.parent_id ? folder_path(@note.parent_id) : @note , notice: "Note was successfully created." }
         format.json { render :show, status: :created, location: @note }
       else
         format.html { render :new, status: :unprocessable_entity }
