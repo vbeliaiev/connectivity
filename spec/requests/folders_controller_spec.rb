@@ -27,7 +27,7 @@ RSpec.describe FoldersController, type: :request do
   end
 
   describe 'GET /folders/new' do
-    let!(:folder) { create(:folder) }
+    let!(:folder) { create(:folder, title: SecureRandom.hex) }
     it 'returns a successful response and does not display any existing folder title' do
       get new_folder_path
       expect(response).to have_http_status(:ok)
