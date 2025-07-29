@@ -3,87 +3,101 @@ class NotesController < ApplicationController
   before_action :set_note, only: %i[ show edit update destroy ]
 
   SEMANTIC_SEARCH_ITEMS_COUNT = 3
+  FOLDER_ITEMS_MAX_COUNT = 10
+  NOTE_ITEMS_MAX_COUNT = 10
 
-  # GET /notes or /notes.json
   def index
     query = params[:query]
-    @folders = Folder.ordered
+
+    @folders = folder_policy_scope.root_records.ordered.page(params[:folders_page]).per(FOLDER_ITEMS_MAX_COUNT)
 
     if query
       query_embedding = EmbeddingGenerator.generate(query)
-      @notes = policy_scope(Note).semantic_search(query_embedding, top: SEMANTIC_SEARCH_ITEMS_COUNT)
+      @notes = note_policy_scope.semantic_search(query_embedding, top: SEMANTIC_SEARCH_ITEMS_COUNT)
     else
-      @notes = policy_scope(Note)
+      @notes = note_policy_scope
     end
 
+    @notes = @notes.includes(:rich_text_page).page(params[:notes_page]).per(NOTE_ITEMS_MAX_COUNT)
   end
 
-  # GET /notes/1 or /notes/1.json
   def show
     authorize @note
   end
 
-  # GET /notes/new
   def new
     @note = Note.new
     authorize @note
+    set_parent_or_parent_scope
   end
 
-  # GET /notes/1/edit
   def edit
     authorize @note
+    @folder_policy_scope = folder_policy_scope
   end
 
-  # POST /notes or /notes.json
   def create
     @note = Note.new(note_params.merge(author: current_user,
                                        organisation: current_user.current_organisation))
     authorize @note
-    respond_to do |format|
-      if @note.save
-        format.html { redirect_to @note, notice: "Note was successfully created." }
-        format.json { render :show, status: :created, location: @note }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @note.errors, status: :unprocessable_entity }
-      end
+
+    if @note.save
+      redirect_to redirect_path, notice: "Note was successfully created."
+    else
+      set_parent_or_parent_scope
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /notes/1 or /notes/1.json
   def update
     authorize @note
-    respond_to do |format|
-      if @note.update(note_params)
-        format.html { redirect_to @note, notice: "Note was successfully updated." }
-        format.json { render :show, status: :ok, location: @note }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @note.errors, status: :unprocessable_entity }
-      end
+
+    if @note.update(note_params)
+      redirect_to @note, notice: "Note was successfully updated."
+    else
+      @folder_policy_scope = folder_policy_scope
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /notes/1 or /notes/1.json
   def destroy
     authorize @note
-    @note.destroy!
 
-    respond_to do |format|
-      format.html { redirect_to notes_path, status: :see_other, notice: "Note was successfully destroyed." }
-      format.json { head :no_content }
+    if @note.destroy!
+      redirect_to redirect_path, notice: "Note was successfully destroyed."
+    else
+      redirect_to redirect_path, alert: 'Note was not destroyed. Please try angain and notify administrator.'
     end
+
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
+  def redirect_path
+    @note.parent_id ? folder_path(@note.parent_id) : root_path
+  end
+
+  def set_parent_or_parent_scope
+    if params[:parent_id]
+      @parent = folder_policy_scope.find(params[:parent_id])
+    else
+      @folder_policy_scope = folder_policy_scope
+    end
+  end
+
   def set_note
     @note = Note.find(params[:id])
   end
 
-  # Only allow a list of trusted parameters through.
   def note_params
     params.require(:note).permit(:content, :page, :parent_id)
+  end
+
+  def note_policy_scope
+    policy_scope(Note)
+  end
+
+  def folder_policy_scope
+    FolderPolicy::Scope.new(current_user, Folder.all).resolve
   end
 end

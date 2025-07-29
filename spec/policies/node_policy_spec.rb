@@ -90,9 +90,10 @@ describe NodePolicy do
     end
 
     context 'when the user is logged in' do
-      let(:user) { create(:user) }
       let(:user_organisation) { create(:organisation) }
       let(:other_organisation) { create(:organisation) }
+
+      let(:user) { create(:user, current_organisation_id: user_organisation.id) }
 
       let!(:note_user_org) { create(:note, organisation: user_organisation, visibility_level: :internal) }
       let!(:internal_note_other_org) { create(:note, organisation: other_organisation, visibility_level: :internal) }
@@ -100,8 +101,8 @@ describe NodePolicy do
 
       before { OrganisationsUser.create(user: user, organisation: user_organisation, role: :member) }
 
-      it 'returns either public notes either internal notes for user organisations' do
-        expect(resolved_scope).to contain_exactly(note_user_org, public_note_other_org)
+      it 'returns notes for selected organisation' do
+        expect(resolved_scope).to contain_exactly(note_user_org)
       end
     end
 

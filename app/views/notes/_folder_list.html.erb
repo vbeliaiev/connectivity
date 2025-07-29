@@ -21,3 +21,6 @@
   <p class="text-center my-10">No folders found.</p>
 <% end %>
 
+<div class="flex">
+  <%= paginate @folders, param_name: :folders_page %>
+</div>

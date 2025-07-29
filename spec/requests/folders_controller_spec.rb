@@ -2,18 +2,13 @@ require 'rails_helper'
 
 RSpec.describe FoldersController, type: :request do
   let(:current_user) { create(:user) }
-  before { current_user.confirm; sign_in current_user }
+  let(:organisation) { create(:organisation) }
 
-  describe 'GET /folders' do
-    let!(:folders) { create_list(:folder, 3, visibility_level: :public_visibility) }
-
-    it 'returns a successful response and displays folder titles' do
-      get folders_path
-      expect(response).to have_http_status(:ok)
-      folders.each do |folder|
-        expect(response.body).to include(folder.title)
-      end
-    end
+  before do
+    current_user.confirm
+    create(:organisations_user, organisation: organisation, user: current_user)
+    current_user.update(current_organisation_id: organisation.id)
+    sign_in current_user
   end
 
   describe 'GET /folders/:id' do
@@ -36,7 +31,6 @@ RSpec.describe FoldersController, type: :request do
   end
 
   describe 'POST /folders' do
-    let(:current_user) { create(:user) }
     let(:folder_title) { FFaker::Lorem.word }
     let(:valid_params) do
       {
@@ -45,8 +39,6 @@ RSpec.describe FoldersController, type: :request do
         }
       }
     end
-
-    before { current_user.confirm; sign_in current_user }
 
     it 'creates a folder and displays its title' do
       post folders_path, params: valid_params
@@ -82,7 +74,7 @@ RSpec.describe FoldersController, type: :request do
 
     it 'destroys the folder and redirects to index, folder title is not present' do
       delete folder_path(folder)
-      expect(response).to redirect_to(folders_path)
+      expect(response).to redirect_to(root_path)
       follow_redirect!
       expect(Folder.exists?(folder.id)).to be_falsey
       expect(response.body).not_to include(folder.title)

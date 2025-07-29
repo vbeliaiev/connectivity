@@ -1,9 +1,11 @@
 class Note < Node
   has_rich_text :page
-
+  validates :page, presence: true
   belongs_to :organisation
 
-  before_save :generate_embedding, unless: -> { Rails.env.test? }
+  MAX_ITEMS_COUNT = 15
+
+  before_save :generate_embedding, unless: -> { Rails.env.test? || Rails.env.development? }
 
   scope :semantic_search, ->(query_embedding, top: 5) {
     order(Arel.sql("embedding <#> '[#{query_embedding.join(',')}]'")).limit(top)

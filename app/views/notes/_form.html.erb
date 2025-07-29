@@ -11,17 +11,17 @@
     </div>
   <% end %>
 
-<div class="my-5">
-  <%= form.collection_select :parent_id, Folder.all, :id, :title,
+  <% if @parent %>
+    <%= form.hidden_field :parent_id, value: @parent.id %>
+  <% else %>
+    <div class="my-5">
+      <%= form.collection_select :parent_id, @folder_policy_scope, :id, :title,
         { prompt: "Select parent Folder" },
-        {
-          class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1"
-        } %>
-</div>
-
+        { class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1" } %>
+    </div>
+  <% end %>
 
   <div class="my-5">
-    <%= form.label :page %>
     <%= form.rich_text_area :page, class: '' %>
   </div>
 

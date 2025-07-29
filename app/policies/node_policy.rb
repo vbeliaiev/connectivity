@@ -27,8 +27,12 @@ class NodePolicy < ApplicationPolicy
 
   def create?
     return false unless user
-    org_user = user.organisations_users.find_by(organisation_id: user.current_organisation.id)
-    org_user.present?
+    org_user = user.organisations_users.find_by(organisation_id: user.current_organisation_id)
+    return false unless org_user.present?
+
+    return true if record.parent.blank?
+
+    record.parent.organisation_id == user.current_organisation_id
   end
 
 
@@ -49,8 +53,7 @@ class NodePolicy < ApplicationPolicy
     def resolve
       return scope.public_visibility unless user
 
-      joined_scope = scope.joins(:organisation).joins('LEFT JOIN organisations_users ON organisations.id = organisations_users.organisation_id')
-      joined_scope.where(organisations_users: { user_id: user.id }).or(scope.public_visibility)
+      scope.joins(:organisation).where(organisation: { id: user.current_organisation_id })
     end
 
     private

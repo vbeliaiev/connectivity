@@ -1,15 +1,6 @@
 <% content_for :title, "Notes" %>
 
 <div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
-  <% if alert.present? %>
-    <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-md inline-block" id="notice"><%= alert %></p>
-  <% end %>
-
-
   <%= form_with url: notes_path, method: :get, local: true, class: "w-full mx-auto mb-10" do %>
   <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden shadow-sm">
     <%= text_field_tag :query, params[:query], placeholder: "Search notes...",
@@ -49,6 +40,10 @@
             </div>
           </div>
         <% end %>
+
+        <div class="flex justify-center items-center mb-10">
+          <%= paginate @notes, param_name: :notes_page %>
+        </div>
       <% else %>
         <p class="text-center my-10">No notes found.</p>
       <% end %>

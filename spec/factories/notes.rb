@@ -7,7 +7,10 @@ FactoryBot.define do
 
 
     after(:build) do |note|
-      note.page = ActionText::RichText.new(body: FFaker::Lorem.paragraph)
+      if note.page.body.blank?
+        note.page = ActionText::RichText.new(body: FFaker::Lorem.paragraph)
+      end
+      
       note.organisation ||= note.author.personal_organisation
     end
   end
