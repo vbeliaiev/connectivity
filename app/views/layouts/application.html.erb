@@ -14,8 +14,8 @@
     <main class="container mx-auto mt-2 px-5 flex flex-col w-full">
       <%= render '/layouts/user_actions_header' %>
       <header class="flex justify-center mb-5">
-        <%= link_to root_path do  %>
-          <%= image_tag 'connectivity_logo.png', class: 'h-24' %>
+        <%= link_to root_path, class: '' do  %>
+          <%= image_tag 'connectivity_logo.png', class: 'sm:h-24 h-28 mt-3 sm:mt-0' %>
         <% end %>
       </header>
         <% if notice.present? %>
