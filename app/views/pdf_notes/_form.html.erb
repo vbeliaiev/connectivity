@@ -1,0 +1,38 @@
+<%= form_with(model: pdf_note, class: "contents") do |form| %>
+  <% if pdf_note.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(pdf_note.errors.count, "error") %> prohibited this pdf note from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% pdf_note.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @parent %>
+    <%= form.hidden_field :parent_id, value: @parent.id %>
+  <% else %>
+    <div class="my-5">
+      <%= form.collection_select :parent_id, @folder_policy_scope, :id, :title,
+        { prompt: "Select parent Folder" },
+        { class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1" } %>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :title %>
+    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": pdf_note.errors[:title].none?, "border-red-400 focus:outline-red-600": pdf_note.errors[:title].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :file, "PDF file" %>
+    <%= form.file_field :file, accept: "application/pdf", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": pdf_note.errors[:file].none?, "border-red-400 focus:outline-red-600": pdf_note.errors[:file].any?}] %>
+    <p class="text-sm text-gray-500 mt-1">PDF only, maximum 100MB.</p>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

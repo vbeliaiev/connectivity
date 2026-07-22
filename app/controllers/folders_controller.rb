@@ -7,6 +7,7 @@ class FoldersController < ApplicationController
     authorize @folder
     @child_notes = @folder.child_notes(params[:notes_page])
     @child_folders = @folder.child_folders(params[:folders_page])
+    @child_pdf_notes = @folder.child_pdf_notes(params[:pdf_notes_page])
   end
 
   def new

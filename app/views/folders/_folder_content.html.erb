@@ -1,6 +1,7 @@
 <% if @child_folders.present? %>
   <hr class="text-gray-200 mt-5">
   <div class="mt-5">
+    <h2 class="font-bold text-xl mb-3">Files:</h2>
     <% @child_folders.each do |folder| %>
       <div class="flex flex-col sm:flex-row justify-between items-center">
         <div class="w-full sm:w-auto mb-2">
@@ -23,9 +24,32 @@
   </div>
 <% end %>
 
-<hr class="text-gray-200 mt-5">
+<% if @child_pdf_notes.present? %>
+  <hr class="text-gray-200 mt-5">
+  <div class="mt-5">
+    <h2 class="font-bold text-xl mb-3">Documents (pdf):</h2>
+    <% @child_pdf_notes.each do |pdf_note| %>
+      <div id="<%= dom_id pdf_note %>" class="w-full sm:w-auto my-5 space-y-1">
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text mr-2"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+          <span><%= pdf_note.title %></span>
+        </div>
+        <%= link_to pdf_note.file.filename.to_s, url_for(pdf_note.file), target: "_blank", rel: "noopener", class: "text-blue-600 hover:underline" %>
+      </div>
+      <hr class="text-gray-200 mt-5">
+    <% end %>
+    <div class="flex justify-center items-center">
+      <%= paginate @child_pdf_notes, param_name: :pdf_notes_page %>
+    </div>
+  </div>
+<% end %>
+
+<% if @child_pdf_notes.blank? %>
+  <hr class="text-gray-200 mt-5">
+<% end %>
 
 <div class="mt-5">
+  <h2 class="font-bold text-xl mb-3">Pages:</h2>
   <% @child_notes.each do |note| %>
     <div id="<%= dom_id note %>" class="w-full sm:w-auto my-5 space-y-5">
       <div class="line-clamp-10">
