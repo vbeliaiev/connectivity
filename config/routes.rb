@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :folders, except: [:index]
   resources :notes
   resources :pdf_notes, only: %i[new create show destroy]
+  resources :video_notes, only: %i[new create show destroy]
 
   resources :users, only: [] do
     post :set_current_organisation, on: :collection

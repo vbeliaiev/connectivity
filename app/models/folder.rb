@@ -16,4 +16,8 @@ class Folder < Node
   def child_pdf_notes(page)
     children.pdf_notes.ordered.includes(file_attachment: :blob).page(page).per(PdfNote::MAX_ITEMS_COUNT)
   end
+
+  def child_video_notes(page)
+    children.video_notes.ordered.includes(file_attachment: :blob).page(page).per(VideoNote::MAX_ITEMS_COUNT)
+  end
 end

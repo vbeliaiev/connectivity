@@ -8,6 +8,7 @@ class Node < ApplicationRecord
   scope :folders, -> { where(type: 'Folder') }
   scope :notes, -> { where(type: 'Note') }
   scope :pdf_notes, -> { where(type: 'PdfNote') }
+  scope :video_notes, -> { where(type: 'VideoNote') }
   scope :ordered, -> { order(Arel.sql('position ASC NULLS LAST'), created_at: :desc) }
   scope :root_records, -> { where(parent: nil) }
 

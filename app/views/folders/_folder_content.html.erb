@@ -1,7 +1,13 @@
+<%
+  sections_before_pdf = @child_folders.present?
+  sections_before_video = sections_before_pdf || @child_pdf_notes.present?
+  sections_before_pages = sections_before_video || @child_video_notes.present?
+%>
+
 <% if @child_folders.present? %>
   <hr class="text-gray-200 mt-5">
   <div class="mt-5">
-    <h2 class="font-bold text-xl mb-3">Files:</h2>
+    <h2 class="font-bold text-xl mb-3">Folders:</h2>
     <% @child_folders.each do |folder| %>
       <div class="flex flex-col sm:flex-row justify-between items-center">
         <div class="w-full sm:w-auto mb-2">
@@ -25,18 +31,22 @@
 <% end %>
 
 <% if @child_pdf_notes.present? %>
-  <hr class="text-gray-200 mt-5">
+  <% if sections_before_pdf %>
+    <hr class="text-gray-200 mt-5">
+  <% end %>
   <div class="mt-5">
     <h2 class="font-bold text-xl mb-3">Documents (pdf):</h2>
-    <% @child_pdf_notes.each do |pdf_note| %>
+    <% @child_pdf_notes.each_with_index do |pdf_note, index| %>
+      <% if index > 0 %>
+        <hr class="text-gray-200 mb-5">
+      <% end %>
       <div id="<%= dom_id pdf_note %>" class="w-full sm:w-auto my-5 space-y-1">
         <div class="flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text mr-2"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
           <span><%= pdf_note.title %></span>
         </div>
-        <%= link_to pdf_note.file.filename.to_s, url_for(pdf_note.file), target: "_blank", rel: "noopener", class: "text-blue-600 hover:underline" %>
+        <%= link_to pdf_note.file.filename.to_s, url_for(pdf_note.file), target: "_blank", rel: "noopener", class: "text-black underline" %>
       </div>
-      <hr class="text-gray-200 mt-5">
     <% end %>
     <div class="flex justify-center items-center">
       <%= paginate @child_pdf_notes, param_name: :pdf_notes_page %>
@@ -44,20 +54,68 @@
   </div>
 <% end %>
 
-<% if @child_pdf_notes.blank? %>
+<% if @child_video_notes.present? %>
+  <% if sections_before_video %>
+    <hr class="text-gray-200 mt-5">
+  <% end %>
+  <div class="mt-5" data-controller="video-modal">
+    <h2 class="font-bold text-xl mb-3">Videos:</h2>
+    <% @child_video_notes.each_with_index do |video_note, index| %>
+      <% if index > 0 %>
+        <hr class="text-gray-200 mb-5">
+      <% end %>
+      <div id="<%= dom_id video_note %>" class="w-full sm:w-auto my-5">
+        <button type="button"
+                class="flex items-center text-left cursor-pointer group"
+                data-action="video-modal#open"
+                data-url="<%= url_for(video_note.file) %>"
+                data-type="<%= video_note.file.content_type %>"
+                data-title="<%= video_note.title %>">
+          <span class="flex items-center justify-center w-16 h-16 rounded-md bg-gray-100 group-hover:bg-gray-200 mr-3 flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera text-gray-500"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+          </span>
+          <span class="text-black underline"><%= video_note.title %></span>
+        </button>
+      </div>
+    <% end %>
+    <div class="flex justify-center items-center">
+      <%= paginate @child_video_notes, param_name: :video_notes_page %>
+    </div>
+
+    <div data-video-modal-target="modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 hidden" data-action="click->video-modal#closeOnBackdrop">
+      <div class="bg-white rounded-lg shadow-lg max-w-3xl w-full p-4 relative">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-lg font-semibold" data-video-modal-target="title"></h3>
+          <button type="button" class="text-gray-400 hover:text-gray-600 focus:outline-none text-5xl leading-none -mt-4 cursor-pointer" data-action="video-modal#close">
+            <span class="sr-only">Close</span>
+            &times;
+          </button>
+        </div>
+        <video controls data-video-modal-target="player" class="w-full rounded-md" style="max-height: 70vh;">
+          <source data-video-modal-target="source" src="" type="">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<% if sections_before_pages %>
   <hr class="text-gray-200 mt-5">
 <% end %>
 
 <div class="mt-5">
   <h2 class="font-bold text-xl mb-3">Pages:</h2>
-  <% @child_notes.each do |note| %>
+  <% @child_notes.each_with_index do |note, index| %>
+    <% if index > 0 %>
+      <hr class="text-gray-200 mb-5">
+    <% end %>
     <div id="<%= dom_id note %>" class="w-full sm:w-auto my-5 space-y-5">
       <div class="line-clamp-10">
         <%= note.page %>
       </div>
       <%= link_to "Check Details", note_path(note), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
     </div>
-    <hr class="text-gray-200 mt-5">
   <% end %>
   <div class="flex justify-center items-center">
     <%= paginate @child_notes, param_name: :notes_page %>

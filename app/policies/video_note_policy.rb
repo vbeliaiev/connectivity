@@ -1,0 +1,2 @@
+class VideoNotePolicy < NodePolicy
+end
