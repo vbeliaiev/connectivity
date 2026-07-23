@@ -1,0 +1,2 @@
+class PhotoGalleryPolicy < NodePolicy
+end

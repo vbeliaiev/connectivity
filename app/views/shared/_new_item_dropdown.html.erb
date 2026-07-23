@@ -1,0 +1,20 @@
+<%
+  parent_id ||= nil
+  wrapper_class ||= "relative inline-block w-full sm:w-auto"
+  select_class ||= "rounded-md pl-3.5 pr-10 py-2.5 w-full sm:w-auto bg-blue-700 hover:bg-blue-600 text-white font-medium cursor-pointer appearance-none"
+%>
+
+<div class="<%= wrapper_class %>">
+  <select data-controller="nav-select" data-action="nav-select#go" class="<%= select_class %>">
+    <option value="" disabled selected>Create Node</option>
+    <option value="<%= new_note_path(parent_id: parent_id) %>">Note</option>
+    <option value="<%= new_folder_path(parent_id: parent_id) %>">Folder</option>
+    <option value="<%= new_pdf_note_path(parent_id: parent_id) %>">PDF note</option>
+    <option value="<%= new_video_note_path(parent_id: parent_id) %>">Video</option>
+    <option value="<%= new_photo_gallery_path(parent_id: parent_id) %>">Gallery</option>
+  </select>
+
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-white">
+    <path d="m6 9 6 6 6-6"/>
+  </svg>
+</div>

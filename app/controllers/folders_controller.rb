@@ -9,6 +9,7 @@ class FoldersController < ApplicationController
     @child_folders = @folder.child_folders(params[:folders_page])
     @child_pdf_notes = @folder.child_pdf_notes(params[:pdf_notes_page])
     @child_video_notes = @folder.child_video_notes(params[:video_notes_page])
+    @child_photo_galleries = @folder.child_photo_galleries(params[:photo_galleries_page])
   end
 
   def new

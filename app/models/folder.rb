@@ -20,4 +20,10 @@ class Folder < Node
   def child_video_notes(page)
     children.video_notes.ordered.includes(file_attachment: :blob).page(page).per(VideoNote::MAX_ITEMS_COUNT)
   end
+
+  def child_photo_galleries(page)
+    children.photo_galleries.ordered
+      .includes(items: { image_attachment: :blob })
+      .page(page).per(PhotoGallery::MAX_ITEMS_COUNT)
+  end
 end

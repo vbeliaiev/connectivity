@@ -16,14 +16,11 @@
     <div class='flex gap-2 flex-col sm:flex-row'>
       <!-- Refactor link title -->
       <%= link_to "<< #{@folder.parent.present? ? @folder.parent.title : 'Back'}", @folder.parent.present? ? folder_path(@folder.parent) : root_path , class: "w-auto px-3.5 py-2.5 text-center sm:mt-0 sm:ml-0 rounded-md bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-      <%= link_to "Edit this folder", edit_folder_path(@folder), class: "w-auto px-3.5 py-2.5 text-center rounded-md bg-gray-100 hover:bg-gray-50 inline-block font-medium bg-green-400 hover:bg-green-300" %>
-      <%= button_to "Destroy this folder", @folder, method: :delete, form_class: "sm:inline-block", class: "w-full block px-3.5 py-2.5 rounded-md text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+      <%= link_to "Edit this folder", edit_folder_path(@folder), class: "w-auto px-3.5 py-2.5 text-center rounded-md bg-gray-100 hover:bg-gray-50 inline-block font-medium bg-green-600 hover:bg-green-500 text-white" %>
+      <%= button_to "Destroy this folder", @folder, method: :delete, form_class: "sm:inline-block", class: "w-full block px-3.5 py-2.5 rounded-md text-white bg-red-700 hover:bg-red-600 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
     </div>
     <div class='flex flex-row mt-2 sm:mt-0'>
-      <%= link_to "New note", new_note_path(parent_id: @folder.id), class: "rounded-md px-3.5 py-2.5 w-1/2 sm:w-auto text-center bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
-      <%= link_to "New folder", new_folder_path(parent_id: @folder.id), class: "rounded-md px-3.5 py-2.5 w-1/2 sm:w-auto text-center ml-3 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
-      <%= link_to "New pdf note", new_pdf_note_path(parent_id: @folder.id), class: "rounded-md px-3.5 py-2.5 w-1/2 sm:w-auto text-center ml-3 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
-      <%= link_to "New Video", new_video_note_path(parent_id: @folder.id), class: "rounded-md px-3.5 py-2.5 w-1/2 sm:w-auto text-center ml-3 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+      <%= render 'shared/new_item_dropdown', parent_id: @folder.id %>
     </div>
   </div>
 

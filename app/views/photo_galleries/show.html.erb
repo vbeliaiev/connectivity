@@ -1,0 +1,52 @@
+<% content_for :title, "Showing photo gallery" %>
+
+<%
+  items_json = @items.map do |item|
+    {
+      id: item.id,
+      url: url_for(item.image),
+      thumbUrl: url_for(item.image.variant(resize_to_fill: [120, 120])),
+      description: item.description
+    }
+  end
+%>
+
+<div class="w-full" data-controller="gallery-carousel"
+     data-gallery-carousel-items-value="<%= items_json.to_json %>"
+     data-gallery-carousel-current-id-value="<%= @current_item&.id %>"
+     data-gallery-carousel-base-url-value="<%= photo_gallery_path(@photo_gallery) %>">
+
+  <div class="flex justify-between items-center flex-wrap gap-2">
+    <%= link_to "Back", (request.referer == root_url || @photo_gallery.parent.blank?) ? root_path : folder_path(@photo_gallery.parent), class: "rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+    <div class="flex gap-2">
+      <%= link_to "Edit", edit_photo_gallery_path(@photo_gallery), class: "rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+      <%= button_to "Destroy", @photo_gallery, method: :delete, form_class: "inline-block", class: "rounded-md px-3.5 py-2.5 text-white bg-red-700 hover:bg-red-600 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+    </div>
+  </div>
+
+  <h1 class="font-bold text-2xl mt-3"><%= @photo_gallery.title %></h1>
+
+  <div class="relative mt-5 flex items-center justify-center bg-gray-50 rounded-md" style="min-height: 60vh;">
+    <button type="button" data-gallery-carousel-target="prev" data-action="gallery-carousel#prev"
+            class="absolute left-2 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white shadow-lg text-3xl hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer z-10">
+      &#8249;
+    </button>
+
+    <img data-gallery-carousel-target="image" src="" class="max-h-[70vh] max-w-full rounded-md" alt="<%= @photo_gallery.title %>">
+
+    <button type="button" data-gallery-carousel-target="next" data-action="gallery-carousel#next"
+            class="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white shadow-lg text-3xl hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer z-10">
+      &#8250;
+    </button>
+  </div>
+
+  <p data-gallery-carousel-target="description" class="text-gray-700 mt-3"></p>
+
+  <div class="flex gap-2 mt-5 overflow-x-auto pb-2">
+    <% @items.each_with_index do |item, index| %>
+      <button type="button" data-gallery-carousel-target="thumbnail" data-index="<%= index %>" data-action="gallery-carousel#select" class="flex-shrink-0 cursor-pointer rounded-md">
+        <%= image_tag item.image.variant(resize_to_fill: [80, 80]), class: "w-20 h-20 object-cover rounded-md" %>
+      </button>
+    <% end %>
+  </div>
+</div>

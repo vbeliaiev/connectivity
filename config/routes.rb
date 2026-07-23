@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :notes
   resources :pdf_notes, only: %i[new create show destroy]
   resources :video_notes, only: %i[new create show destroy]
+  resources :photo_galleries, only: %i[new create show edit update destroy]
 
   resources :users, only: [] do
     post :set_current_organisation, on: :collection
