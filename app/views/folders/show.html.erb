@@ -16,8 +16,10 @@
     <div class='flex gap-2 flex-col sm:flex-row'>
       <!-- Refactor link title -->
       <%= link_to "<< #{@folder.parent.present? ? @folder.parent.title : 'Back'}", @folder.parent.present? ? folder_path(@folder.parent) : root_path , class: "w-auto px-3.5 py-2.5 text-center sm:mt-0 sm:ml-0 rounded-md bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-      <%= link_to "Edit this folder", edit_folder_path(@folder), class: "w-auto px-3.5 py-2.5 text-center rounded-md bg-gray-100 hover:bg-gray-50 inline-block font-medium bg-green-600 hover:bg-green-500 text-white" %>
-      <%= button_to "Destroy this folder", @folder, method: :delete, form_class: "sm:inline-block", class: "w-full block px-3.5 py-2.5 rounded-md text-white bg-red-700 hover:bg-red-600 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+      <div class="flex items-center gap-1">
+        <%= edit_icon_button(edit_folder_path(@folder)) %>
+        <%= destroy_icon_button(@folder) %>
+      </div>
     </div>
     <div class='flex flex-row mt-2 sm:mt-0'>
       <%= render 'shared/new_item_dropdown', parent_id: @folder.id %>

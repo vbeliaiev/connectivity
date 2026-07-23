@@ -24,7 +24,7 @@ RSpec.describe AiChatService, type: :service do
       end
 
       let(:tool_calls) do
-        [double('ToolCall', function: double('Function', name: 'CreateNote', arguments: { page: 'Note content' }.to_json))]
+        [double('ToolCall', function: double('Function', name: 'CreateNote', arguments: { title: 'Note title', page: 'Note content' }.to_json))]
       end
 
       before do

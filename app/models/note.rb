@@ -1,6 +1,7 @@
 class Note < Node
   has_rich_text :page
   validates :page, presence: true
+  validates :title, presence: true
   belongs_to :organisation
 
   MAX_ITEMS_COUNT = 15

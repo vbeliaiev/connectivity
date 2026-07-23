@@ -3,19 +3,16 @@ class NotesController < ApplicationController
   before_action :set_note, only: %i[ show edit update destroy ]
 
   SEMANTIC_SEARCH_ITEMS_COUNT = 3
-  FOLDER_ITEMS_MAX_COUNT = 10
   NOTE_ITEMS_MAX_COUNT = 10
 
   def index
     query = params[:query]
 
-    @folders = folder_policy_scope.root_records.ordered.page(params[:folders_page]).per(FOLDER_ITEMS_MAX_COUNT)
-
     if query
       query_embedding = EmbeddingGenerator.generate(query)
       @notes = note_policy_scope.semantic_search(query_embedding, top: SEMANTIC_SEARCH_ITEMS_COUNT)
     else
-      @notes = note_policy_scope
+      @notes = note_policy_scope.order(created_at: :desc)
     end
 
     @notes = @notes.includes(:rich_text_page).page(params[:notes_page]).per(NOTE_ITEMS_MAX_COUNT)
@@ -90,7 +87,7 @@ class NotesController < ApplicationController
   end
 
   def note_params
-    params.require(:note).permit(:content, :page, :parent_id)
+    params.require(:note).permit(:title, :content, :page, :parent_id)
   end
 
   def note_policy_scope

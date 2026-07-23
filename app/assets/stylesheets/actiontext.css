@@ -34,5 +34,44 @@
   max-width: 30%;
   height: auto;
   display: block;
-  margin: 1em auto; 
+  margin: 1em auto;
+}
+
+/*
+ * Wrapper added by the rich-text-links Stimulus controller around runs of
+ * 2+ image attachments placed directly next to each other with nothing in
+ * between. Lets those images sit side by side instead of the default
+ * stacked/centered layout used for a lone image.
+*/
+.trix-content-image-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.5em;
+  max-width: 100%;
+  margin: 1em auto;
+}
+
+.trix-content-image-row action-text-attachment,
+.trix-content-image-row action-text-attachment .attachment {
+  flex: 0 1 auto;
+  max-width: 100%;
+}
+
+.trix-content-image-row img {
+  display: block;
+  height: 220px;
+  width: auto;
+  max-width: 100%;
+  margin: 0;
+}
+
+.trix-content a {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.trix-content a:hover {
+  color: #1e40af;
 }

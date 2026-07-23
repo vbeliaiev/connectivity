@@ -1,3 +1,16 @@
-<div class="trix-content">
-  <%= yield -%>
+<div data-controller="rich-text-links image-modal">
+  <div class="trix-content">
+    <%= yield -%>
+  </div>
+
+  <div data-image-modal-target="modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 hidden" data-action="click->image-modal#closeOnBackdrop">
+    <div class="bg-white rounded-lg shadow-lg max-w-3xl w-full p-4 relative">
+      <button type="button" class="absolute -top-4 -right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white text-gray-600 hover:text-gray-900 shadow-lg text-2xl leading-none focus:outline-none cursor-pointer" data-action="image-modal#close">
+        <span class="sr-only">Close</span>
+        &times;
+      </button>
+      <img data-image-modal-target="image" src="" class="w-full max-h-[80vh] object-contain rounded-md" alt="">
+      <p data-image-modal-target="caption" class="text-center text-gray-600 text-sm mt-2 hidden"></p>
+    </div>
+  </div>
 </div>

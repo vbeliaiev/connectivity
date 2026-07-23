@@ -2,6 +2,7 @@ require 'openai'
 require 'dry/monads'
 
 class CreateNote < OpenAI::BaseModel
+  required :title, String, doc: "Short descriptive title of the note"
   required :page, String, doc: "Content of the note"
 end
 
@@ -10,6 +11,8 @@ class AiChatService
 
   SYSTEM_ROLE = <<~TEXT
     You are an assistant. Use the CreateNote function if you need to create a note.
+
+    Always provide a short, descriptive `title` for the note in addition to its `page` content.
 
     When using the CreateNote function, if the note includes any formatting (such as bold text, italics, lists, links, or other rich content), format the `page` field using Action Text-compatible HTML (as used by the Trix editor).
 

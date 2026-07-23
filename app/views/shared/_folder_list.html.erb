@@ -1,6 +1,6 @@
 
-<% if @folders.present? %>
-  <% @folders.each do |folder| %>
+<% if @sidebar_folders.present? %>
+  <% @sidebar_folders.each do |folder| %>
     <div class="flex flex-col sm:flex-row justify-between items-center">
       <div id="<%= dom_id folder %>" class="w-full sm:w-auto mb-2">
         <div>
@@ -22,5 +22,5 @@
 <% end %>
 
 <div class="flex">
-  <%= paginate @folders, param_name: :folders_page %>
+  <%= paginate @sidebar_folders, param_name: :folders_page %>
 </div>
