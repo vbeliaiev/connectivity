@@ -21,8 +21,7 @@ class PhotoGalleriesController < ApplicationController
   end
 
   def create
-    @photo_gallery = PhotoGallery.new(photo_gallery_params.merge(author: current_user,
-                                                                 organisation: current_user.current_organisation))
+    @photo_gallery = PhotoGallery.new(photo_gallery_params.merge(author: current_user))
     authorize @photo_gallery
 
     images = uploaded_images

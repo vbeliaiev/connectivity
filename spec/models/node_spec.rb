@@ -25,37 +25,4 @@ RSpec.describe Node, type: :model do
       expect(Node.folders.ordered).to eq([folder2, folder1])
     end
   end
-
-  describe '.generic_folder_for' do
-    let(:user) { create(:user) }
-
-    it 'returns a folder with the GENERIC_FOLDER_NAME and position -999' do
-
-      folder = Node.generic_folder_for(user.id)
-      expect(folder).to be_a(Node)
-      expect(folder.title).to eq(Node::GENERIC_FOLDER_NAME)
-      expect(folder.position).to eq(-999)
-
-      expect(folder).to be_persisted
-    end
-
-    it 'returns the same record on subsequent calls' do
-      folder1 = Node.generic_folder_for(user.id)
-      folder2 = Node.generic_folder_for(user.id)
-      expect(folder1).to eq(folder2)
-    end
-  end
-
-  describe '#generic?' do
-    let(:user) { create(:user) }
-    it 'returns true for the generic folder' do
-      folder = Node.generic_folder_for(user.id)
-      expect(folder.generic?).to be true
-    end
-
-    it 'returns false for a non-generic folder' do
-      folder = create(:folder, title: 'NotGeneric')
-      expect(folder.generic?).to be false
-    end
-  end
 end

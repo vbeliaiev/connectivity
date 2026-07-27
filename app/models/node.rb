@@ -25,17 +25,6 @@ class Node < ApplicationRecord
     where("content_tsv @@ #{tsquery}").order(Arel.sql("ts_rank(content_tsv, #{tsquery}) DESC"))
   }
 
-  GENERIC_FOLDER_NAME = 'Generic'.freeze
-
-  def self.generic_folder_for(user_id, organisation_id: nil)
-    organisation_id ||= User.find(user_id).personal_organisation.id
-    find_or_create_by(title: GENERIC_FOLDER_NAME, position: -999, user_id: user_id, organisation_id: organisation_id)
-  end
-
-  def generic?
-    title == GENERIC_FOLDER_NAME
-  end
-
   # Returns the chain of ancestors from the root folder down to (but not
   # including) this node. Used to build breadcrumb navigation based purely
   # on the parent/child hierarchy (no reliance on request referer).

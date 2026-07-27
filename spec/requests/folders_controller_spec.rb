@@ -2,12 +2,9 @@ require 'rails_helper'
 
 RSpec.describe FoldersController, type: :request do
   let(:current_user) { create(:user) }
-  let(:organisation) { create(:organisation) }
 
   before do
     current_user.confirm
-    create(:organisations_user, organisation: organisation, user: current_user)
-    current_user.update(current_organisation_id: organisation.id)
     sign_in current_user
   end
 

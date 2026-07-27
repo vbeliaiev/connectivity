@@ -2,13 +2,10 @@ require 'rails_helper'
 
 RSpec.describe PhotoGalleriesController, type: :request do
   let(:current_user) { create(:user) }
-  let(:current_user_org) { create(:organisation) }
   let(:test_image) { Rails.root.join('spec/fixtures/files/test_image.png') }
 
   before do
     current_user.confirm
-    current_user.update(current_organisation_id: current_user_org.id)
-    create(:organisations_user, user: current_user, organisation: current_user_org)
     sign_in current_user
   end
 
@@ -20,7 +17,7 @@ RSpec.describe PhotoGalleriesController, type: :request do
   end
 
   describe 'POST /photo_galleries' do
-    let(:folder) { create(:folder, organisation: current_user_org, author: current_user) }
+    let(:folder) { create(:folder, author: current_user) }
 
     let(:valid_params) do
       {
@@ -83,7 +80,7 @@ RSpec.describe PhotoGalleriesController, type: :request do
   end
 
   describe 'GET /photo_galleries/:id' do
-    let(:gallery) { create(:photo_gallery, author: current_user, organisation: current_user_org) }
+    let(:gallery) { create(:photo_gallery, author: current_user) }
     let!(:item1) { create(:gallery_item, gallery: gallery, cover: true) }
     let!(:item2) { create(:gallery_item, gallery: gallery) }
 
@@ -100,7 +97,7 @@ RSpec.describe PhotoGalleriesController, type: :request do
   end
 
   describe 'PATCH /photo_galleries/:id' do
-    let(:gallery) { create(:photo_gallery, author: current_user, organisation: current_user_org) }
+    let(:gallery) { create(:photo_gallery, author: current_user) }
     let!(:item1) { create(:gallery_item, gallery: gallery, cover: true) }
 
     it 'updates the title' do
@@ -144,7 +141,7 @@ RSpec.describe PhotoGalleriesController, type: :request do
   end
 
   describe 'DELETE /photo_galleries/:id' do
-    let(:gallery) { create(:photo_gallery, author: current_user, organisation: current_user_org) }
+    let(:gallery) { create(:photo_gallery, author: current_user) }
     let!(:item1) { create(:gallery_item, gallery: gallery, cover: true) }
 
     it 'destroys the gallery and its items' do

@@ -13,8 +13,7 @@ class PdfNotesController < ApplicationController
   end
 
   def create
-    @pdf_note = PdfNote.new(pdf_note_params.merge(author: current_user,
-                                                  organisation: current_user.current_organisation))
+    @pdf_note = PdfNote.new(pdf_note_params.merge(author: current_user))
     authorize @pdf_note
 
     if @pdf_note.save

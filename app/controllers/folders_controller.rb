@@ -25,8 +25,7 @@ class FoldersController < ApplicationController
   end
 
   def create
-    @folder = Folder.new(folder_params.merge(author: current_user,
-                                             organisation: current_user.current_organisation))
+    @folder = Folder.new(folder_params.merge(author: current_user))
 
     authorize @folder
 

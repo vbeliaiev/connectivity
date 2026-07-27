@@ -1,5 +1,4 @@
 class VideoNote < Node
-  belongs_to :organisation
   has_one_attached :file
 
   MAX_ITEMS_COUNT = 15

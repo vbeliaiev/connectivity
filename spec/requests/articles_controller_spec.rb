@@ -2,17 +2,14 @@ require 'rails_helper'
 
 RSpec.describe ArticlesController, type: :request do
   let(:current_user) { create(:user) }
-  let(:current_user_org) { create(:organisation) }
 
   before do
     current_user.confirm
-    current_user.update(current_organisation_id: current_user_org.id)
-    create(:organisations_user, user: current_user, organisation: current_user_org)
     sign_in current_user
   end
 
   describe 'GET /articles' do
-    let!(:articles) { create_list(:article, 3, visibility_level: :public_visibility, organisation: current_user_org) }
+    let!(:articles) { create_list(:article, 3, visibility_level: :public_visibility) }
 
     it 'returns a successful response and displays article page body' do
       get articles_path
@@ -43,7 +40,7 @@ RSpec.describe ArticlesController, type: :request do
   end
 
   describe 'POST /articles' do
-    let(:folder) { create(:folder, organisation: current_user_org) }
+    let(:folder) { create(:folder) }
     let(:article_body) { FFaker::Lorem.paragraph }
     let(:valid_params) do
       {

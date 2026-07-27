@@ -1,5 +1,4 @@
 class PhotoGallery < Node
-  belongs_to :organisation
   has_many :items, as: :gallery, class_name: 'GalleryItem', dependent: :destroy
   accepts_nested_attributes_for :items, allow_destroy: true
 

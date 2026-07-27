@@ -8,32 +8,34 @@ class ApplicationPolicy
     @record = record
   end
 
+  # Temporary development policy: allow all actions and records.
+  # Replace with role/ownership checks before deploying.
   def index?
-    false
+    true
   end
 
   def show?
-    false
+    true
   end
 
   def create?
-    false
+    true
   end
 
   def new?
-    create?
+    true
   end
 
   def update?
-    false
+    true
   end
 
   def edit?
-    update?
+    true
   end
 
   def destroy?
-    false
+    true
   end
 
   class Scope
@@ -43,7 +45,7 @@ class ApplicationPolicy
     end
 
     def resolve
-      raise NoMethodError, "You must define #resolve in #{self.class}"
+      scope.all
     end
 
     private

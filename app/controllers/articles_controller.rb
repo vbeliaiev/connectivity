@@ -25,8 +25,7 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    @article = Article.new(article_params.merge(author: current_user,
-                                       organisation: current_user.current_organisation))
+    @article = Article.new(article_params.merge(author: current_user))
     authorize @article
 
     if @article.save

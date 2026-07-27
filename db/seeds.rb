@@ -11,8 +11,6 @@
 
 user = User.create(email: 'vladislav.belyaev.93@gmail.com', password: '123123', display_name: 'Vlad')
 user.confirm
-current_organisation = user.current_organisation
-user.update(current_organisation_id: current_organisation.id)
 
 folder1 = FactoryBot.create(:folder, title: 'Documents', author: user)
 subfolder1 = FactoryBot.create(:folder, title: 'Top Secret', author: user, parent: folder1)

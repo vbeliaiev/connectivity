@@ -9,8 +9,6 @@ FactoryBot.define do
       if article.page.body.blank?
         article.page = ActionText::RichText.new(body: FFaker::Lorem.paragraph)
       end
-
-      article.organisation ||= article.author.personal_organisation
     end
   end
 end
