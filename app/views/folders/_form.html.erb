@@ -1,7 +1,8 @@
+<div class="p-3 border border-gray-400 rounded-md">
 <%= form_with(model: folder, class: "contents") do |form| %>
   <% if folder.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(folder.errors.count, "error") %> prohibited this folder from being saved:</h2>
+      <h2><%= pluralize(folder.errors.count, "erreur", plural: "erreurs") %> <%= folder.errors.count > 1 ? "ont" : "a" %> empêché l'enregistrement de ce dossier :</h2>
 
       <ul class="list-disc ml-6">
         <% folder.errors.each do |error| %>
@@ -14,20 +15,23 @@
   <% if @parent %>
     <%= form.hidden_field :parent_id, value: @parent.id %>
   <% else %>
-    <div class="my-5">
+    <div class="">
+      <%= form.label :parent_id, "Dossier parent", class: "font-semibold" %>
       <%= form.collection_select :parent_id, @policy_scope, :id, :title,
-        { prompt: "Select parent Folder" },
-        { class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1" } %>
+        { prompt: "Sélectionner le dossier parent" },
+        { class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2" } %>
     </div>
   <% end %>
 
 
   <div class="my-5">
-    <%= form.label :title %>
-    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": folder.errors[:title].none?, "border-red-400 focus:outline-red-600": folder.errors[:title].any?}] %>
+    <%= form.label :title, "Titre", class: "font-semibold" %>
+    <%= form.text_field :title, placeholder: "Entrez le titre du dossier", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": folder.errors[:title].none?, "border-red-400 focus:outline-red-600": folder.errors[:title].any?}] %>
   </div>
 
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-700 hover:bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+  <div class="flex flex-col sm:flex-row">
+    <%= form.submit (folder.new_record? ? "Créer le dossier" : "Mettre à jour le dossier"), class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-[#8c4e1c] hover:bg-[#d93] text-white inline-block font-medium cursor-pointer" %>
+    <%= link_to "Annuler", cancel_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
   </div>
 <% end %>
+</div>

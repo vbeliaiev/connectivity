@@ -6,8 +6,9 @@
   <div class='flex flex-col sm:flex-row justify-between mt-3'>
     <div class='flex gap-2 flex-col sm:flex-row'>
       <div class="flex items-center gap-1">
-        <%= edit_icon_button(edit_folder_path(@folder)) %>
-        <%= destroy_icon_button(@folder) %>
+        <span class="underline text-gray-500">Outils d'administration:</span>
+        <%= edit_icon_button(edit_folder_path(@folder), label: "(Modifier)") %>
+        <%= destroy_icon_button(@folder, label: "(Supprimer)") %>
       </div>
     </div>
     <div class='flex flex-row'>

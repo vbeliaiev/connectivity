@@ -1,9 +1,7 @@
-<% content_for :title, "Edit photo gallery" %>
+<% content_for :title, "Modification de la galerie photo" %>
 
-<div class="w-full">
-  <h1 class="font-bold text-2xl">Edit "<%= @photo_gallery.title %>"</h1>
+<div class="w-full p-3 border border-gray-400 rounded-md">
+  <h1 class="font-bold text-2xl">Modification de "<%= @photo_gallery.title %>"</h1>
 
-  <%= render "form", photo_gallery: @photo_gallery, url: photo_gallery_path(@photo_gallery), method: :patch %>
-
-  <%= link_to "Cancel", photo_gallery_path(@photo_gallery), class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <%= render "form", photo_gallery: @photo_gallery, url: photo_gallery_path(@photo_gallery), method: :patch, cancel_path: photo_gallery_path(@photo_gallery) %>
 </div>

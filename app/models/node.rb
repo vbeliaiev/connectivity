@@ -13,6 +13,18 @@ class Node < ApplicationRecord
   scope :ordered, -> { order(Arel.sql('position ASC NULLS LAST'), created_at: :desc) }
   scope :root_records, -> { where(parent: nil) }
 
+  # Full text search on `title` + `content` using Postgres FTS (content_tsv
+  # is a generated/stored tsvector column, see migration
+  # AddContentTsvToNodes). `websearch_to_tsquery` accepts natural,
+  # multi-word user input (e.g. "annual report 2024") and treats it as an
+  # AND of terms, so results are ranked by relevance via ts_rank.
+  scope :content_search, ->(query) {
+    return none if query.blank?
+
+    tsquery = sanitize_sql_array(["websearch_to_tsquery('french', ?)", query])
+    where("content_tsv @@ #{tsquery}").order(Arel.sql("ts_rank(content_tsv, #{tsquery}) DESC"))
+  }
+
   GENERIC_FOLDER_NAME = 'Generic'.freeze
 
   def self.generic_folder_for(user_id, organisation_id: nil)

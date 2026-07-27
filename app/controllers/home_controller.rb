@@ -1,14 +1,16 @@
 class HomeController < ApplicationController
   after_action :verify_pundit_authorization
 
-  SEMANTIC_SEARCH_ITEMS_COUNT = 3
-
   def index
     @query = params[:query]
 
     if @query.present?
-      query_embedding = EmbeddingGenerator.generate(@query)
-      @notes = policy_scope(Note).semantic_search(query_embedding, top: SEMANTIC_SEARCH_ITEMS_COUNT)
+      scope = policy_scope(Node)
+      @folders = scope.folders.content_search(@query)
+      @notes = scope.notes.content_search(@query)
+      @pdf_notes = scope.pdf_notes.content_search(@query).includes(file_attachment: :blob)
+      @video_notes = scope.video_notes.content_search(@query).includes(file_attachment: :blob)
+      @photo_galleries = scope.photo_galleries.content_search(@query).includes(items: { image_attachment: :blob })
     else
       skip_policy_scope
       @root_folders = @sidebar_folders

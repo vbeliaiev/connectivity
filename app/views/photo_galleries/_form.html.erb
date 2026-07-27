@@ -1,7 +1,8 @@
+<div class="p-3 border border-gray-400 rounded-md">
 <%= form_with(model: photo_gallery, url: url, method: method, class: "contents", multipart: true) do |form| %>
   <% if photo_gallery.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(photo_gallery.errors.count, "error") %> prohibited this photo gallery from being saved:</h2>
+      <h2><%= pluralize(photo_gallery.errors.count, "erreur") %> ont empêché cette galerie photo d'être enregistrée :</h2>
 
       <ul class="list-disc ml-6">
         <% photo_gallery.errors.each do |error| %>
@@ -14,46 +15,49 @@
   <% if @parent %>
     <%= form.hidden_field :parent_id, value: @parent.id %>
   <% elsif photo_gallery.new_record? %>
-    <div class="my-5">
+    <div class="">
+      <%= form.label :parent_id, "Dossier parent", class: "font-semibold" %>
       <%= form.collection_select :parent_id, @folder_policy_scope, :id, :title,
-        { prompt: "Select parent Folder" },
-        { class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1" } %>
+        { prompt: "Sélectionner le dossier parent" },
+        { class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2" } %>
     </div>
   <% end %>
 
   <div class="my-5">
-    <%= form.label :title %>
-    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": photo_gallery.errors[:title].none?, "border-red-400 focus:outline-red-600": photo_gallery.errors[:title].any?}] %>
+    <%= form.label :title, "Titre", class: "font-semibold" %>
+    <%= form.text_field :title, placeholder: "Entrez le titre de la galerie photo", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": photo_gallery.errors[:title].none?, "border-red-400 focus:outline-red-600": photo_gallery.errors[:title].any?}] %>
   </div>
 
   <% if photo_gallery.persisted? && @items.present? %>
     <div class="my-5">
-      <h3 class="font-semibold mb-2">Existing photos</h3>
+      <h3 class="font-semibold mb-2">Photos existantes</h3>
       <div class="space-y-2">
         <%= form.fields_for :items, @items do |item_form| %>
           <% item = item_form.object %>
-          <div class="flex items-center gap-3 border border-gray-200 rounded-md p-2">
+          <div class="flex items-start gap-3 border border-gray-200 rounded-md p-2 bg-gray-100">
             <% if item.image.attached? %>
               <%= image_tag item.image.variant(resize_to_fill: [64, 64]), class: "w-16 h-16 object-cover rounded-md flex-shrink-0" %>
             <% else %>
               <span class="flex items-center justify-center w-16 h-16 rounded-md bg-red-50 text-red-400 flex-shrink-0 text-xs text-center px-1">
-                broken image
+                image cassée
               </span>
             <% end %>
 
             <div class="flex-grow">
               <%= item_form.hidden_field :id %>
-              <%= item_form.text_field :description, placeholder: "Description (optional)", class: "block w-full text-sm shadow-sm rounded-md border border-gray-300 px-2 py-1" %>
+              <div class="flex items-center gap-3 pt-2.5">
+                <%= item_form.text_field :description, placeholder: "Description (facultatif)", class: "block w-full text-sm shadow-sm rounded-md border border-gray-300 px-2 py-1 bg-white" %>
+
+                <label class="flex items-center gap-1 text-sm flex-shrink-0">
+                  <%= radio_button_tag "photo_gallery[cover_selection]", item.id, item.cover?, id: "cover_#{item.id}" %>
+                  Couverture
+                </label>
+              </div>
 
               <label class="flex items-center gap-1 text-xs mt-1 text-red-600">
-                <%= item_form.check_box :_destroy, class: "mr-1" %> Remove
+                <%= item_form.check_box :_destroy, class: "mr-1" %> Supprimer
               </label>
             </div>
-
-            <label class="flex items-center gap-1 text-sm flex-shrink-0">
-              <%= radio_button_tag "photo_gallery[cover_selection]", item.id, item.cover?, id: "cover_#{item.id}" %>
-              Cover
-            </label>
           </div>
         <% end %>
       </div>
@@ -61,15 +65,17 @@
   <% end %>
 
   <div class="my-5" data-controller="gallery-uploader" data-gallery-uploader-max-value="<%= PhotoGallery::MAX_UPLOAD_BATCH %>">
-    <%= form.label :images, photo_gallery.persisted? ? "Add more photos" : "Photos" %>
+    <%= form.label :images, photo_gallery.persisted? ? "Ajouter d'autres photos" : "Photos", class: "font-semibold" %>
     <%= file_field_tag "photo_gallery[images][]", multiple: true, accept: "image/*", data: { gallery_uploader_target: "input", action: "gallery-uploader#pick" }, class: "block shadow-sm rounded-md border border-gray-400 px-3 py-2 mt-2 w-full" %>
-    <p class="text-sm text-gray-500 mt-1">Any image format, maximum 30MB per photo, up to <%= PhotoGallery::MAX_UPLOAD_BATCH %> photos in total. You can select photos in multiple batches.</p>
+    <p class="text-sm text-gray-500 mt-1">Tous formats d'image, maximum 30 Mo par photo, jusqu'à <%= PhotoGallery::MAX_UPLOAD_BATCH %> photos au total. Vous pouvez sélectionner les photos en plusieurs lots.</p>
 
-    <p data-gallery-uploader-target="emptyState" class="text-sm text-gray-400 mt-3">No photos selected yet.</p>
+    <p data-gallery-uploader-target="emptyState" class="text-sm text-gray-400 mt-3">Aucune photo sélectionnée pour le moment.</p>
     <div data-gallery-uploader-target="list" class="mt-3 space-y-2"></div>
   </div>
 
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-700 hover:bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+  <div class="flex flex-col sm:flex-row">
+    <%= form.submit (photo_gallery.new_record? ? "Créer la galerie photo" : "Mettre à jour la galerie photo"), class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-[#8c4e1c] hover:bg-[#d93] text-white inline-block font-medium cursor-pointer" %>
+    <%= link_to "Annuler", cancel_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
   </div>
 <% end %>
+</div>

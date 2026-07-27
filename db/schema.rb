@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_07_22_120000) do
+ActiveRecord::Schema[7.1].define(version: 2025_07_27_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -76,6 +76,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_22_120000) do
     t.bigint "organisation_id", null: false
     t.integer "visibility_level", default: 0, null: false
     t.bigint "user_id", null: false
+    t.text "content"
+    t.virtual "content_tsv", type: :tsvector, as: "to_tsvector('french'::regconfig, (((COALESCE(title, ''::character varying))::text || ' '::text) || COALESCE(content, ''::text)))", stored: true
+    t.index ["content_tsv"], name: "index_nodes_on_content_tsv", using: :gin
     t.index ["organisation_id"], name: "index_nodes_on_organisation_id"
     t.index ["parent_id"], name: "index_nodes_on_parent_id"
     t.index ["user_id"], name: "index_nodes_on_user_id"

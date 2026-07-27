@@ -1,9 +1,7 @@
 <% content_for :title, "New photo gallery" %>
 
 <div class="w-full">
-  <h1 class="font-bold text-2xl">Let's create a photo gallery!</h1>
+  <h1 class="font-bold text-2xl mt-2 mb-6">Création d'une galerie photo</h1>
 
-  <%= render "form", photo_gallery: @photo_gallery, url: photo_galleries_path, method: :post %>
-
-  <%= link_to "Cancel", :back, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <%= render "form", photo_gallery: @photo_gallery, url: photo_galleries_path, method: :post, cancel_path: :back %>
 </div>

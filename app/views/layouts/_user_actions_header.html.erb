@@ -1,8 +1,8 @@
 <header class="flex flex-col w-full sm:py-2">
   <% if user_signed_in? %>
     <div class="container flex justify-center sm:justify-end">
-      <%= link_to "My Account", edit_user_registration_path, class: "sm:text-base text-sm block font-medium text-gray-500 hover:text-gray-900 pr-3" %>
-      <%= button_to "Log out", destroy_user_session_path, method: :delete, class: "sm:text-base block text-sm font-medium text-gray-500 hover:text-gray-900" %>
+      <%= link_to "Mon compte", edit_user_registration_path, class: "sm:text-base text-sm block font-medium text-gray-500 hover:text-gray-900 pr-3" %>
+      <%= button_to "Se déconnecter", destroy_user_session_path, method: :delete, class: "sm:text-base block text-sm font-medium text-gray-500 hover:text-gray-900" %>
     </div>
   <% else %>
     <div class="container flex justify-center sm:justify-end">

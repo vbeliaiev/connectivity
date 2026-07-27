@@ -1,7 +1,8 @@
+<div class="p-3 border border-gray-400 rounded-md">
 <%= form_with(model: video_note, class: "contents") do |form| %>
   <% if video_note.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(video_note.errors.count, "error") %> prohibited this video note from being saved:</h2>
+      <h2><%= pluralize(video_note.errors.count, "erreur") %> ont empêché cette vidéo d'être enregistrée :</h2>
 
       <ul class="list-disc ml-6">
         <% video_note.errors.each do |error| %>
@@ -14,25 +15,28 @@
   <% if @parent %>
     <%= form.hidden_field :parent_id, value: @parent.id %>
   <% else %>
-    <div class="my-5">
+    <div class="">
+      <%= form.label :parent_id, "Dossier parent", class: "font-semibold" %>
       <%= form.collection_select :parent_id, @folder_policy_scope, :id, :title,
-        { prompt: "Select parent Folder" },
-        { class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1" } %>
+        { prompt: "Sélectionner le dossier parent" },
+        { class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2" } %>
     </div>
   <% end %>
 
   <div class="my-5">
-    <%= form.label :title %>
-    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": video_note.errors[:title].none?, "border-red-400 focus:outline-red-600": video_note.errors[:title].any?}] %>
+    <%= form.label :title, "Titre", class: "font-semibold" %>
+    <%= form.text_field :title, placeholder: "Entrez le titre de la vidéo", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": video_note.errors[:title].none?, "border-red-400 focus:outline-red-600": video_note.errors[:title].any?}] %>
   </div>
 
   <div class="my-5">
-    <%= form.label :file, "Video file" %>
+    <%= form.label :file, "Fichier vidéo", class: "font-semibold" %>
     <%= form.file_field :file, accept: "video/*", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": video_note.errors[:file].none?, "border-red-400 focus:outline-red-600": video_note.errors[:file].any?}] %>
-    <p class="text-sm text-gray-500 mt-1">Any video format, maximum 700MB.</p>
+    <p class="text-sm text-gray-500 mt-1">Tous formats vidéo, 700 Mo maximum.</p>
   </div>
 
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-700 hover:bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+  <div class="flex flex-col sm:flex-row">
+    <%= form.submit "Créer le contenu vidéo", class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-[#8c4e1c] hover:bg-[#d93] text-white inline-block font-medium cursor-pointer" %>
+    <%= link_to "Annuler", cancel_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
   </div>
 <% end %>
+</div>

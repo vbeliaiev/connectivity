@@ -11,7 +11,7 @@
   end
 %>
 
-<div class="w-full" data-controller="gallery-carousel"
+<div class="w-full p-3 border border-gray-400 rounded-md" data-controller="gallery-carousel"
      data-gallery-carousel-items-value="<%= items_json.to_json %>"
      data-gallery-carousel-current-id-value="<%= @current_item&.id %>"
      data-gallery-carousel-base-url-value="<%= photo_gallery_path(@photo_gallery) %>">
@@ -19,8 +19,9 @@
   <div class="flex justify-between items-center flex-wrap gap-2">
     <%= render 'shared/breadcrumb', node: @photo_gallery %>
     <div class="flex items-center gap-1">
-      <%= edit_icon_button(edit_photo_gallery_path(@photo_gallery)) %>
-      <%= destroy_icon_button(@photo_gallery) %>
+      <span class="underline text-gray-500">Outils d'administration:</span>
+      <%= edit_icon_button(edit_photo_gallery_path(@photo_gallery), label: "(Modifier)") %>
+      <%= destroy_icon_button(@photo_gallery, label: "(Supprimer)") %>
     </div>
   </div>
 

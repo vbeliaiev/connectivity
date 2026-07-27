@@ -53,7 +53,7 @@ class NodePolicy < ApplicationPolicy
     def resolve
       return scope.public_visibility unless user
 
-      scope.joins(:organisation).where(organisation: { id: user.current_organisation_id })
+      scope.all
     end
 
     private

@@ -3,32 +3,25 @@
     <h1 class="font-bold text-3xl">Search results for &ldquo;<%= @query %>&rdquo;</h1>
   </div>
 
-  <div id="notes" class="min-w-full divide-y divide-gray-200 space-y-5">
-    <% if @notes.any? %>
-      <% @notes.each do |note| %>
-        <div class="flex flex-col sm:flex-col justify-between items-start pb-5 sm:pb-0">
-          <div class="line-clamp-10">
-            <%= render note %>
-          </div>
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row sm:items-center gap-2 mt-3 mb-3">
-            <%= link_to "Show more", note, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-1.5 h-9 flex items-center justify-center bg-gray-100 hover:bg-gray-50 font-medium" %>
-            <div class="flex items-center -space-x-1">
-              <%= edit_icon_button(edit_note_path(note)) %>
-              <%= destroy_icon_button(note) %>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    <% else %>
-      <p class="text-center my-10">No notes found.</p>
-    <% end %>
-  </div>
+  <% if @folders.blank? && @notes.blank? && @pdf_notes.blank? && @video_notes.blank? && @photo_galleries.blank? %>
+    <p class="text-center my-10">Aucun résultat trouvé.</p>
+  <% else %>
+    <div class="mt-5 p-3 border border-gray-400 rounded-md">
+      <%= render 'shared/content_sections',
+                 folders: @folders,
+                 pdf_notes: @pdf_notes,
+                 video_notes: @video_notes,
+                 photo_galleries: @photo_galleries,
+                 notes: @notes,
+                 show_destroy_label: true %>
+    </div>
+  <% end %>
 <% else %>
   <div class="flex flex-col sm:flex-row justify-between items-center">
     <div class="flex space-x-2 my-5 sm:my-0 sm:order-2">
-      <%= render 'shared/new_item_dropdown', wrapper_class: "relative inline-block", select_class: "rounded-md pl-3.5 pr-10 py-2.5 bg-blue-700 hover:bg-blue-600 text-white text-sm font-medium cursor-pointer appearance-none" %>
+      <%= render 'shared/new_item_dropdown', wrapper_class: "relative inline-block", select_class: "rounded-md pl-9 pr-10 py-2.5 bg-[#8eb200] hover:bg-[#d93] text-white text-base font-medium cursor-pointer appearance-none" %>
     </div>
-    <h1 class="font-bold text-3xl sm:order-1">Home</h1>
+    <h1 class="font-bold text-3xl sm:order-1">Page d'accueil des adhérents AICMC</h1>
   </div>
 
   <% if @root_folders.present? %>
@@ -52,7 +45,7 @@
         %>
 
         <% if child_folders.items.blank? && child_pdf_notes.items.blank? && child_video_notes.items.blank? && child_photo_galleries.items.blank? && child_notes.items.blank? %>
-          <p class="teext-gray-500 mt-2">This folder is empty.</p>
+          <p class="teext-gray-500 mt-2">Ce dossier est vide.</p>
         <% else %>
           <%= render 'shared/content_sections',
                      folders: child_folders.items,
@@ -66,15 +59,16 @@
                        video_notes: (child_video_notes.more? ? { remaining: child_video_notes.remaining_count, path: folder_path(folder, anchor: 'video_notes-section') } : nil),
                        photo_galleries: (child_photo_galleries.more? ? { remaining: child_photo_galleries.remaining_count, path: folder_path(folder, anchor: 'photo_galleries-section') } : nil),
                        notes: (child_notes.more? ? { remaining: child_notes.remaining_count, path: folder_path(folder, anchor: 'notes-section') } : nil)
-                     } %>
+                     },
+                     show_destroy_label: true %>
         <% end %>
       </div>
     <% end %>
 
-    <div class="flex mt-5">
+    <div class="flex<%= ' mt-5' if @root_folders.total_pages > 1 %>">
       <%= paginate @root_folders, param_name: :folders_page %>
     </div>
   <% else %>
-    <p class="text-center my-10">No folders found.</p>
+    <p class="text-center my-10">Aucun dossier trouvé.</p>
   <% end %>
 <% end %>

@@ -89,7 +89,7 @@ export default class extends Controller {
 
     this.items.forEach((item, index) => {
       const row = document.createElement("div")
-      row.className = "flex items-center gap-3 border border-gray-200 rounded-md p-2"
+      row.className = "flex items-start gap-3 border border-gray-200 rounded-md p-2 bg-gray-100"
 
       const img = document.createElement("img")
       img.src = item.url
@@ -104,17 +104,18 @@ export default class extends Controller {
       nameEl.textContent = item.file.name
       fields.appendChild(nameEl)
 
+      const descRow = document.createElement("div")
+      descRow.className = "flex items-center gap-3"
+
       const descInput = document.createElement("input")
       descInput.type = "text"
       descInput.name = "photo_gallery[image_descriptions][]"
-      descInput.placeholder = "Description (optional)"
+      descInput.placeholder = "Description (facultatif)"
       descInput.value = item.description
-      descInput.className = "block w-full text-sm shadow-sm rounded-md border border-gray-300 px-2 py-1"
+      descInput.className = "block w-full text-sm shadow-sm rounded-md border border-gray-300 px-2 py-1 bg-white"
       descInput.dataset.index = index
       descInput.dataset.action = "input->gallery-uploader#updateDescription"
-      fields.appendChild(descInput)
-
-      row.appendChild(fields)
+      descRow.appendChild(descInput)
 
       const coverLabel = document.createElement("label")
       coverLabel.className = "flex items-center gap-1 text-sm flex-shrink-0"
@@ -126,16 +127,20 @@ export default class extends Controller {
       coverRadio.dataset.index = index
       coverRadio.dataset.action = "change->gallery-uploader#selectCover"
       coverLabel.appendChild(coverRadio)
-      coverLabel.appendChild(document.createTextNode("Cover"))
-      row.appendChild(coverLabel)
+      coverLabel.appendChild(document.createTextNode("Couverture"))
+      descRow.appendChild(coverLabel)
+
+      fields.appendChild(descRow)
 
       const removeButton = document.createElement("button")
       removeButton.type = "button"
-      removeButton.textContent = "Remove"
-      removeButton.className = "flex-shrink-0 text-sm text-red-600 hover:underline cursor-pointer"
+      removeButton.textContent = "Supprimer"
+      removeButton.className = "block mt-1 text-sm text-red-600 hover:underline cursor-pointer"
       removeButton.dataset.index = index
       removeButton.dataset.action = "click->gallery-uploader#remove"
-      row.appendChild(removeButton)
+      fields.appendChild(removeButton)
+
+      row.appendChild(fields)
 
       this.listTarget.appendChild(row)
     })

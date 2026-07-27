@@ -1,12 +1,12 @@
 <% content_for :title, "Showing note" %>
 
 <div class="w-full">
-  <div class="flex items-center justify-between flex-wrap gap-2">
-    <%= render 'shared/breadcrumb', node: @note %>
-    <div class="flex items-center gap-1">
-      <%= edit_icon_button(edit_note_path(@note)) %>
-      <%= destroy_icon_button(@note) %>
-    </div>
+  <%= render 'shared/breadcrumb', node: @note %>
+
+  <div class="flex items-center gap-1 mt-3">
+    <span class="underline text-gray-500">Outils d'administration:</span>
+    <%= edit_icon_button(edit_note_path(@note), label: "(Modifier)") %>
+    <%= destroy_icon_button(@note, label: "(Supprimer)") %>
   </div>
 
   <%= render @note %>
