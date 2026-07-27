@@ -1,4 +1,11 @@
 module ApplicationHelper
+  # Chain of nodes to render as a breadcrumb, from the root folder down to
+  # (and including) the given node. Built purely from the parent/child
+  # hierarchy, never from request referer.
+  def breadcrumb_nodes(node)
+    node.ancestors + [node]
+  end
+
   # Renders an icon-only link styled as a small round button, used for
   # inline "Edit" actions instead of a full text button.
   def edit_icon_button(path, extra_class: "")

@@ -17,7 +17,7 @@
      data-gallery-carousel-base-url-value="<%= photo_gallery_path(@photo_gallery) %>">
 
   <div class="flex justify-between items-center flex-wrap gap-2">
-    <%= link_to "Back", (request.referer == root_url || @photo_gallery.parent.blank?) ? root_path : folder_path(@photo_gallery.parent), class: "rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+    <%= render 'shared/breadcrumb', node: @photo_gallery %>
     <div class="flex items-center gap-1">
       <%= edit_icon_button(edit_photo_gallery_path(@photo_gallery)) %>
       <%= destroy_icon_button(@photo_gallery) %>

@@ -1,0 +1,8 @@
+<%# Renders a "+N more" link under a content section when its items were
+    capped for a preview. `link` is either nil (nothing rendered) or a hash
+    with :remaining (Integer) and :path (String) keys. %>
+<% if link.present? %>
+  <div class="flex justify-center items-center mt-2">
+    <%= link_to "+#{link[:remaining]} more", link[:path], class: "text-sm font-medium text-gray-600 hover:text-[#8c4e1c] underline" %>
+  </div>
+<% end %>

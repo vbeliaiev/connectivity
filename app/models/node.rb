@@ -23,4 +23,11 @@ class Node < ApplicationRecord
   def generic?
     title == GENERIC_FOLDER_NAME
   end
+
+  # Returns the chain of ancestors from the root folder down to (but not
+  # including) this node. Used to build breadcrumb navigation based purely
+  # on the parent/child hierarchy (no reliance on request referer).
+  def ancestors
+    parent ? parent.ancestors + [parent] : []
+  end
 end
