@@ -77,7 +77,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_27_120000) do
     t.integer "visibility_level", default: 0, null: false
     t.bigint "user_id", null: false
     t.text "content"
-    t.virtual "content_tsv", type: :tsvector, as: "to_tsvector('french'::regconfig, (((COALESCE(title, ''::character varying))::text || ' '::text) || COALESCE(content, ''::text)))", stored: true
+    t.virtual "content_tsv", type: :tsvector, as: "(setweight(to_tsvector('french'::regconfig, (COALESCE(title, ''::character varying))::text), 'A'::\"char\") || setweight(to_tsvector('french'::regconfig, COALESCE(content, ''::text)), 'B'::\"char\"))", stored: true
     t.index ["content_tsv"], name: "index_nodes_on_content_tsv", using: :gin
     t.index ["organisation_id"], name: "index_nodes_on_organisation_id"
     t.index ["parent_id"], name: "index_nodes_on_parent_id"

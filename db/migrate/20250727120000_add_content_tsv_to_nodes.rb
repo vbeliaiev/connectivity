@@ -14,11 +14,17 @@ class AddContentTsvToNodes < ActiveRecord::Migration[7.1]
     # other inflections match each other (e.g. "bulletin" / "bulletins").
     # Occasional English words or acronyms (e.g. "AG") still match fine,
     # since unrecognized tokens are kept as-is rather than dropped.
+    #
+    # `title` is weighted 'A' (highest) and `content` is weighted 'B', so a
+    # match in the title ranks above a match buried in body text when
+    # ordering by ts_rank -- e.g. a note titled "Peugeot 208 a vendre"
+    # outranks one that merely mentions "peugeot" once in its body.
     execute <<-SQL.squish
       ALTER TABLE nodes
       ADD COLUMN content_tsv tsvector
       GENERATED ALWAYS AS (
-        to_tsvector('french', coalesce(title, '') || ' ' || coalesce(content, ''))
+        setweight(to_tsvector('french', coalesce(title, '')), 'A') ||
+        setweight(to_tsvector('french', coalesce(content, '')), 'B')
       ) STORED
     SQL
 
