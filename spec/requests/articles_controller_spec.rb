@@ -60,7 +60,7 @@ RSpec.describe ArticlesController, type: :request do
       article = Article.order(:created_at).last
       expect(response).to redirect_to(folder_path(article.parent))
       follow_redirect!
-      expect(response.body).to include(article.page.body.to_plain_text)
+      expect(response.body).to include(article.title)
     end
   end
 

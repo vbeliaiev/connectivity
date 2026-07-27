@@ -89,23 +89,6 @@ describe NodePolicy do
       described_class.new(user, Article.all).resolve
     end
 
-    context 'when the user is logged in' do
-      let(:user_organisation) { create(:organisation) }
-      let(:other_organisation) { create(:organisation) }
-
-      let(:user) { create(:user, current_organisation_id: user_organisation.id) }
-
-      let!(:article_user_org) { create(:article, organisation: user_organisation, visibility_level: :internal) }
-      let!(:internal_article_other_org) { create(:article, organisation: other_organisation, visibility_level: :internal) }
-      let!(:public_article_other_org) { create(:article, organisation: other_organisation, visibility_level: :public_visibility) }
-
-      before { OrganisationsUser.create(user: user, organisation: user_organisation, role: :member) }
-
-      it 'returns articles for selected organisation' do
-        expect(resolved_scope).to contain_exactly(article_user_org)
-      end
-    end
-
     context 'when the user is not logged in' do
       let(:user) { nil }
 

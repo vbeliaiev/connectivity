@@ -22,7 +22,4 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "home#index"
-
-  get  "/chat", to: "chat#new"
-  post "/chat", to: "chat#create"
 end
