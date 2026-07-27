@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  enum :role, { member: 0, moderator: 1, admin: 2 }, default: :member
+
   has_many :folders
   has_many :notes
   has_many :nodes # node == note || folder

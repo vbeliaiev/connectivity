@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe FoldersController, type: :request do
-  let(:current_user) { create(:user) }
+  let(:current_user) { create(:user, :moderator) }
 
   before do
     current_user.confirm
@@ -74,6 +74,39 @@ RSpec.describe FoldersController, type: :request do
       follow_redirect!
       expect(Folder.exists?(folder.id)).to be_falsey
       expect(response.body).not_to include(folder.title)
+    end
+  end
+
+  # TODO: check user permissions for each action below.
+  # Each example should verify that the correct role (member / moderator / admin / guest)
+  # is allowed or denied access, and that the response matches the expected behaviour.
+  context 'authorization' do
+    it 'allows a guest to view a public folder' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'denies a guest access to an internal folder' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'denies a member from creating a folder' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'denies a member from updating a folder' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'denies a member from deleting a folder' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'allows a moderator to create a folder' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'allows an admin to destroy a folder' do
+      skip 'user permission checks not yet implemented'
     end
   end
 end

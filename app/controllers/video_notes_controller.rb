@@ -13,7 +13,7 @@ class VideoNotesController < ApplicationController
   end
 
   def create
-    @video_note = VideoNote.new(video_note_params.merge(author: current_user)
+    @video_note = VideoNote.new(video_note_params.merge(author: current_user))
     authorize @video_note
 
     if @video_note.save

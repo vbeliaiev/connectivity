@@ -4,6 +4,7 @@
   select_class ||= "rounded-md pl-9 pr-10 py-2.5 w-full sm:w-auto bg-[#8eb200] hover:bg-[#d93] text-white font-medium cursor-pointer appearance-none lg:text-sm xl:text-base"
 %>
 
+<% if policy(Node.new).new? %>
 <div class="<%= wrapper_class %>">
   <select data-controller="nav-select" data-action="nav-select#go" class="<%= select_class %>">
     <option value="" disabled selected>Ajouter du contenu</option>
@@ -24,3 +25,4 @@
     <path d="m6 9 6 6 6-6"/>
   </svg>
 </div>
+<% end %>

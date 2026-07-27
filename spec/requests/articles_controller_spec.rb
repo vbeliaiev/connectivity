@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ArticlesController, type: :request do
-  let(:current_user) { create(:user) }
+  let(:current_user) { create(:user, :moderator) }
 
   before do
     current_user.confirm
@@ -90,6 +90,39 @@ RSpec.describe ArticlesController, type: :request do
       follow_redirect!
       expect(Article.exists?(article.id)).to be_falsey
       expect(response.body).not_to include(article.page.body.to_plain_text)
+    end
+  end
+
+  # TODO: check user permissions for each action below.
+  # Each example should verify that the correct role (member / moderator / admin / guest)
+  # is allowed or denied access, and that the response matches the expected behaviour.
+  context 'authorization' do
+    it 'allows a guest to view a public article' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'denies a guest access to an internal article' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'denies a member from creating an article' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'denies a member from updating an article' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'denies a member from deleting an article' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'allows a moderator to create an article' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'allows an admin to destroy an article' do
+      skip 'user permission checks not yet implemented'
     end
   end
 end

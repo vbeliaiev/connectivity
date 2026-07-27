@@ -5,11 +5,13 @@
 
   <div class='flex flex-col sm:flex-row justify-between mt-3'>
     <div class='flex gap-2 flex-col sm:flex-row'>
+      <% if policy(@folder).edit? %>
       <div class="flex items-center gap-1">
         <span class="underline text-gray-500">Outils d'administration:</span>
         <%= edit_icon_button(edit_folder_path(@folder), label: "(Modifier)") %>
         <%= destroy_icon_button(@folder, label: "(Supprimer)") %>
       </div>
+      <% end %>
     </div>
     <div class='flex flex-row'>
       <%= render 'shared/new_item_dropdown', parent_id: @folder.id %>

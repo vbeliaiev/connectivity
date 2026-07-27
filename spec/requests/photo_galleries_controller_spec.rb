@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe PhotoGalleriesController, type: :request do
-  let(:current_user) { create(:user) }
+  let(:current_user) { create(:user, :moderator) }
   let(:test_image) { Rails.root.join('spec/fixtures/files/test_image.png') }
 
   before do
@@ -150,6 +150,39 @@ RSpec.describe PhotoGalleriesController, type: :request do
       }.to change(PhotoGallery, :count).by(-1).and change(GalleryItem, :count).by(-1)
 
       expect(response).to redirect_to(root_path)
+    end
+  end
+
+  # TODO: check user permissions for each action below.
+  # Each example should verify that the correct role (member / moderator / admin / guest)
+  # is allowed or denied access, and that the response matches the expected behaviour.
+  context 'authorization' do
+    it 'allows a guest to view a public photo gallery' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'denies a guest access to an internal photo gallery' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'denies a member from creating a photo gallery' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'denies a member from updating a photo gallery' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'denies a member from deleting a photo gallery' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'allows a moderator to create a photo gallery' do
+      skip 'user permission checks not yet implemented'
+    end
+
+    it 'allows an admin to destroy a photo gallery' do
+      skip 'user permission checks not yet implemented'
     end
   end
 end
