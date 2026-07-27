@@ -1,0 +1,13 @@
+<% content_for :title, "Showing article" %>
+
+<div class="w-full">
+  <%= render 'shared/breadcrumb', node: @article %>
+
+  <div class="flex items-center gap-1 mt-3">
+    <span class="underline text-gray-500">Outils d'administration:</span>
+    <%= edit_icon_button(edit_article_path(@article), label: "(Modifier)") %>
+    <%= destroy_icon_button(@article, label: "(Supprimer)") %>
+  </div>
+
+  <%= render @article %>
+</div>

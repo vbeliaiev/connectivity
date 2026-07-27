@@ -17,7 +17,7 @@
       - optional Hash of { section_key => { remaining: Integer, path: String } }
         used to render a "+N more" link under a section when its items were
         capped. section_key is one of :folders, :pdf_notes, :video_notes,
-        :photo_galleries, :notes.
+        :photo_galleries, :articles.
     show_destroy_label
       - when true, renders a "(Supprimer)" text label next to destroy icon
         buttons (pdf_notes, video_notes). Defaults to false.
@@ -27,7 +27,7 @@
   pdf_notes ||= []
   video_notes ||= []
   photo_galleries ||= []
-  notes ||= []
+  articles ||= []
   paginate_sections ||= false
   more_links ||= {}
   destroy_label = local_assigns[:show_destroy_label] ? "(Supprimer)" : nil
@@ -164,26 +164,26 @@
   </div>
 <% end %>
 
-<% if notes.present? %>
+<% if articles.present? %>
   <% if sections_before_pages %>
     <hr class="text-gray-200 mt-5">
   <% end %>
 
-  <div class="mt-3" id="notes-section">
+  <div class="mt-3" id="articles-section">
     <h2 class="font-bold text-xl mb-3">Pages:</h2>
     <div class="flex flex-wrap gap-3 bg-gray-100 p-3 rounded-md">
-      <% notes.each do |note| %>
-        <%= link_to note_path(note), id: dom_id(note), class: "flex items-center p-2 rounded-md hover:bg-[#d93] hover:text-white hover:border-black border w-full sm:w-auto" do %>
+      <% articles.each do |article| %>
+        <%= link_to article_path(article), id: dom_id(article), class: "flex items-center p-2 rounded-md hover:bg-[#d93] hover:text-white hover:border-black border w-full sm:w-auto" do %>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-notebook-text mr-1 flex-shrink-0"><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9.5 8h5"/><path d="M9.5 12H16"/><path d="M9.5 16H14"/></svg>
-          <span><%= note.title %></span>
+          <span><%= article.title %></span>
         <% end %>
       <% end %>
     </div>
     <% if paginate_sections %>
       <div class="flex justify-center items-center">
-        <%= paginate notes, param_name: :notes_page %>
+        <%= paginate articles, param_name: :articles_page %>
       </div>
     <% end %>
-    <%= render 'shared/more_link', link: more_links[:notes] %>
+    <%= render 'shared/more_link', link: more_links[:articles] %>
   </div>
 <% end %>

@@ -1,20 +1,20 @@
 require 'openai'
 require 'dry/monads'
 
-class CreateNote < OpenAI::BaseModel
-  required :title, String, doc: "Short descriptive title of the note"
-  required :page, String, doc: "Content of the note"
+class CreateArticle < OpenAI::BaseModel
+  required :title, String, doc: "Short descriptive title of the article"
+  required :page, String, doc: "Content of the article"
 end
 
 class AiChatService
   include Dry::Monads[:result]
 
   SYSTEM_ROLE = <<~TEXT
-    You are an assistant. Use the CreateNote function if you need to create a note.
+    You are an assistant. Use the CreateArticle function if you need to create an article.
 
-    Always provide a short, descriptive `title` for the note in addition to its `page` content.
+    Always provide a short, descriptive `title` for the article in addition to its `page` content.
 
-    When using the CreateNote function, if the note includes any formatting (such as bold text, italics, lists, links, or other rich content), format the `page` field using Action Text-compatible HTML (as used by the Trix editor).
+    When using the CreateArticle function, if the article includes any formatting (such as bold text, italics, lists, links, or other rich content), format the `page` field using Action Text-compatible HTML (as used by the Trix editor).
 
     If formatting is needed, wrap the content in a `<div class="trix-content">...</div>` and use standard inline HTML tags for structure:
     - `<strong>` for bold
@@ -64,22 +64,22 @@ class AiChatService
     client.chat.completions.create(
       model: "gpt-4",
       messages: chat_history,
-      tools: [CreateNote],
+      tools: [CreateArticle],
       temperature: 0.7
     )
   end
 
   def perform_tool_call(function, current_user:)
     case function.name
-    when 'CreateNote'
-      note_relations = { parent: Node.generic_folder_for(current_user.id),
+    when 'CreateArticle'
+      article_relations = { parent: Node.generic_folder_for(current_user.id),
                          author: current_user,
                          organisation: current_user.current_organisation }
-      arguments = JSON.parse(function.arguments).merge(note_relations)
+      arguments = JSON.parse(function.arguments).merge(article_relations)
 
-      note = Note.create(arguments)
+      article = Article.create(arguments)
 
-      "Note with arguments is created. ID: #{note.id}"
+      "Article with arguments is created. ID: #{article.id}"
     else
       warn_message = 'AiChatService: Undefined tool function has been called'
       Rails.logger.warn(warn_message)

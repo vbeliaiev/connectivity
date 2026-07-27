@@ -26,8 +26,8 @@ class Folder < Node
     children.folders.ordered.page(page).per(MAX_ITEMS_COUNT)
   end
 
-  def child_notes(page)
-    children.notes.ordered.includes(:rich_text_page).page(page).per(Note::MAX_ITEMS_COUNT)
+  def child_articles(page)
+    children.articles.ordered.includes(:rich_text_page).page(page).per(Article::MAX_ITEMS_COUNT)
   end
 
   def child_pdf_notes(page)
@@ -48,8 +48,8 @@ class Folder < Node
     preview_for(children.folders.ordered)
   end
 
-  def child_notes_preview
-    preview_for(children.notes.ordered.includes(:rich_text_page))
+  def child_articles_preview
+    preview_for(children.articles.ordered.includes(:rich_text_page))
   end
 
   def child_pdf_notes_preview

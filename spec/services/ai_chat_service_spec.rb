@@ -24,16 +24,16 @@ RSpec.describe AiChatService, type: :service do
       end
 
       let(:tool_calls) do
-        [double('ToolCall', function: double('Function', name: 'CreateNote', arguments: { title: 'Note title', page: 'Note content' }.to_json))]
+        [double('ToolCall', function: double('Function', name: 'CreateArticle', arguments: { title: 'Article title', page: 'Article content' }.to_json))]
       end
 
       before do
         expect(service).to receive(:get_ai_response).and_return(ai_response)
       end
 
-      it 'creates a note with the correct page body' do
-        expect { subject }.to change(Note, :count).by(1)
-        expect(Note.last.page.body.to_plain_text).to eq('Note content')
+      it 'creates an article with the correct page body' do
+        expect { subject }.to change(Article, :count).by(1)
+        expect(Article.last.page.body.to_plain_text).to eq('Article content')
       end
     end
 

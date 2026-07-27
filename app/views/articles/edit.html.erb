@@ -1,0 +1,7 @@
+<% content_for :title, "Editing article" %>
+
+<div class="w-full my-2">
+  <h1 class="font-bold text-2xl mb-6">Modification d'un article</h1>
+
+  <%= render "form", article: @article, cancel_path: @article %>
+</div>

@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
   private
 
   # Loads the folder tree shown in the left sidebar on every page (folder,
-  # note, pdf, video, and gallery show pages, plus the root notes index).
+  # article, pdf, video, and gallery show pages, plus the root articles index).
   def set_sidebar_folders
     @sidebar_folders = FolderPolicy::Scope.new(current_user, Folder.all)
       .resolve.root_records.ordered

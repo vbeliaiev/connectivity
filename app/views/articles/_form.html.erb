@@ -1,11 +1,11 @@
 <div class="p-3 border border-gray-400 rounded-md">
-<%= form_with(model: note, class: "contents") do |form| %>
-  <% if note.errors.any? %>
+<%= form_with(model: article, class: "contents") do |form| %>
+  <% if article.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(note.errors.count, "error") %> prohibited this note from being saved:</h2>
+      <h2><%= pluralize(article.errors.count, "error") %> prohibited this article from being saved:</h2>
 
       <ul class="list-disc ml-6">
-        <% note.errors.each do |error| %>
+        <% article.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
@@ -25,7 +25,7 @@
 
   <div class="my-5">
     <%= form.label :title, "Titre", class: "font-semibold" %>
-    <%= form.text_field :title, placeholder: "Entrez le titre de l'article", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": note.errors[:title].none?, "border-red-400 focus:outline-red-600": note.errors[:title].any?}] %>
+    <%= form.text_field :title, placeholder: "Entrez le titre de l'article", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": article.errors[:title].none?, "border-red-400 focus:outline-red-600": article.errors[:title].any?}] %>
   </div>
 
   <div class="my-5">
@@ -33,7 +33,7 @@
   </div>
 
   <div class="flex flex-col sm:flex-row">
-    <%= form.submit (note.new_record? ? "Créer l'article" : "Mettre à jour l'article"), class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-[#8c4e1c] hover:bg-[#d93] text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit (article.new_record? ? "Créer l'article" : "Mettre à jour l'article"), class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-[#8c4e1c] hover:bg-[#d93] text-white inline-block font-medium cursor-pointer" %>
     <%= link_to "Annuler", cancel_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
   </div>
 <% end %>

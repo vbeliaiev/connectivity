@@ -6,7 +6,7 @@ class Node < ApplicationRecord
   enum visibility_level: { internal: 0, public_visibility: 1 }
 
   scope :folders, -> { where(type: 'Folder') }
-  scope :notes, -> { where(type: 'Note') }
+  scope :articles, -> { where(type: 'Article') }
   scope :pdf_notes, -> { where(type: 'PdfNote') }
   scope :video_notes, -> { where(type: 'VideoNote') }
   scope :photo_galleries, -> { where(type: 'PhotoGallery') }

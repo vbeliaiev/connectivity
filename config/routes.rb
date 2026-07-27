@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     confirmations: 'users/confirmations'
   }
   resources :folders, except: [:index]
-  resources :notes
+  resources :articles
   resources :pdf_notes, only: %i[new create show destroy]
   resources :video_notes, only: %i[new create show destroy]
   resources :photo_galleries, only: %i[new create show edit update destroy]

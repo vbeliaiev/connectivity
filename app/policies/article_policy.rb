@@ -1,0 +1,2 @@
+class ArticlePolicy < NodePolicy
+end

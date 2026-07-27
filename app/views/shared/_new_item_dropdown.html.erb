@@ -7,7 +7,7 @@
 <div class="<%= wrapper_class %>">
   <select data-controller="nav-select" data-action="nav-select#go" class="<%= select_class %>">
     <option value="" disabled selected>Ajouter du contenu</option>
-    <option value="<%= new_note_path(parent_id: parent_id) %>">Article</option>
+    <option value="<%= new_article_path(parent_id: parent_id) %>">Article</option>
     <option value="<%= new_pdf_note_path(parent_id: parent_id) %>">Document PDF</option>
     <option value="<%= new_folder_path(parent_id: parent_id) %>">Dossier</option>
     <option value="<%= new_photo_gallery_path(parent_id: parent_id) %>">Galerie</option>

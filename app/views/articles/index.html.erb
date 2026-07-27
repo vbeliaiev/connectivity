@@ -1,33 +1,33 @@
-<% content_for :title, "Notes" %>
+<% content_for :title, "Articles" %>
 
 <div class="flex flex-col sm:flex-row justify-between items-center">
   <div class="flex space-x-2 my-5 sm:my-0 sm:order-2">
     <%= render 'shared/new_item_dropdown', wrapper_class: "relative inline-block", select_class: "rounded-md pl-9 pr-10 py-2.5 bg-[#8eb200] hover:bg-[#d93] text-white text-base font-medium cursor-pointer appearance-none" %>
   </div>
-  <h1 class="font-bold text-3xl sm:order-1">Latest Notes</h1>
+  <h1 class="font-bold text-3xl sm:order-1">Latest Articles</h1>
 </div>
 
-<div id="notes" class="min-w-full divide-y divide-gray-200 space-y-5">
-  <% if @notes.any? %>
-    <% @notes.each do |note| %>
+<div id="articles" class="min-w-full divide-y divide-gray-200 space-y-5">
+  <% if @articles.any? %>
+    <% @articles.each do |article| %>
       <div class="flex flex-col sm:flex-col justify-between items-start pb-5 sm:pb-0">
         <div class="line-clamp-10">
-          <%= render note %>
+          <%= render article %>
         </div>
         <div class="w-full sm:w-auto flex flex-col sm:flex-row sm:items-center gap-2 mt-3 mb-3">
-          <%= link_to "Show more", note, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-1.5 h-9 flex items-center justify-center bg-gray-100 hover:bg-gray-50 font-medium" %>
+          <%= link_to "Show more", article, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-1.5 h-9 flex items-center justify-center bg-gray-100 hover:bg-gray-50 font-medium" %>
           <div class="flex items-center -space-x-1">
-            <%= edit_icon_button(edit_note_path(note)) %>
-            <%= destroy_icon_button(note) %>
+            <%= edit_icon_button(edit_article_path(article)) %>
+            <%= destroy_icon_button(article) %>
           </div>
         </div>
       </div>
     <% end %>
 
     <div class="flex justify-center items-center mb-10">
-      <%= paginate @notes, param_name: :notes_page %>
+      <%= paginate @articles, param_name: :articles_page %>
     </div>
   <% else %>
-    <p class="text-center my-10">No notes found.</p>
+    <p class="text-center my-10">No articles found.</p>
   <% end %>
 </div>

@@ -22,5 +22,5 @@ subfolder2 = FactoryBot.create(:folder, title: 'Cooking recipes', author: user, 
 
 
 [folder1, subfolder1, folder2, subfolder2].each do |folder|
-  3.times { FactoryBot.create(:note, parent: folder, author: user, page: FFaker::Lorem.paragraph(20)) }
+  3.times { FactoryBot.create(:article, parent: folder, author: user, page: FFaker::Lorem.paragraph(20)) }
 end

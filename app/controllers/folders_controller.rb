@@ -5,7 +5,7 @@ class FoldersController < ApplicationController
 
   def show
     authorize @folder
-    @child_notes = @folder.child_notes(params[:notes_page])
+    @child_articles = @folder.child_articles(params[:articles_page])
     @child_folders = @folder.child_folders(params[:folders_page])
     @child_pdf_notes = @folder.child_pdf_notes(params[:pdf_notes_page])
     @child_video_notes = @folder.child_video_notes(params[:video_notes_page])

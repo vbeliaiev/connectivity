@@ -3,7 +3,7 @@
     <h1 class="font-bold text-3xl">Résultats de recherche pour «&nbsp;<%= @query %>&nbsp;»</h1>
   </div>
 
-  <% if @folders.blank? && @notes.blank? && @pdf_notes.blank? && @video_notes.blank? && @photo_galleries.blank? %>
+  <% if @folders.blank? && @articles.blank? && @pdf_notes.blank? && @video_notes.blank? && @photo_galleries.blank? %>
     <p class="text-center my-10">Aucun résultat trouvé.</p>
   <% else %>
     <div class="mt-5 p-3 border border-gray-400 rounded-md">
@@ -12,7 +12,7 @@
                  pdf_notes: @pdf_notes,
                  video_notes: @video_notes,
                  photo_galleries: @photo_galleries,
-                 notes: @notes,
+                 articles: @articles,
                  show_destroy_label: true %>
     </div>
   <% end %>
@@ -41,10 +41,10 @@
           child_pdf_notes = folder.child_pdf_notes_preview
           child_video_notes = folder.child_video_notes_preview
           child_photo_galleries = folder.child_photo_galleries_preview
-          child_notes = folder.child_notes_preview
+          child_articles = folder.child_articles_preview
         %>
 
-        <% if child_folders.items.blank? && child_pdf_notes.items.blank? && child_video_notes.items.blank? && child_photo_galleries.items.blank? && child_notes.items.blank? %>
+        <% if child_folders.items.blank? && child_pdf_notes.items.blank? && child_video_notes.items.blank? && child_photo_galleries.items.blank? && child_articles.items.blank? %>
           <p class="teext-gray-500 mt-2">Ce dossier est vide.</p>
         <% else %>
           <%= render 'shared/content_sections',
@@ -52,13 +52,13 @@
                      pdf_notes: child_pdf_notes.items,
                      video_notes: child_video_notes.items,
                      photo_galleries: child_photo_galleries.items,
-                     notes: child_notes.items,
+                     articles: child_articles.items,
                      more_links: {
                        folders: (child_folders.more? ? { remaining: child_folders.remaining_count, path: folder_path(folder, anchor: 'folders-section') } : nil),
                        pdf_notes: (child_pdf_notes.more? ? { remaining: child_pdf_notes.remaining_count, path: folder_path(folder, anchor: 'pdf_notes-section') } : nil),
                        video_notes: (child_video_notes.more? ? { remaining: child_video_notes.remaining_count, path: folder_path(folder, anchor: 'video_notes-section') } : nil),
                        photo_galleries: (child_photo_galleries.more? ? { remaining: child_photo_galleries.remaining_count, path: folder_path(folder, anchor: 'photo_galleries-section') } : nil),
-                       notes: (child_notes.more? ? { remaining: child_notes.remaining_count, path: folder_path(folder, anchor: 'notes-section') } : nil)
+                       articles: (child_articles.more? ? { remaining: child_articles.remaining_count, path: folder_path(folder, anchor: 'articles-section') } : nil)
                      },
                      show_destroy_label: true %>
         <% end %>

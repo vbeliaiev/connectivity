@@ -9,15 +9,15 @@ RSpec.describe Node, type: :model do
   describe 'scopes' do
     let!(:folder1) { create(:folder, title: 'A', position: 2, created_at: 2.days.ago) }
     let!(:folder2) { create(:folder, title: 'B', position: 1, created_at: 1.day.ago) }
-    let!(:note1)   { create(:note, title: 'Note1') }
-    let!(:note2)   { create(:note, title: 'Note2') }
+    let!(:article1) { create(:article, title: 'Article1') }
+    let!(:article2) { create(:article, title: 'Article2') }
 
     it '.folders returns only folders' do
       expect(Node.folders).to match_array([folder1, folder2])
     end
 
-    it '.notes returns only notes' do
-      expect(Node.notes).to match_array([note1, note2])
+    it '.articles returns only articles' do
+      expect(Node.articles).to match_array([article1, article2])
     end
 
     it '.ordered returns folders ordered by position ASC NULLS LAST, then created_at DESC' do
