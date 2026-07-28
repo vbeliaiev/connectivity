@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   resources :video_notes, only: %i[new create show destroy]
   resources :photo_galleries, only: %i[new create show edit update destroy]
 
-  resources :users
+  resources :users, except: [:show]
 
   get 'mentions-legales' => 'static_pages#mentions_legales', as: :mentions_legales
   get 'politique-de-confidentialite' => 'static_pages#politique_confidentialite', as: :politique_confidentialite

@@ -1,0 +1,47 @@
+<div class="p-3 border border-gray-400 rounded-md">
+<%= form_with(model: user, class: "contents", data: (user.persisted? ? { controller: "role-change-confirm", role_change_confirm_original_value: user.role, action: "submit->role-change-confirm#submit" } : {})) do |form| %>
+  <% if user.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(user.errors.count, "erreur", plural: "erreurs") %> <%= user.errors.count > 1 ? "ont" : "a" %> empêché l'enregistrement de cet adhérent :</h2>
+
+      <ul class="list-disc ml-6">
+        <% user.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :email, "Email", class: "font-semibold" %>
+    <%= form.email_field :email, placeholder: "Entrez l'adresse email de l'adhérent", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": user.errors[:email].none?, "border-red-400 focus:outline-red-600": user.errors[:email].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :display_name, "Nom affiché", class: "font-semibold" %>
+    <%= form.text_field :display_name, placeholder: "Entrez le nom affiché (facultatif)", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": user.errors[:display_name].none?, "border-red-400 focus:outline-red-600": user.errors[:display_name].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :role, "Rôle", class: "font-semibold" %>
+    <%= form.select :role, User.roles.keys.map { |role| [role_label(role), role] },
+      {},
+      { class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full", data: (user.persisted? ? { role_change_confirm_target: "role" } : {}) } %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :password, "Mot de passe", class: "font-semibold" %>
+    <%= form.password_field :password, autocomplete: "new-password", placeholder: (user.new_record? ? "Entrez le mot de passe" : "Laisser vide pour ne pas changer"), class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": user.errors[:password].none?, "border-red-400 focus:outline-red-600": user.errors[:password].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :password_confirmation, "Confirmation du mot de passe", class: "font-semibold" %>
+    <%= form.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Confirmez le mot de passe", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": user.errors[:password_confirmation].none?, "border-red-400 focus:outline-red-600": user.errors[:password_confirmation].any?}] %>
+  </div>
+
+  <div class="flex flex-col sm:flex-row">
+    <%= form.submit (user.new_record? ? "Créer l'adhérent" : "Mettre à jour l'adhérent"), class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-[#8c4e1c] hover:bg-[#d93] text-white inline-block font-medium cursor-pointer" %>
+    <%= link_to "Annuler", cancel_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  </div>
+<% end %>
+</div>
