@@ -1,6 +1,6 @@
 class PdfNotesController < ApplicationController
   after_action :verify_pundit_authorization
-  before_action :set_pdf_note, only: %i[ show destroy ]
+  before_action :set_pdf_note, only: %i[ show destroy toggle_visibility ]
 
   def show
     authorize @pdf_note
@@ -34,6 +34,18 @@ class PdfNotesController < ApplicationController
     end
   end
 
+  def toggle_visibility
+    authorize @pdf_note, :update?
+
+    new_level = @pdf_note.public_visibility? ? :internal : :public_visibility
+
+    if @pdf_note.update(visibility_level: new_level)
+      redirect_to redirect_path, notice: "Pdf note visibility was successfully updated."
+    else
+      redirect_to redirect_path, alert: 'Pdf note visibility was not updated. Please try again and notify administrator.'
+    end
+  end
+
   private
 
   def redirect_path
@@ -53,7 +65,9 @@ class PdfNotesController < ApplicationController
   end
 
   def pdf_note_params
-    params.require(:pdf_note).permit(:title, :file, :parent_id)
+    permitted = params.require(:pdf_note).permit(:title, :file, :parent_id, :visibility_level)
+    permitted = permitted.except(:visibility_level) unless current_user&.moderator? || current_user&.admin?
+    permitted
   end
 
   def folder_policy_scope

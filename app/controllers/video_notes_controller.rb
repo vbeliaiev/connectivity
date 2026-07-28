@@ -1,6 +1,6 @@
 class VideoNotesController < ApplicationController
   after_action :verify_pundit_authorization
-  before_action :set_video_note, only: %i[ show destroy ]
+  before_action :set_video_note, only: %i[ show destroy toggle_visibility ]
 
   def show
     authorize @video_note
@@ -34,6 +34,18 @@ class VideoNotesController < ApplicationController
     end
   end
 
+  def toggle_visibility
+    authorize @video_note, :update?
+
+    new_level = @video_note.public_visibility? ? :internal : :public_visibility
+
+    if @video_note.update(visibility_level: new_level)
+      redirect_to redirect_path, notice: "Video note visibility was successfully updated."
+    else
+      redirect_to redirect_path, alert: 'Video note visibility was not updated. Please try again and notify administrator.'
+    end
+  end
+
   private
 
   def redirect_path
@@ -53,7 +65,9 @@ class VideoNotesController < ApplicationController
   end
 
   def video_note_params
-    params.require(:video_note).permit(:title, :file, :parent_id)
+    permitted = params.require(:video_note).permit(:title, :file, :parent_id, :visibility_level)
+    permitted = permitted.except(:visibility_level) unless current_user&.moderator? || current_user&.admin?
+    permitted
   end
 
   def folder_policy_scope

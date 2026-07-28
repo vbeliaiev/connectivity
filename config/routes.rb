@@ -9,8 +9,12 @@ Rails.application.routes.draw do
   end
   resources :folders, except: [:index]
   resources :articles
-  resources :pdf_notes, only: %i[new create show destroy]
-  resources :video_notes, only: %i[new create show destroy]
+  resources :pdf_notes, only: %i[new create show destroy] do
+    patch :toggle_visibility, on: :member
+  end
+  resources :video_notes, only: %i[new create show destroy] do
+    patch :toggle_visibility, on: :member
+  end
   resources :photo_galleries, only: %i[new create show edit update destroy]
 
   resources :users, except: [:show]

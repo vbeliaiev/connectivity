@@ -190,11 +190,15 @@ class PhotoGalleriesController < ApplicationController
   end
 
   def photo_gallery_params
-    params.require(:photo_gallery).permit(:title, :parent_id)
+    permitted = params.require(:photo_gallery).permit(:title, :parent_id, :visibility_level)
+    permitted = permitted.except(:visibility_level) unless current_user&.moderator? || current_user&.admin?
+    permitted
   end
 
   def photo_gallery_update_params
-    params.require(:photo_gallery).permit(:title, items_attributes: [:id, :description, :_destroy])
+    permitted = params.require(:photo_gallery).permit(:title, :visibility_level, items_attributes: [:id, :description, :_destroy])
+    permitted = permitted.except(:visibility_level) unless current_user&.moderator? || current_user&.admin?
+    permitted
   end
 
   def folder_policy_scope

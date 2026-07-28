@@ -28,6 +28,15 @@
     <%= form.text_field :title, placeholder: "Entrez le titre de l'article", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": article.errors[:title].none?, "border-red-400 focus:outline-red-600": article.errors[:title].any?}] %>
   </div>
 
+  <% if current_user&.moderator? || current_user&.admin? %>
+    <div class="my-5">
+      <%= form.label :visibility_level, "Visibilité", class: "font-semibold" %>
+      <%= form.select :visibility_level, Node.visibility_levels.keys.map { |level| [visibility_label(level), level] },
+        {},
+        { class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full" } %>
+    </div>
+  <% end %>
+
   <div class="my-5">
     <%= form.rich_text_area :page, class: 'bg-gray-100' %>
   </div>

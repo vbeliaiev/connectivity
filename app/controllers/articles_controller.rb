@@ -77,7 +77,9 @@ class ArticlesController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:title, :content, :page, :parent_id)
+    permitted = params.require(:article).permit(:title, :content, :page, :parent_id, :visibility_level)
+    permitted = permitted.except(:visibility_level) unless current_user&.moderator? || current_user&.admin?
+    permitted
   end
 
   def article_policy_scope

@@ -1,7 +1,7 @@
 <% content_for :title, "Showing video" %>
 
 <div class="w-full">
-  <h1 class="font-bold text-2xl"><%= @video_note.title %></h1>
+  <h1 class="font-bold text-2xl"><%= node_title(@video_note) %></h1>
 
   <div class="mt-3">
     <video controls class="max-w-full rounded-md" style="max-height: 70vh;">
@@ -9,6 +9,13 @@
       Your browser does not support the video tag.
     </video>
   </div>
+
+  <% if policy(@video_note).update? %>
+    <div class="flex items-center gap-1 mt-3">
+      <span class="underline text-gray-500">Outils d'administration:</span>
+      <%= toggle_visibility_button(@video_note, label: (@video_note.public_visibility? ? "Rendre privé" : "Rendre public")) %>
+    </div>
+  <% end %>
 
   <div class="flex items-center gap-1 mt-2">
     <%= link_to "Back", (request.referer == root_url || @video_note.parent.blank?) ? root_path : folder_path(@video_note.parent), class: "text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>

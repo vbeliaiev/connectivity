@@ -75,6 +75,8 @@ class FoldersController < ApplicationController
   end
 
   def folder_params
-    params.require(:folder).permit(:title, :parent_id)
+    permitted = params.require(:folder).permit(:title, :parent_id, :visibility_level)
+    permitted = permitted.except(:visibility_level) unless current_user&.moderator? || current_user&.admin?
+    permitted
   end
 end

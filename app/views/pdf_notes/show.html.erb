@@ -1,9 +1,17 @@
 <% content_for :title, "Showing pdf note" %>
 
 <div class="w-full">
-  <h1 class="font-bold text-2xl"><%= @pdf_note.title %></h1>
+  <h1 class="font-bold text-2xl"><%= node_title(@pdf_note) %></h1>
 
   <%= link_to "Open PDF", url_for(@pdf_note.file), target: "_blank", rel: "noopener", class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium mt-3" %>
+
+  <% if policy(@pdf_note).update? %>
+    <div class="flex items-center gap-1 mt-2">
+      <span class="underline text-gray-500">Outils d'administration:</span>
+      <%= toggle_visibility_button(@pdf_note, label: (@pdf_note.public_visibility? ? "Rendre privé" : "Rendre public")) %>
+    </div>
+  <% end %>
+
   <div class="flex items-center gap-1 mt-2">
     <%= link_to "Back", (request.referer == root_url || @pdf_note.parent.blank?) ? root_path : folder_path(@pdf_note.parent), class: "text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
     <%= destroy_icon_button(@pdf_note) %>
