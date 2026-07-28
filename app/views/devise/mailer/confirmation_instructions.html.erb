@@ -1,9 +1,0 @@
-<div style="text-align:center; margin-bottom: 24px;">
-  <img src="<%= asset_path('connectivity_logo.png') %>" alt="Connectivity Logo" style="max-width: 220px; height: auto;">
-</div>
-
-<p>Welcome <%= @email %>!</p>
-
-<p>You can confirm your account email through the link below:</p>
-
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>

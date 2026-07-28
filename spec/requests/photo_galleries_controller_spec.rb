@@ -5,7 +5,6 @@ RSpec.describe PhotoGalleriesController, type: :request do
   let(:test_image) { Rails.root.join('spec/fixtures/files/test_image.png') }
 
   before do
-    current_user.confirm
     sign_in current_user
   end
 

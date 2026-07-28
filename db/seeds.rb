@@ -10,7 +10,6 @@
 
 
 user = User.create(email: 'vladislav.belyaev.93@gmail.com', password: '123123', display_name: 'Vlad')
-user.confirm
 
 folder1 = FactoryBot.create(:folder, title: 'Documents', author: user)
 subfolder1 = FactoryBot.create(:folder, title: 'Top Secret', author: user, parent: folder1)

@@ -4,7 +4,6 @@ RSpec.describe PdfNotesController, type: :request do
   let(:current_user) { create(:user, :moderator) }
 
   before do
-    current_user.confirm
     sign_in current_user
   end
 

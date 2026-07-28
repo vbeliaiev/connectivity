@@ -1,60 +1,50 @@
-<div class="w-full max-w-md mx-auto">
+<div class="w-full max-w-md mx-auto border border-gray-400 rounded-md p-8">
   <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-    Edit Profile
+    Modifier le profil
   </h2>
 
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "mt-8 space-y-6" }) do |f| %>
+  <%= form_for(resource, as: resource_name, url: user_registration_path, html: { method: :put, class: "mt-8 space-y-6" }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
 
-    <div class="rounded-md shadow-sm -space-y-px">
+    <div class="space-y-2 mb-2">
       <div>
         <%= f.label :display_name, class: "sr-only" %>
-        <%= f.text_field :display_name, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Display name" %>
+        <%= f.text_field :display_name, class: "block w-full px-3 py-2 border border-gray-300 rounded-md text-sm", placeholder: "Nom d'affichage" %>
       </div>
       <div>
         <%= f.label :email, class: "sr-only" %>
-        <%= f.email_field :email, autocomplete: "email", disabled: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 bg-gray-100 text-gray-500 focus:outline-none sm:text-sm", title: "Contact administrator to change your email" %>
-        <p class="text-xs text-red-500 mt-1">To change your email, please contact the administrator.</p>
+        <%= f.email_field :email, autocomplete: "email", disabled: true, class: "block w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-gray-100 text-gray-500", title: "Contactez l'administrateur pour changer votre e-mail" %>
+        <p class="text-xs text-red-500 mt-1">Pour changer votre e-mail, veuillez contacter l'administrateur.</p>
       </div>
-      <div>
+      <div class="mt-4">
         <%= f.label :password, class: "sr-only" %>
-        <%= f.password_field :password, autocomplete: "new-password", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "New password (leave blank if no change)" %>
+        <%= f.password_field :password, autocomplete: "off", class: "block w-full px-3 py-2 border border-gray-300 rounded-md text-sm", placeholder: "Nouveau mot de passe (laisser vide si inchangé)" %>
       </div>
       <div>
         <%= f.label :password_confirmation, class: "sr-only" %>
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Confirm new password" %>
+        <%= f.password_field :password_confirmation, autocomplete: "off", class: "block w-full px-3 py-2 border border-gray-300 rounded-md text-sm", placeholder: "Confirmer le nouveau mot de passe" %>
       </div>
       <div>
         <%= f.label :current_password, class: "sr-only" %>
-        <%= f.password_field :current_password, autocomplete: "current-password", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Current password (to confirm changes)" %>
+        <%= f.password_field :current_password, autocomplete: "off", class: "block w-full px-3 py-2 border border-gray-300 rounded-md text-sm", placeholder: "Mot de passe actuel (pour confirmer les changements)" %>
       </div>
     </div>
 
-    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-      <div class="text-sm text-gray-600">
-        Currently waiting confirmation for: <%= resource.unconfirmed_email %>
-      </div>
-    <% end %>
-
     <% if @minimum_password_length %>
-      <p class="mt-2 text-xs text-gray-500">
-        <%= @minimum_password_length %> characters minimum
+      <p class="text-xs text-gray-500">
+        <%= @minimum_password_length %> caractères minimum
       </p>
     <% end %>
 
     <div>
-      <%= f.submit "Update", class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+      <%= f.submit "Mettre à jour", class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#8c4e1c] hover:bg-[#d93] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8c4e1c] cursor-pointer" %>
     </div>
   <% end %>
 
-  <div class="mt-6">
-    <h3 class="text-lg font-medium text-gray-900">Cancel my account</h3>
-    <div class="mt-2 text-sm text-gray-600">
-      <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "font-medium text-indigo-600 hover:text-indigo-500" %></p>
-    </div>
-  </div>
-
-  <div class="text-sm text-center mt-4">
-    <%= link_to "Back", :back, class: "font-medium text-indigo-600 hover:text-indigo-500" %>
+  <div class="text-sm text-center mt-2">
+    <%= link_to root_path, class: "flex items-center justify-center w-full py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house mr-1 flex-shrink-0"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      Naviguer vers l'accueil
+    <% end %>
   </div>
 </div>

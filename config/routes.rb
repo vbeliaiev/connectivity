@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {
+  devise_for :users, skip: [:registrations, :confirmations], controllers: {
     sessions: 'users/sessions',
-    registrations: 'users/registrations',
-    passwords: 'users/passwords',
-    confirmations: 'users/confirmations'
+    passwords: 'users/passwords'
   }
+  as :user do
+    get 'users/edit' => 'users/registrations#edit', as: :edit_user_registration
+    put 'users' => 'users/registrations#update', as: :user_registration
+  end
   resources :folders, except: [:index]
   resources :articles
   resources :pdf_notes, only: %i[new create show destroy]

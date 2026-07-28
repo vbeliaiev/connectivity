@@ -15,18 +15,18 @@
 
     <main class="container mx-auto mt-2 px-5 flex flex-col">
 
-      <header class="flex justify-start mb-5">
-        <%= link_to root_path do  %>
-          <%= image_tag 'logo-aicmc.jpg', class: 'h-[67px] w-[67px] object-contain rounded' %>
-        <% end %>
-      </header>
+      <%= render '/layouts/user_actions_header' %>
       <% if notice %>
         <div class="mb-4 p-2 bg-green-100 text-green-800 rounded text-center"> <%= notice %> </div>
       <% end %>
-      <% if alert %>
+      <% if alert && !devise_controller? %>
         <div class="mb-4 p-2 bg-red-100 text-red-800 rounded text-center"> <%= alert %> </div>
       <% end %>
       <%= yield %>
+
+      <footer class="w-full text-center text-sm font-semibold text-gray-500 py-4">
+        &copy; AICMC <%= Date.current.year %> Tous droits réservés
+      </footer>
     </main>
   </body>
 </html>
