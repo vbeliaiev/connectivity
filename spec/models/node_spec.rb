@@ -4,6 +4,8 @@ RSpec.describe Node, type: :model do
   describe 'associations' do
     it { should have_many(:children).class_name('Node').with_foreign_key('parent_id') }
     it { should belong_to(:parent).class_name('Node').optional }
+    it { should have_many(:catalog_item_nodes).dependent(:destroy) }
+    it { should have_many(:catalog_items).through(:catalog_item_nodes) }
   end
 
   describe 'scopes' do

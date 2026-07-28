@@ -8,9 +8,10 @@ export default class extends Controller {
   static targets = ["modal", "image", "caption"]
 
   connect() {
-    // Scoped to .trix-content so the modal's own (initially empty) <img>
-    // never gets a click listener attached to itself.
-    this.element.querySelectorAll(".trix-content img").forEach((img) => {
+    // Scoped to any <img> inside this controller's element, excluding the
+    // modal's own (initially empty) <img> so it never gets a listener
+    // attached to itself.
+    this.element.querySelectorAll("img:not([data-image-modal-target='image'])").forEach((img) => {
       img.classList.add("cursor-pointer")
       img.addEventListener("click", (event) => this.open(event))
     })

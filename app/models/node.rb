@@ -3,6 +3,9 @@ class Node < ApplicationRecord
   belongs_to :parent, class_name: 'Node', optional: true
   belongs_to :author, class_name: 'User', foreign_key: :user_id
 
+  has_many :catalog_item_nodes, dependent: :destroy
+  has_many :catalog_items, through: :catalog_item_nodes
+
   enum visibility_level: { internal: 0, public_visibility: 1 }
 
   scope :folders, -> { where(type: 'Folder') }

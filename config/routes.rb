@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   end
   resources :photo_galleries, only: %i[new create show edit update destroy]
 
+  resource :catalog, only: :show, controller: 'catalog'
+  resources :catalog_items, except: [:index]
+
   resources :users, except: [:show]
 
   get 'mentions-legales' => 'static_pages#mentions_legales', as: :mentions_legales

@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_07_27_220000) do
+ActiveRecord::Schema[7.1].define(version: 2026_07_28_161100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "unaccent"
   enable_extension "vector"
 
   create_table "action_text_rich_texts", force: :cascade do |t|
@@ -51,6 +52,44 @@ ActiveRecord::Schema[7.1].define(version: 2026_07_27_220000) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "brands", force: :cascade do |t|
+    t.string "title", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["title"], name: "index_brands_on_title", unique: true
+  end
+
+  create_table "catalog_item_nodes", force: :cascade do |t|
+    t.bigint "node_id", null: false
+    t.bigint "catalog_item_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["catalog_item_id"], name: "index_catalog_item_nodes_on_catalog_item_id"
+    t.index ["node_id", "catalog_item_id"], name: "index_catalog_item_nodes_on_node_id_and_catalog_item_id", unique: true
+    t.index ["node_id"], name: "index_catalog_item_nodes_on_node_id"
+  end
+
+  create_table "catalog_items", force: :cascade do |t|
+    t.string "title", null: false
+    t.bigint "brand_id", null: false
+    t.string "model"
+    t.bigint "country_id"
+    t.integer "production_start_year"
+    t.integer "production_end_year"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index "to_tsvector('simple'::regconfig, immutable_unaccent((title)::text))", name: "index_catalog_items_on_title_tsvector", using: :gin
+    t.index ["brand_id"], name: "index_catalog_items_on_brand_id"
+    t.index ["country_id"], name: "index_catalog_items_on_country_id"
+  end
+
+  create_table "countries", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_countries_on_name", unique: true
   end
 
   create_table "gallery_items", force: :cascade do |t|
@@ -103,5 +142,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_07_27_220000) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "catalog_item_nodes", "catalog_items"
+  add_foreign_key "catalog_item_nodes", "nodes"
+  add_foreign_key "catalog_items", "brands"
+  add_foreign_key "catalog_items", "countries"
   add_foreign_key "nodes", "users"
 end

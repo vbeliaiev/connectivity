@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AICMC</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= favicon_link_tag 'logo-aicmc.jpg' %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+    <main class="container mx-auto mt-2 px-5 flex flex-col w-full">
+      <%= render '/layouts/user_actions_header' %>
+        <% if notice.present? %>
+          <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+        <% end %>
+
+        <% if alert.present? %>
+          <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-md inline-block" id="notice"><%= alert %></p>
+        <% end %>
+
+      <%= yield %>
+
+      <div class="flex lg:flex-row flex-col w-full">
+        <div class="hidden lg:block lg:w-1/4 lg:pr-7"></div>
+        <footer class="w-full lg:w-3/4 text-center text-sm font-semibold text-gray-500 py-4 ">
+          &copy; AICMC <%= Date.current.year %> Tous droits réservés
+          &middot;
+          <%= link_to "Mentions légales", mentions_legales_path, class: "hover:underline" %>
+          &middot;
+          <%= link_to "Politique de confidentialité", politique_confidentialite_path, class: "hover:underline" %>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>

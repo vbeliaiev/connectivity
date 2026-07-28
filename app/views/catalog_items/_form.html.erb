@@ -1,0 +1,93 @@
+<div class="p-3 border border-gray-400 rounded-md">
+<%= form_with(model: catalog_item, class: "contents", multipart: true) do |form| %>
+  <% if catalog_item.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(catalog_item.errors.count, "erreur") %> <%= catalog_item.errors.count > 1 ? "ont" : "a" %> empêché cet élément d'être enregistré :</h2>
+
+      <ul class="list-disc ml-6">
+        <% catalog_item.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :title, "Titre", class: "font-semibold" %>
+    <%= form.text_field :title, maxlength: CatalogItem::MAX_FIELD_LENGTH, placeholder: "Entrez le titre", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": catalog_item.errors[:title].none?, "border-red-400 focus:outline-red-600": catalog_item.errors[:title].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :cover, "Couverture", class: "font-semibold" %>
+
+    <% if catalog_item.cover.attached? %>
+      <div class="flex items-center gap-3 mt-2">
+        <%= image_tag catalog_item.cover.variant(resize_to_fill: [96, 96]), class: "w-24 h-24 object-cover rounded-md border border-gray-300" %>
+        <label class="flex items-center gap-1 text-sm text-red-600">
+          <%= check_box_tag "catalog_item[remove_cover]", "1", false %> Supprimer la couverture actuelle
+        </label>
+      </div>
+    <% end %>
+
+    <%= form.file_field :cover, accept: "image/*", class: "block shadow-sm rounded-md border border-gray-400 px-3 py-2 mt-2 w-full" %>
+    <p class="text-sm text-gray-500 mt-1">Image uniquement, 60 Mo maximum.</p>
+  </div>
+
+  <div class="my-5" data-controller="option-picker" data-option-picker-add-label-value="+ Ajouter une nouvelle marque" data-option-picker-choose-label-value="Choisir dans la liste">
+    <div class="flex items-center justify-between">
+      <%= form.label :brand_id, "Marque", class: "font-semibold" %>
+      <button type="button" data-option-picker-target="toggleButton" data-action="option-picker#toggle" class="text-sm text-blue-600 hover:underline cursor-pointer">+ Ajouter une nouvelle marque</button>
+    </div>
+
+    <%= form.collection_select :brand_id, Brand.order(:title), :id, :title,
+      { prompt: "Sélectionner une marque" },
+      { data: { option_picker_target: "select" }, class: ["rounded-md border bg-white text-gray-900 shadow-sm focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full", {"border-gray-300 focus:border-blue-500": catalog_item.errors[:brand].none? && catalog_item.errors[:brand_id].none?, "border-red-400 focus:border-red-600": catalog_item.errors[:brand].any? || catalog_item.errors[:brand_id].any?}] } %>
+
+    <div data-option-picker-target="newField" class="mt-2">
+      <%= form.text_field :new_brand_title, maxlength: CatalogItem::MAX_FIELD_LENGTH, placeholder: "Entrez le nom de la nouvelle marque", class: "block shadow-sm rounded-md border border-gray-400 px-3 py-2 w-full" %>
+    </div>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :model, "Nom du modèle", class: "font-semibold" %>
+    <%= form.text_field :model, maxlength: CatalogItem::MAX_FIELD_LENGTH, placeholder: "Entrez le nom du modèle", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": catalog_item.errors[:model].none?, "border-red-400 focus:outline-red-600": catalog_item.errors[:model].any?}] %>
+  </div>
+
+  <div class="my-5 flex flex-col sm:flex-row gap-3">
+    <div class="w-full sm:w-1/2">
+      <%= form.label :production_start_year, "Année de début de production", class: "font-semibold" %>
+      <%= form.number_field :production_start_year, class: "block shadow-sm rounded-md border border-gray-400 px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <div class="w-full sm:w-1/2">
+      <%= form.label :production_end_year, "Année de fin de production", class: "font-semibold" %>
+      <%= form.number_field :production_end_year, class: "block shadow-sm rounded-md border border-gray-400 px-3 py-2 mt-2 w-full" %>
+    </div>
+  </div>
+
+  <div class="my-5" data-controller="option-picker" data-option-picker-add-label-value="+ Ajouter un nouveau pays" data-option-picker-choose-label-value="Choisir dans la liste">
+    <div class="flex items-center justify-between">
+      <%= form.label :country_id, "Pays", class: "font-semibold" %>
+      <button type="button" data-option-picker-target="toggleButton" data-action="option-picker#toggle" class="text-sm text-blue-600 hover:underline cursor-pointer">+ Ajouter un nouveau pays</button>
+    </div>
+
+    <%= form.collection_select :country_id, Country.order(:name), :id, :name,
+      { prompt: "Sélectionner un pays" },
+      { data: { option_picker_target: "select" }, class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full" } %>
+
+    <div data-option-picker-target="newField" class="mt-2">
+      <%= form.text_field :new_country_name, maxlength: CatalogItem::MAX_FIELD_LENGTH, placeholder: "Entrez le nom du nouveau pays", class: "block shadow-sm rounded-md border border-gray-400 px-3 py-2 w-full" %>
+    </div>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :description, "Description", class: "font-semibold" %>
+    <%= form.rich_text_area :description, class: 'bg-gray-100' %>
+  </div>
+
+  <div class="flex flex-col sm:flex-row">
+    <%= form.submit (catalog_item.new_record? ? "Créer le modèle" : "Mettre à jour le modèle"), class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-[#8c4e1c] hover:bg-[#d93] text-white inline-block font-medium cursor-pointer" %>
+    <%= link_to "Annuler", cancel_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  </div>
+<% end %>
+</div>
