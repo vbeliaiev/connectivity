@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Connectivity</title>
+    <title>AICMC</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -26,6 +26,10 @@
 
       <footer class="w-full text-center text-sm font-semibold text-gray-500 py-4">
         &copy; AICMC <%= Date.current.year %> Tous droits réservés
+        &middot;
+        <%= link_to "Mentions légales", mentions_legales_path, class: "hover:underline" %>
+        &middot;
+        <%= link_to "Politique de confidentialité", politique_confidentialite_path, class: "hover:underline" %>
       </footer>
     </main>
   </body>

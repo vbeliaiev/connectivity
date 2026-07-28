@@ -14,6 +14,9 @@ Rails.application.routes.draw do
   resources :photo_galleries, only: %i[new create show edit update destroy]
 
   resources :users
+
+  get 'mentions-legales' => 'static_pages#mentions_legales', as: :mentions_legales
+  get 'politique-de-confidentialite' => 'static_pages#politique_confidentialite', as: :politique_confidentialite
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
