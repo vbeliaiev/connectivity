@@ -16,6 +16,13 @@ module Connectivity
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w(assets tasks))
 
+    # Dump the schema as SQL (db/structure.sql) instead of Ruby (db/schema.rb).
+    # Ruby-format dumps can't represent raw SQL objects created via `execute`
+    # in migrations (e.g. the immutable_unaccent() function used for accent-
+    # insensitive search), so db:schema:load would always fail partway
+    # through and leave the database in an inconsistent state.
+    config.active_record.schema_format = :sql
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

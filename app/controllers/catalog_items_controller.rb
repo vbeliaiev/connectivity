@@ -6,6 +6,20 @@ class CatalogItemsController < ApplicationController
 
   def show
     authorize @catalog_item
+
+    @linked_folders = @catalog_item.linked_folders(current_user)
+    @linked_pdf_notes = @catalog_item.linked_pdf_notes(current_user)
+    @linked_video_notes = @catalog_item.linked_video_notes(current_user)
+    @linked_photo_galleries = @catalog_item.linked_photo_galleries(current_user)
+    @linked_articles = @catalog_item.linked_articles(current_user)
+
+    respond_to do |format|
+      format.html
+      # Used by the "Associer au catalogue numérique" modal to validate a
+      # pasted catalog item link in real time (see catalog-item-link
+      # Stimulus controller).
+      format.json { render json: { id: @catalog_item.id, title: @catalog_item.title } }
+    end
   end
 
   def new

@@ -19,10 +19,13 @@
   <div class="flex justify-between items-center flex-wrap gap-2">
     <%= render 'shared/breadcrumb', node: @photo_gallery %>
     <% if policy(@photo_gallery).edit? %>
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-1" data-controller="catalog-item-link" data-catalog-item-link-base-url-value="<%= catalog_items_path %>">
       <span class="underline text-gray-500">Outils d'administration:</span>
       <%= edit_icon_button(edit_photo_gallery_path(@photo_gallery), label: "(Modifier)") %>
       <%= destroy_icon_button(@photo_gallery, label: "(Supprimer)") %>
+      <%= catalog_item_link_button(label: "Associer au catalogue numérique") %>
+
+      <%= render 'shared/catalog_item_link_modal', node: @photo_gallery %>
     </div>
     <% end %>
   </div>

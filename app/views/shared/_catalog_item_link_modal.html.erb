@@ -1,0 +1,50 @@
+<%# Modal for associating a Node (article, pdf note, video note, photo
+    gallery, folder...) with one or more digital catalog items. Must be
+    rendered within a data-controller="catalog-item-link" scope, alongside
+    the catalog_item_link_button trigger. %>
+<div data-catalog-item-link-target="modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 hidden" data-action="click->catalog-item-link#closeOnBackdrop">
+  <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-5 relative">
+    <button type="button" class="absolute -top-4 -right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white text-gray-600 hover:text-gray-900 shadow-lg text-2xl leading-none focus:outline-none cursor-pointer" data-action="catalog-item-link#close">
+      <span class="sr-only">Fermer</span>
+      &times;
+    </button>
+
+    <h3 class="text-xl font-bold mb-4">Associer au catalogue numérique</h3>
+
+    <% if node.catalog_item_nodes.any? %>
+      <ul class="space-y-2 mb-4">
+        <% node.catalog_item_nodes.includes(:catalog_item).each do |catalog_item_node| %>
+          <li class="flex items-center justify-between gap-2 border border-gray-300 rounded-md px-3 py-2">
+            <%= link_to catalog_item_node.catalog_item.title, catalog_item_path(catalog_item_node.catalog_item), class: "text-blue-600 font-medium underline", target: "_blank", rel: "noopener" %>
+            <%= destroy_icon_button(catalog_item_node) %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <%= form_with url: catalog_item_nodes_path, method: :post do |f| %>
+      <%= hidden_field_tag :node_id, node.id %>
+      <%= hidden_field_tag :catalog_item_id, "", data: { catalog_item_link_target: "catalogItemIdField" } %>
+
+      <%= label_tag :catalog_item_link_url, "Lien ou identifiant de l'élément du catalogue", class: "font-semibold block mb-1" %>
+      <%= text_field_tag :catalog_item_link_url, nil, placeholder: "https://.../catalog_items/123 ou 123", autocomplete: "off", class: "block shadow-sm rounded-md border border-gray-400 px-3 py-2 w-full", data: { catalog_item_link_target: "input", action: "input->catalog-item-link#check" } %>
+
+      <p class="mt-2 hidden" data-catalog-item-link-target="statusFound">
+        <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-100 text-green-700 text-sm font-medium">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+          <span data-catalog-item-link-target="statusFoundLabel"></span>
+        </span>
+      </p>
+      <p class="mt-2 hidden" data-catalog-item-link-target="statusNotFound">
+        <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-red-100 text-red-700 text-sm font-medium">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          Aucun élément du catalogue trouvé avec cet identifiant
+        </span>
+      </p>
+
+      <div class="flex justify-end mt-4">
+        <%= f.submit "Associer", disabled: true, class: "rounded-md px-3.5 py-2.5 bg-[#8c4e1c] hover:bg-[#d93] text-white font-medium cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed", data: { catalog_item_link_target: "submitButton" } %>
+      </div>
+    <% end %>
+  </div>
+</div>

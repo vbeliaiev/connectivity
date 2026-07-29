@@ -23,7 +23,7 @@ module ApplicationHelper
     return node.title unless node.public_visibility?
     return node.title unless current_user&.moderator? || current_user&.admin?
 
-    "[public] #{node.title}"
+    "(public) #{node.title}"
   end
 
   # Renders an icon-only link styled as a small round button, used for
@@ -78,6 +78,25 @@ module ApplicationHelper
   def lock_icon
     content_tag(:svg, xmlns: "http://www.w3.org/2000/svg", width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round", class: "lucide lucide-lock") do
       raw('<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>')
+    end
+  end
+
+  # Renders an icon-only button (chain-link) that opens the "Associer au
+  # catalogue numérique" modal, styled to match edit_icon_button /
+  # destroy_icon_button. Must be used within a
+  # data-controller="catalog-item-link" scope alongside the
+  # shared/catalog_item_link_modal partial, which provides the modal markup
+  # this button toggles.
+  def catalog_item_link_button(extra_class: "", label: nil)
+    classes = label.present? ? "inline-flex items-center gap-1 px-2 h-9 rounded-full text-gray-500 hover:text-gray-900 hover:bg-gray-100 cursor-pointer #{extra_class}" : "inline-flex items-center justify-center w-9 h-9 rounded-full text-gray-500 hover:text-gray-900 hover:bg-gray-100 cursor-pointer #{extra_class}"
+
+    content_tag(:button, type: "button", class: classes, title: "Associer au catalogue numérique", "aria-label": "Associer au catalogue numérique", data: { action: "catalog-item-link#open" }) do
+      safe_join([
+        content_tag(:svg, xmlns: "http://www.w3.org/2000/svg", width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round", class: "lucide lucide-link") do
+          raw('<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>')
+        end,
+        (content_tag(:span, label, class: "text-sm") if label.present?)
+      ].compact)
     end
   end
 

@@ -72,7 +72,35 @@ class CatalogItem < ApplicationRecord
     where('catalog_items.production_start_year <= ? OR catalog_items.production_start_year IS NULL', year)
   }
 
+  # Associated content (folders/documents/videos/galleries/pages) linked to
+  # this catalog item, scoped through NodePolicy::Scope so that private
+  # content stays hidden from signed-out visitors and never leaks on the
+  # public catalog item page.
+  def linked_folders(user)
+    linked_nodes_scope(user).folders.ordered
+  end
+
+  def linked_articles(user)
+    linked_nodes_scope(user).articles.ordered.includes(:rich_text_page)
+  end
+
+  def linked_pdf_notes(user)
+    linked_nodes_scope(user).pdf_notes.ordered.includes(file_attachment: :blob)
+  end
+
+  def linked_video_notes(user)
+    linked_nodes_scope(user).video_notes.ordered.includes(file_attachment: :blob)
+  end
+
+  def linked_photo_galleries(user)
+    linked_nodes_scope(user).photo_galleries.ordered.includes(items: { image_attachment: :blob })
+  end
+
   private
+
+  def linked_nodes_scope(user)
+    NodePolicy::Scope.new(user, nodes).resolve
+  end
 
   def assign_new_brand
     title = new_brand_title.to_s.strip

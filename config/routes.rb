@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
   resource :catalog, only: :show, controller: 'catalog'
   resources :catalog_items, except: [:index]
+  resources :catalog_item_nodes, only: %i[create destroy]
 
   resources :users, except: [:show]
 

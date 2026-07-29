@@ -19,8 +19,14 @@
         capped. section_key is one of :folders, :pdf_notes, :video_notes,
         :photo_galleries, :articles.
     show_destroy_label
-      - when true, renders a "(Supprimer)" text label next to destroy icon
-        buttons (pdf_notes, video_notes). Defaults to false.
+      - when true, renders a "(Supprimer)", "(Rendre public/privé)" and
+        "(Associer)" text label next to the destroy/visibility/catalog-item
+        -link icon buttons (pdf_notes, video_notes). Defaults to false.
+    readonly
+      - when true, hides all admin controls (edit/destroy/toggle-visibility/
+        "Associer au catalogue numérique") on every item, regardless of the
+        current user's permissions. Used for read-only listings such as a
+        catalog item's associated content. Defaults to false.
 %>
 <%
   folders ||= []
@@ -30,6 +36,7 @@
   articles ||= []
   paginate_sections ||= false
   more_links ||= {}
+  readonly = local_assigns[:readonly] || false
   destroy_label = local_assigns[:show_destroy_label] ? "(Supprimer)" : nil
 
   sections_before_pdf = folders.present?
@@ -63,7 +70,7 @@
     <h2 class="font-bold text-xl mb-3">Documents:</h2>
     <div class="flex flex-wrap bg-gray-100 p-3 rounded-md" >
       <% pdf_notes.each do |pdf_note| %>
-        <div id="<%= dom_id pdf_note %>" class="w-full sm:w-auto my-2  bg-gray-100 mr-5 rounded-md">
+        <div id="<%= dom_id pdf_note %>" class="w-full sm:w-auto my-2  bg-gray-100 mr-5 rounded-md" data-controller="catalog-item-link" data-catalog-item-link-base-url-value="<%= catalog_items_path %>">
           <div class="flex items-center justify-between">
           <% if policy(pdf_note).show? %>
             <%= link_to url_for(pdf_note.file), target: "_blank", rel: "noopener" do %>
@@ -84,15 +91,22 @@
               </div>
             <% end %>
           <% end %>
-            <div class="flex items-center">
-              <% if policy(pdf_note).update? %>
-                <%= toggle_visibility_button(pdf_note, label: (destroy_label.present? ? (pdf_note.public_visibility? ? "(Rendre privé)" : "(Rendre public)") : nil)) %>
-              <% end %>
-              <%= destroy_icon_button(pdf_note, label: destroy_label) if policy(pdf_note).destroy? %>
-            </div>
+            <% unless readonly %>
+              <div class="flex items-center">
+                <% if policy(pdf_note).update? %>
+                  <%= toggle_visibility_button(pdf_note, label: (destroy_label.present? ? (pdf_note.public_visibility? ? "(Rendre privé)" : "(Rendre public)") : nil)) %>
+                <% end %>
+                <%= destroy_icon_button(pdf_note, label: destroy_label) if policy(pdf_note).destroy? %>
+                <% if policy(pdf_note).update? %>
+                  <%= catalog_item_link_button(label: (destroy_label.present? ? "(Associer)" : nil)) %>
+                <% end %>
+              </div>
+            <% end %>
           </div>
 
-
+          <% if !readonly && policy(pdf_note).update? %>
+            <%= render 'shared/catalog_item_link_modal', node: pdf_note %>
+          <% end %>
         </div>
       <% end %>
     </div>
@@ -113,7 +127,7 @@
     <h2 class="font-bold text-xl mb-3">Vidéos:</h2>
     <div class="flex flex-wrap gap-3 bg-gray-100 p-3 rounded-md">
       <% video_notes.each do |video_note| %>
-        <div id="<%= dom_id video_note %>" class="flex items-center">
+        <div id="<%= dom_id video_note %>" class="flex items-center" data-controller="catalog-item-link" data-catalog-item-link-base-url-value="<%= catalog_items_path %>">
           <% if policy(video_note).show? %>
             <button type="button"
                     class="flex items-center p-2 rounded-md hover:bg-[#d93] hover:text-white hover:border-black border cursor-pointer"
@@ -133,10 +147,19 @@
               <span><%= node_title(video_note) %></span>
             <% end %>
           <% end %>
-          <% if policy(video_note).update? %>
-            <%= toggle_visibility_button(video_note, label: (destroy_label.present? ? (video_note.public_visibility? ? "(Rendre privé)" : "(Rendre public)") : nil)) %>
+          <% unless readonly %>
+            <% if policy(video_note).update? %>
+              <%= toggle_visibility_button(video_note, label: (destroy_label.present? ? (video_note.public_visibility? ? "(Rendre privé)" : "(Rendre public)") : nil)) %>
+            <% end %>
+            <%= destroy_icon_button(video_note, label: destroy_label) if policy(video_note).destroy? %>
+
+            <% if policy(video_note).update? %>
+              <%= catalog_item_link_button(label: (destroy_label.present? ? "(Associer)" : nil)) %>
+            <% end %>
+            <% if policy(video_note).update? %>
+              <%= render 'shared/catalog_item_link_modal', node: video_note %>
+            <% end %>
           <% end %>
-          <%= destroy_icon_button(video_note, label: destroy_label) if policy(video_note).destroy? %>
         </div>
       <% end %>
     </div>
