@@ -1,6 +1,6 @@
 class PdfNotesController < ApplicationController
   after_action :verify_pundit_authorization
-  before_action :set_pdf_note, only: %i[ show destroy toggle_visibility ]
+  before_action :set_pdf_note, only: %i[ show edit update destroy toggle_visibility ]
 
   def show
     authorize @pdf_note
@@ -12,6 +12,10 @@ class PdfNotesController < ApplicationController
     set_parent_or_parent_scope
   end
 
+  def edit
+    authorize @pdf_note
+  end
+
   def create
     @pdf_note = PdfNote.new(pdf_note_params.merge(author: current_user))
     authorize @pdf_note
@@ -21,6 +25,16 @@ class PdfNotesController < ApplicationController
     else
       set_parent_or_parent_scope
       render :new, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    authorize @pdf_note
+
+    if @pdf_note.update(pdf_note_update_params)
+      redirect_to @pdf_note, notice: "Pdf note was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -67,6 +81,15 @@ class PdfNotesController < ApplicationController
   def pdf_note_params
     permitted = params.require(:pdf_note).permit(:title, :file, :parent_id, :visibility_level)
     permitted = permitted.except(:visibility_level) unless current_user&.moderator? || current_user&.admin?
+    permitted
+  end
+
+  # Same as pdf_note_params, but drops :file when no new file was chosen so
+  # the existing attachment is left untouched (the file input has no value
+  # to fall back on, unlike a text field).
+  def pdf_note_update_params
+    permitted = pdf_note_params.except(:parent_id)
+    permitted = permitted.except(:file) if permitted[:file].blank?
     permitted
   end
 
