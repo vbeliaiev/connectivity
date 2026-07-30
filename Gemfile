@@ -47,6 +47,9 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 1.2"
 
+# Use Active Storage S3 service in production [https://guides.rubyonrails.org/active_storage_overview.html#amazon-s3-service]
+gem "aws-sdk-s3", "~> 1.14", require: false
+
 gem "devise"
 gem "openai", "~> 0.6.0"
 gem "neighbor"
