@@ -59,4 +59,6 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
+HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=3 \
+  CMD curl -f "http://localhost:${PORT:-3000}/up" || exit 1
 CMD ["./bin/rails", "server"]
