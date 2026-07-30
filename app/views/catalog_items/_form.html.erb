@@ -33,18 +33,37 @@
     <p class="text-sm text-gray-500 mt-1">Image uniquement, 60 Mo maximum.</p>
   </div>
 
-  <div class="my-5" data-controller="option-picker" data-option-picker-add-label-value="+ Ajouter une nouvelle marque" data-option-picker-choose-label-value="Choisir dans la liste">
-    <div class="flex items-center justify-between">
-      <%= form.label :brand_id, "Marque", class: "font-semibold" %>
-      <button type="button" data-option-picker-target="toggleButton" data-action="option-picker#toggle" class="text-sm text-blue-600 hover:underline cursor-pointer">+ Ajouter une nouvelle marque</button>
+  <div data-controller="department-filter">
+    <div class="my-5" data-controller="option-picker" data-option-picker-add-label-value="+ Ajouter une nouvelle marque" data-option-picker-choose-label-value="Choisir dans la liste">
+      <div class="flex items-center justify-between">
+        <%= form.label :brand_id, "Marque", class: "font-semibold" %>
+        <button type="button" data-option-picker-target="toggleButton" data-action="option-picker#toggle" class="text-sm text-blue-600 hover:underline cursor-pointer">+ Ajouter une nouvelle marque</button>
+      </div>
+
+      <%= form.collection_select :brand_id, Brand.order(:title), :id, :title,
+        { prompt: "Sélectionner une marque" },
+        { data: { option_picker_target: "select", department_filter_target: "brandSelect", action: "change->department-filter#filterOptions" }, class: ["rounded-md border bg-white text-gray-900 shadow-sm focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full", {"border-gray-300 focus:border-blue-500": catalog_item.errors[:brand].none? && catalog_item.errors[:brand_id].none?, "border-red-400 focus:border-red-600": catalog_item.errors[:brand].any? || catalog_item.errors[:brand_id].any?}] } %>
+
+      <div data-option-picker-target="newField" class="mt-2">
+        <%= form.text_field :new_brand_title, maxlength: CatalogItem::MAX_FIELD_LENGTH, placeholder: "Entrez le nom de la nouvelle marque", class: "block shadow-sm rounded-md border border-gray-400 px-3 py-2 w-full" %>
+      </div>
     </div>
 
-    <%= form.collection_select :brand_id, Brand.order(:title), :id, :title,
-      { prompt: "Sélectionner une marque" },
-      { data: { option_picker_target: "select" }, class: ["rounded-md border bg-white text-gray-900 shadow-sm focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full", {"border-gray-300 focus:border-blue-500": catalog_item.errors[:brand].none? && catalog_item.errors[:brand_id].none?, "border-red-400 focus:border-red-600": catalog_item.errors[:brand].any? || catalog_item.errors[:brand_id].any?}] } %>
+    <div class="my-5" data-controller="option-picker" data-option-picker-add-label-value="+ Ajouter un nouveau département" data-option-picker-choose-label-value="Choisir dans la liste">
+      <div class="flex items-center justify-between">
+        <%= form.label :department_id, "Département", class: "font-semibold" %>
+        <button type="button" data-option-picker-target="toggleButton" data-department-filter-target="toggleButton" data-action="option-picker#toggle" class="text-sm text-blue-600 hover:underline cursor-pointer">+ Ajouter un nouveau département</button>
+      </div>
 
-    <div data-option-picker-target="newField" class="mt-2">
-      <%= form.text_field :new_brand_title, maxlength: CatalogItem::MAX_FIELD_LENGTH, placeholder: "Entrez le nom de la nouvelle marque", class: "block shadow-sm rounded-md border border-gray-400 px-3 py-2 w-full" %>
+      <%= form.select :department_id,
+        options_for_select(Department.order(:name).map { |d| [d.name, d.id, { data: { brand_id: d.brand_id } }] }, catalog_item.department_id),
+        { include_blank: "Sélectionner un département" },
+        { data: { option_picker_target: "select", department_filter_target: "departmentSelect" }, class: ["rounded-md border bg-white text-gray-900 shadow-sm focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full", {"border-gray-300 focus:border-blue-500": catalog_item.errors[:department].none? && catalog_item.errors[:department_id].none?, "border-red-400 focus:border-red-600": catalog_item.errors[:department].any? || catalog_item.errors[:department_id].any?}] } %>
+
+      <div data-option-picker-target="newField" class="mt-2">
+        <%= form.text_field :new_department_name, maxlength: CatalogItem::MAX_FIELD_LENGTH, placeholder: "Entrez le nom du nouveau département", data: { department_filter_target: "newInput" }, class: "block shadow-sm rounded-md border border-gray-400 px-3 py-2 w-full" %>
+      </div>
+      <p class="text-sm text-gray-500 mt-1">Sélectionnez d'abord une marque pour choisir ou créer un département.</p>
     </div>
   </div>
 

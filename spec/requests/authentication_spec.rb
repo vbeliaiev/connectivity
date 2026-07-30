@@ -32,7 +32,7 @@ RSpec.describe 'Authentication', type: :request do
         }
       }
 
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(edit_user_registration_path)
       user.reload
       expect(user.display_name).to eq('NewName')
     end
@@ -45,7 +45,7 @@ RSpec.describe 'Authentication', type: :request do
           current_password: password
         }
       }
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(edit_user_registration_path)
     end
 
     it 'does not allow email change' do
@@ -62,7 +62,7 @@ RSpec.describe 'Authentication', type: :request do
 
     it 'shows a message to contact administrator to update email' do
       get edit_user_registration_path
-      expect(response.body).to include('To change your email, please contact the administrator.')
+      expect(response.body).to include("Pour changer votre e-mail, veuillez contacter l'administrateur.")
     end
   end
 end

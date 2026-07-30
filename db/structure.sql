@@ -1,4 +1,4 @@
-\restrict YOjqKJjl4L4QgczaDWlUtSY1npeHUSlepPBMpwvG6MyJvW9ydFUmQTeyfKzOzUd
+\restrict BtU4ZjLyLWxLcdLh7h60b03psr25H7LZ44E2J2ELCSZjaOJGJTCwaDdzXdUBRzD
 
 -- Dumped from database version 17.10 (Homebrew)
 -- Dumped by pg_dump version 17.10 (Homebrew)
@@ -289,7 +289,8 @@ CREATE TABLE public.catalog_items (
     production_end_year integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    item_category_id bigint NOT NULL
+    item_category_id bigint NOT NULL,
+    department_id bigint
 );
 
 
@@ -341,6 +342,38 @@ CREATE SEQUENCE public.countries_id_seq
 --
 
 ALTER SEQUENCE public.countries_id_seq OWNED BY public.countries.id;
+
+
+--
+-- Name: departments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.departments (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    brand_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: departments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.departments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: departments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.departments_id_seq OWNED BY public.departments.id;
 
 
 --
@@ -555,6 +588,13 @@ ALTER TABLE ONLY public.countries ALTER COLUMN id SET DEFAULT nextval('public.co
 
 
 --
+-- Name: departments id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.departments ALTER COLUMN id SET DEFAULT nextval('public.departments_id_seq'::regclass);
+
+
+--
 -- Name: gallery_items id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -652,6 +692,14 @@ ALTER TABLE ONLY public.catalog_items
 
 ALTER TABLE ONLY public.countries
     ADD CONSTRAINT countries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: departments departments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.departments
+    ADD CONSTRAINT departments_pkey PRIMARY KEY (id);
 
 
 --
@@ -772,6 +820,13 @@ CREATE INDEX index_catalog_items_on_country_id ON public.catalog_items USING btr
 
 
 --
+-- Name: index_catalog_items_on_department_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_catalog_items_on_department_id ON public.catalog_items USING btree (department_id);
+
+
+--
 -- Name: index_catalog_items_on_item_category_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -790,6 +845,20 @@ CREATE INDEX index_catalog_items_on_title_tsvector ON public.catalog_items USING
 --
 
 CREATE UNIQUE INDEX index_countries_on_name ON public.countries USING btree (name);
+
+
+--
+-- Name: index_departments_on_brand_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_departments_on_brand_id ON public.departments USING btree (brand_id);
+
+
+--
+-- Name: index_departments_on_brand_id_and_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_departments_on_brand_id_and_name ON public.departments USING btree (brand_id, name);
 
 
 --
@@ -864,6 +933,14 @@ ALTER TABLE ONLY public.catalog_item_nodes
 
 
 --
+-- Name: catalog_items fk_rails_37a8a01bef; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.catalog_items
+    ADD CONSTRAINT fk_rails_37a8a01bef FOREIGN KEY (department_id) REFERENCES public.departments(id);
+
+
+--
 -- Name: nodes fk_rails_3ceff5c266; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -877,6 +954,14 @@ ALTER TABLE ONLY public.nodes
 
 ALTER TABLE ONLY public.catalog_items
     ADD CONSTRAINT fk_rails_60e4409f8f FOREIGN KEY (country_id) REFERENCES public.countries(id);
+
+
+--
+-- Name: departments fk_rails_810480876c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.departments
+    ADD CONSTRAINT fk_rails_810480876c FOREIGN KEY (brand_id) REFERENCES public.brands(id);
 
 
 --
@@ -923,11 +1008,13 @@ ALTER TABLE ONLY public.catalog_item_nodes
 -- PostgreSQL database dump complete
 --
 
-\unrestrict YOjqKJjl4L4QgczaDWlUtSY1npeHUSlepPBMpwvG6MyJvW9ydFUmQTeyfKzOzUd
+\unrestrict BtU4ZjLyLWxLcdLh7h60b03psr25H7LZ44E2J2ELCSZjaOJGJTCwaDdzXdUBRzD
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260730120100'),
+('20260730120000'),
 ('20260729122825'),
 ('20260729122801'),
 ('20260728161100'),

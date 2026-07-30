@@ -2,6 +2,7 @@ class CatalogItem < ApplicationRecord
   belongs_to :brand
   belongs_to :item_category
   belongs_to :country, optional: true
+  belongs_to :department, optional: true
 
   has_many :catalog_item_nodes, dependent: :destroy
   has_many :nodes, through: :catalog_item_nodes
@@ -14,14 +15,15 @@ class CatalogItem < ApplicationRecord
 
   # Let the form offer a "add a new brand/country" text field instead of
   # forcing the user to pick one that already exists in the list.
-  attr_accessor :new_brand_title, :new_country_name, :new_item_category_name
+  attr_accessor :new_brand_title, :new_country_name, :new_item_category_name, :new_department_name
 
-  before_validation :assign_new_brand, :assign_new_country, :assign_new_item_category
+  before_validation :assign_new_brand, :assign_new_country, :assign_new_item_category, :assign_new_department
 
   validates :title, presence: true, length: { maximum: MAX_FIELD_LENGTH }
   validates :model, length: { maximum: MAX_FIELD_LENGTH }
   validates :production_start_year, :production_end_year, numericality: { only_integer: true }, allow_nil: true
   validate :acceptable_cover
+  validate :department_belongs_to_brand
 
   # Full text search on title, using PostgreSQL's tsvector/tsquery.
   #
@@ -60,6 +62,10 @@ class CatalogItem < ApplicationRecord
 
   scope :by_country, lambda { |country_id|
     country_id.present? ? where(country_id: country_id) : all
+  }
+
+  scope :by_department, lambda { |department_id|
+    department_id.present? ? where(department_id: department_id) : all
   }
 
   # These two scopes are meant to be combined: they let users filter catalog
@@ -126,6 +132,26 @@ class CatalogItem < ApplicationRecord
     return if name.blank?
 
     self.item_category = ItemCategory.find_or_create_by(name: name)
+  end
+
+  # The department is always scoped to the selected/created brand: a new
+  # department is created under `brand`, not as a global record, so we
+  # need the brand to already be assigned (assign_new_brand runs first).
+  def assign_new_department
+    name = new_department_name.to_s.strip
+    return if name.blank? || brand.nil?
+
+    self.department = brand.departments.find_or_create_by(name: name)
+  end
+
+  # Guards against mismatched brand/department pairs being submitted
+  # directly (e.g. a stale <select> from before the brand was changed),
+  # since the form only ever offers departments belonging to the chosen
+  # brand.
+  def department_belongs_to_brand
+    return if department.nil?
+
+    errors.add(:department, "doit appartenir à la marque sélectionnée") if department.brand_id != brand_id
   end
 
   def acceptable_cover

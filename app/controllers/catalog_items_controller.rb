@@ -1,6 +1,7 @@
 class CatalogItemsController < ApplicationController
   layout 'catalog'
 
+  before_action :authenticate_user!
   after_action :verify_pundit_authorization
   before_action :set_catalog_item, only: %i[ show edit update destroy ]
 
@@ -71,6 +72,6 @@ class CatalogItemsController < ApplicationController
   end
 
   def catalog_item_params
-    params.require(:catalog_item).permit(:title, :brand_id, :new_brand_title, :item_category_id, :new_item_category_name, :model, :country_id, :new_country_name, :production_start_year, :production_end_year, :cover, :description)
+    params.require(:catalog_item).permit(:title, :brand_id, :new_brand_title, :item_category_id, :new_item_category_name, :model, :country_id, :new_country_name, :department_id, :new_department_name, :production_start_year, :production_end_year, :cover, :description)
   end
 end

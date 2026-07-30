@@ -1,6 +1,8 @@
 class CatalogController < ApplicationController
   layout 'catalog'
 
+  before_action :authenticate_user!
+
   CATALOG_ITEMS_MAX_COUNT = 10
 
   def show
@@ -9,6 +11,7 @@ class CatalogController < ApplicationController
                       .by_brand(filter_params[:brand_id])
                       .by_item_category(filter_params[:item_category_id])
                       .by_country(filter_params[:country_id])
+                      .by_department(filter_params[:department_id])
                       .by_production_start_year(filter_params[:production_start_year])
                       .by_production_end_year(filter_params[:production_end_year])
                       .order(updated_at: :desc)
@@ -19,6 +22,6 @@ class CatalogController < ApplicationController
   private
 
   def filter_params
-    params.fetch(:filter, {}).permit(:brand_id, :item_category_id, :country_id, :production_start_year, :production_end_year)
+    params.fetch(:filter, {}).permit(:brand_id, :item_category_id, :country_id, :department_id, :production_start_year, :production_end_year)
   end
 end

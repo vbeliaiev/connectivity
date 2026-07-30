@@ -7,13 +7,13 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-big-left-icon lucide-arrow-big-left mr-1 flex-shrink-0"><path d="M10.793 19.793a.707.707 0 0 0 1.207-.5V16a1 1 0 0 1 1-1h6a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-6a1 1 0 0 1-1-1V4.707a.707.707 0 0 0-1.207-.5l-6.94 6.94a1.207 1.207 0 0 0 0 1.707z"/></svg>
         Retour
       <% end %>
-      <%= link_to root_path, class: "flex items-center justify-center px-4 py-2.5 rounded-md font-medium text-sm bg-[#8eb200] text-white hover:bg-[#d93]" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house mr-1 flex-shrink-0"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-        Naviguer vers l'accueil
-      <% end %>
       <%= link_to catalog_path, class: "flex items-center justify-center px-4 py-2.5 rounded-md font-medium text-sm bg-[#8c4e1c] text-white hover:bg-[#d93]" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-landmark mr-1 flex-shrink-0"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg>
         Naviguer vers catalogue numérique
+      <% end %>
+      <%= link_to root_path, class: "flex items-center justify-center px-4 py-2.5 rounded-md font-medium text-sm bg-[#8eb200] text-white hover:bg-[#d93]" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house mr-1 flex-shrink-0"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Naviguer vers l'accueil
       <% end %>
     </div>
 
@@ -42,40 +42,60 @@
 
       <div class="w-full lg:w-2/3 p-4 border border-gray-300 rounded-md">
         <dl class="space-y-3">
-          <div class="flex items-center gap-1">
-            <dt class="font-semibold">Marque :</dt>
-            <dd class="pt-0.5"><%= link_to @catalog_item.brand.title, catalog_path(filter: { brand_id: @catalog_item.brand.id }), class: "text-blue-600 font-semibold underline" if @catalog_item.brand %></dd>
-          </div>
-          <hr class="border-gray-300">
+          <% if @catalog_item.brand %>
+            <div class="flex items-center gap-1">
+              <dt class="font-semibold">Marque :</dt>
+              <dd class="pt-0.5"><%= link_to @catalog_item.brand.title, catalog_path(filter: { brand_id: @catalog_item.brand.id }), class: "text-blue-600 font-semibold underline" %></dd>
+            </div>
+            <hr class="border-gray-300">
+          <% end %>
 
-          <div class="flex items-center gap-1">
-            <dt class="font-semibold">Catégorie :</dt>
-            <dd class="pt-0.5"><%= link_to @catalog_item.item_category.name, catalog_path(filter: { item_category_id: @catalog_item.item_category.id }), class: "text-blue-600 font-semibold underline" if @catalog_item.item_category %></dd>
-          </div>
-          <hr class="border-gray-300">
+          <% if @catalog_item.department %>
+            <div class="flex items-center gap-1">
+              <dt class="font-semibold">Département :</dt>
+              <dd class="pt-0.5"><%= link_to @catalog_item.department.name, catalog_path(filter: { department_id: @catalog_item.department.id }), class: "text-blue-600 font-semibold underline" %></dd>
+            </div>
+            <hr class="border-gray-300">
+          <% end %>
 
-          <div class="flex gap-1">
-            <dt class="font-semibold">Modèle :</dt>
-            <dd><%= @catalog_item.model %></dd>
-          </div>
-          <hr class="border-gray-300">
+          <% if @catalog_item.item_category %>
+            <div class="flex items-center gap-1">
+              <dt class="font-semibold">Catégorie :</dt>
+              <dd class="pt-0.5"><%= link_to @catalog_item.item_category.name, catalog_path(filter: { item_category_id: @catalog_item.item_category.id }), class: "text-blue-600 font-semibold underline" %></dd>
+            </div>
+            <hr class="border-gray-300">
+          <% end %>
 
-          <div class="flex gap-1">
-            <dt class="font-semibold">Période de production :</dt>
-            <dd><%= [@catalog_item.production_start_year, @catalog_item.production_end_year].compact.join(' - ') %></dd>
-          </div>
-          <hr class="border-gray-300">
+          <% if @catalog_item.model.present? %>
+            <div class="flex gap-1">
+              <dt class="font-semibold">Modèle :</dt>
+              <dd class="pt-0.25"><%= @catalog_item.model %></dd>
+            </div>
+            <hr class="border-gray-300">
+          <% end %>
 
-          <div class="flex items-center gap-1">
-            <dt class="font-semibold">Pays :</dt>
-            <dd><%= link_to @catalog_item.country.name, catalog_path(filter: { country_id: @catalog_item.country.id }), class: "text-blue-600 font-semibold underline" if @catalog_item.country %></dd>
-          </div>
-          <hr class="border-gray-300">
+          <% if @catalog_item.production_start_year.present? || @catalog_item.production_end_year.present? %>
+            <div class="flex gap-1">
+              <dt class="font-semibold">Période de production :</dt>
+              <dd><%= [@catalog_item.production_start_year, @catalog_item.production_end_year].compact.join(' - ') %></dd>
+            </div>
+            <hr class="border-gray-300">
+          <% end %>
 
-          <div>
-            <dt class="font-semibold">Description</dt>
-            <dd><%= @catalog_item.description %></dd>
-          </div>
+          <% if @catalog_item.country %>
+            <div class="flex items-center gap-1">
+              <dt class="font-semibold">Pays :</dt>
+              <dd><%= link_to @catalog_item.country.name, catalog_path(filter: { country_id: @catalog_item.country.id }), class: "text-blue-600 font-semibold underline" %></dd>
+            </div>
+            <hr class="border-gray-300">
+          <% end %>
+
+          <% if @catalog_item.description.present? %>
+            <div>
+              <dt class="font-semibold">Description</dt>
+              <dd><%= @catalog_item.description %></dd>
+            </div>
+          <% end %>
         </dl>
       </div>
 

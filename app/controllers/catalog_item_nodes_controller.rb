@@ -1,4 +1,5 @@
 class CatalogItemNodesController < ApplicationController
+  before_action :authenticate_user!
   after_action :verify_pundit_authorization
 
   before_action :set_node, only: :create
