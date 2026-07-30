@@ -15,28 +15,28 @@
   <% if @parent %>
     <%= form.hidden_field :parent_id, value: @parent.id %>
   <% else %>
-    <div class="my-5">
-      <%= form.label :parent_id, "Dossier parent", class: "block" %>
+    <div class="">
+      <%= form.label :parent_id, "Dossier parent", class: "font-semibold" %>
       <%= form.collection_select :parent_id, @folder_policy_scope, :id, :title,
         { prompt: "Sélectionner le dossier parent" },
-        { class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 mt-2" } %>
+        { class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2" } %>
     </div>
   <% end %>
 
   <div class="my-5">
-    <%= form.label :title, "Titre" %>
+    <%= form.label :title, "Titre", class: "font-semibold" %>
     <%= form.text_field :title, placeholder: "Entrez le titre du document (pdf)", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": pdf_note.errors[:title].none?, "border-red-400 focus:outline-red-600": pdf_note.errors[:title].any?}] %>
   </div>
 
   <div class="my-5">
-    <%= form.label :file, "Fichier PDF" %>
+    <%= form.label :file, "Fichier PDF", class: "font-semibold" %>
     <%= form.file_field :file, accept: "application/pdf", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": pdf_note.errors[:file].none?, "border-red-400 focus:outline-red-600": pdf_note.errors[:file].any?}] %>
     <p class="text-sm text-gray-500 mt-1">PDF uniquement, 100 Mo maximum.</p>
   </div>
 
   <% if current_user&.moderator? || current_user&.admin? %>
     <div class="my-5">
-      <%= form.label :visibility_level, "Visibilité" %>
+      <%= form.label :visibility_level, "Visibilité", class: "font-semibold" %>
       <%= form.select :visibility_level, Node.visibility_levels.keys.map { |level| [visibility_label(level), level] },
         {},
         { class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full" } %>

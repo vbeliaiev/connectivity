@@ -1,5 +1,6 @@
 class CatalogItem < ApplicationRecord
   belongs_to :brand
+  belongs_to :item_category
   belongs_to :country, optional: true
 
   has_many :catalog_item_nodes, dependent: :destroy
@@ -13,9 +14,9 @@ class CatalogItem < ApplicationRecord
 
   # Let the form offer a "add a new brand/country" text field instead of
   # forcing the user to pick one that already exists in the list.
-  attr_accessor :new_brand_title, :new_country_name
+  attr_accessor :new_brand_title, :new_country_name, :new_item_category_name
 
-  before_validation :assign_new_brand, :assign_new_country
+  before_validation :assign_new_brand, :assign_new_country, :assign_new_item_category
 
   validates :title, presence: true, length: { maximum: MAX_FIELD_LENGTH }
   validates :model, length: { maximum: MAX_FIELD_LENGTH }
@@ -51,6 +52,10 @@ class CatalogItem < ApplicationRecord
 
   scope :by_brand, lambda { |brand_id|
     brand_id.present? ? where(brand_id: brand_id) : all
+  }
+
+  scope :by_item_category, lambda { |item_category_id|
+    item_category_id.present? ? where(item_category_id: item_category_id) : all
   }
 
   scope :by_country, lambda { |country_id|
@@ -114,6 +119,13 @@ class CatalogItem < ApplicationRecord
     return if name.blank?
 
     self.country = Country.find_or_create_by(name: name)
+  end
+
+  def assign_new_item_category
+    name = new_item_category_name.to_s.strip
+    return if name.blank?
+
+    self.item_category = ItemCategory.find_or_create_by(name: name)
   end
 
   def acceptable_cover

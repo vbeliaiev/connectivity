@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :catalog_item do
     title { FFaker::Lorem.sentence }
     association :brand
+    association :item_category
     association :country
     production_start_year { 1990 }
     production_end_year { 2000 }

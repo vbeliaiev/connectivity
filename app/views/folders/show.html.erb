@@ -7,7 +7,7 @@
     <div class='flex gap-2 flex-col sm:flex-row'>
       <% if policy(@folder).edit? %>
       <div class="flex items-center gap-1" data-controller="catalog-item-link" data-catalog-item-link-base-url-value="<%= catalog_items_path %>">
-        <span class="underline text-gray-500">Outils d'administration:</span>
+        <span class="underline text-gray-500">Outils de modération:</span>
         <%= edit_icon_button(edit_folder_path(@folder), label: "(Modifier)") %>
         <%= destroy_icon_button(@folder, label: "(Supprimer)") %>
         <%= catalog_item_link_button(label: "Associer au catalogue numérique") %>

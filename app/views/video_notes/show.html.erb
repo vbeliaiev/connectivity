@@ -1,24 +1,29 @@
 <% content_for :title, "Showing video" %>
 
-<div class="w-full">
-  <h1 class="font-bold text-2xl"><%= node_title(@video_note) %></h1>
+<div class="w-full p-3 border border-gray-400 rounded-md">
 
-  <div class="mt-3">
+  <div class="flex justify-between items-center flex-wrap gap-2">
+    <%= render 'shared/breadcrumb', node: @video_note %>
+    <% if policy(@video_note).update? || policy(@video_note).destroy? %>
+    <div class="flex items-center gap-1" data-controller="catalog-item-link" data-catalog-item-link-base-url-value="<%= catalog_items_path %>">
+      <span class="underline text-gray-500">Outils de modération:</span>
+      <% if policy(@video_note).update? %>
+        <%= toggle_visibility_button(@video_note, label: (@video_note.public_visibility? ? "Rendre privé" : "Rendre public")) %>
+        <%= catalog_item_link_button(label: "Associer au catalogue numérique") %>
+      <% end %>
+      <%= destroy_icon_button(@video_note, label: "Supprimer") if policy(@video_note).destroy? %>
+
+      <%= render 'shared/catalog_item_link_modal', node: @video_note if policy(@video_note).update? %>
+    </div>
+    <% end %>
+  </div>
+
+  <h1 class="font-bold text-2xl mt-3"><%= node_title(@video_note) %></h1>
+
+  <div class="mt-5 mb-5 flex justify-center">
     <video controls class="max-w-full rounded-md" style="max-height: 70vh;">
       <source src="<%= url_for(@video_note.file) %>" type="<%= @video_note.file.content_type %>">
       Your browser does not support the video tag.
     </video>
-  </div>
-
-  <% if policy(@video_note).update? %>
-    <div class="flex items-center gap-1 mt-3">
-      <span class="underline text-gray-500">Outils d'administration:</span>
-      <%= toggle_visibility_button(@video_note, label: (@video_note.public_visibility? ? "Rendre privé" : "Rendre public")) %>
-    </div>
-  <% end %>
-
-  <div class="flex items-center gap-1 mt-2">
-    <%= link_to "Back", (request.referer == root_url || @video_note.parent.blank?) ? root_path : folder_path(@video_note.parent), class: "text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-    <%= destroy_icon_button(@video_note) %>
   </div>
 </div>

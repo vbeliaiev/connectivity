@@ -19,7 +19,7 @@
 
     <% if current_user&.moderator? || current_user&.admin? %>
       <div class="flex items-center gap-1">
-        <span class="underline text-gray-500">Outils d'administration:</span>
+        <span class="underline text-gray-500">Outils de modération:</span>
         <%= edit_icon_button(edit_catalog_item_path(@catalog_item), label: "(Modifier)") %>
         <%= destroy_icon_button(@catalog_item, label: "(Supprimer)") %>
       </div>
@@ -45,6 +45,12 @@
           <div class="flex items-center gap-1">
             <dt class="font-semibold">Marque :</dt>
             <dd class="pt-0.5"><%= link_to @catalog_item.brand.title, catalog_path(filter: { brand_id: @catalog_item.brand.id }), class: "text-blue-600 font-semibold underline" if @catalog_item.brand %></dd>
+          </div>
+          <hr class="border-gray-300">
+
+          <div class="flex items-center gap-1">
+            <dt class="font-semibold">Catégorie :</dt>
+            <dd class="pt-0.5"><%= link_to @catalog_item.item_category.name, catalog_path(filter: { item_category_id: @catalog_item.item_category.id }), class: "text-blue-600 font-semibold underline" if @catalog_item.item_category %></dd>
           </div>
           <hr class="border-gray-300">
 

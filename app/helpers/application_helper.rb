@@ -15,15 +15,19 @@ module ApplicationHelper
     VISIBILITY_LABELS.fetch(level.to_s, level.to_s.capitalize)
   end
 
-  # Prefixes a node's title with "[public]" when it's flagged as public
+  # Prefixes a node's title with a globe icon when it's flagged as public
   # content, but only for moderators/admins (so they can tell at a glance
   # which content is publicly visible to signed-out users). Regular members
-  # and anonymous visitors just see the plain title.
+  # and anonymous visitors just see the plain title. Wrapped in an
+  # inline-flex span so the icon lines up with the text regardless of
+  # whether it's rendered inside a heading, span, or flex container.
   def node_title(node)
     return node.title unless node.public_visibility?
     return node.title unless current_user&.moderator? || current_user&.admin?
 
-    "(public) #{node.title}"
+    content_tag(:span, class: "inline-flex items-center gap-1") do
+      safe_join([globe_icon, node.title])
+    end
   end
 
   # Renders an icon-only link styled as a small round button, used for
@@ -70,7 +74,7 @@ module ApplicationHelper
   end
 
   def globe_icon
-    content_tag(:svg, xmlns: "http://www.w3.org/2000/svg", width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round", class: "lucide lucide-globe") do
+    content_tag(:svg, xmlns: "http://www.w3.org/2000/svg", width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round", class: "lucide lucide-globe flex-shrink-0") do
       raw('<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>')
     end
   end
@@ -94,6 +98,23 @@ module ApplicationHelper
       safe_join([
         content_tag(:svg, xmlns: "http://www.w3.org/2000/svg", width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round", class: "lucide lucide-link") do
           raw('<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>')
+        end,
+        (content_tag(:span, label, class: "text-sm") if label.present?)
+      ].compact)
+    end
+  end
+
+  # Renders an icon link (gear/settings) pointing to a node's own show page,
+  # used on listing views (home page, folder show page) as the single entry
+  # point to that node's admin tools (visibility toggle, catalog item link,
+  # destroy), which live on the show page itself. Pass `label` to also
+  # render a text label inside the same clickable link.
+  def administer_icon_button(path, extra_class: "", label: "Administrer")
+    classes = label.present? ? "inline-flex items-center gap-1 px-2 h-9 rounded-full text-gray-500 hover:text-gray-900 hover:bg-gray-100 #{extra_class}" : "inline-flex items-center justify-center w-9 h-9 rounded-full text-gray-500 hover:text-gray-900 hover:bg-gray-100 #{extra_class}"
+    link_to path, class: classes, title: "Administrer", "aria-label": "Administrer" do
+      safe_join([
+        content_tag(:svg, xmlns: "http://www.w3.org/2000/svg", width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round", class: "lucide lucide-settings-icon lucide-settings") do
+          raw('<path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/>')
         end,
         (content_tag(:span, label, class: "text-sm") if label.present?)
       ].compact)

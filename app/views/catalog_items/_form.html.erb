@@ -48,6 +48,21 @@
     </div>
   </div>
 
+  <div class="my-5" data-controller="option-picker" data-option-picker-add-label-value="+ Ajouter une nouvelle catégorie" data-option-picker-choose-label-value="Choisir dans la liste">
+    <div class="flex items-center justify-between">
+      <%= form.label :item_category_id, "Catégorie", class: "font-semibold" %>
+      <button type="button" data-option-picker-target="toggleButton" data-action="option-picker#toggle" class="text-sm text-blue-600 hover:underline cursor-pointer">+ Ajouter une nouvelle catégorie</button>
+    </div>
+
+    <%= form.collection_select :item_category_id, ItemCategory.order(:name), :id, :name,
+      { prompt: "Sélectionner une catégorie" },
+      { data: { option_picker_target: "select" }, class: ["rounded-md border bg-white text-gray-900 shadow-sm focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full", {"border-gray-300 focus:border-blue-500": catalog_item.errors[:item_category].none? && catalog_item.errors[:item_category_id].none?, "border-red-400 focus:border-red-600": catalog_item.errors[:item_category].any? || catalog_item.errors[:item_category_id].any?}] } %>
+
+    <div data-option-picker-target="newField" class="mt-2">
+      <%= form.text_field :new_item_category_name, maxlength: CatalogItem::MAX_FIELD_LENGTH, placeholder: "Entrez le nom de la nouvelle catégorie", class: "block shadow-sm rounded-md border border-gray-400 px-3 py-2 w-full" %>
+    </div>
+  </div>
+
   <div class="my-5">
     <%= form.label :model, "Nom du modèle", class: "font-semibold" %>
     <%= form.text_field :model, maxlength: CatalogItem::MAX_FIELD_LENGTH, placeholder: "Entrez le nom du modèle", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": catalog_item.errors[:model].none?, "border-red-400 focus:outline-red-600": catalog_item.errors[:model].any?}] %>

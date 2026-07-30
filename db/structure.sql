@@ -1,4 +1,4 @@
-\restrict 2LchmhFNO2h04YRl4jKmhBwGWbcmdF9ed4aFJ5LAAOJ0chyw35ESZl9HfhCf3IV
+\restrict YOjqKJjl4L4QgczaDWlUtSY1npeHUSlepPBMpwvG6MyJvW9ydFUmQTeyfKzOzUd
 
 -- Dumped from database version 17.10 (Homebrew)
 -- Dumped by pg_dump version 17.10 (Homebrew)
@@ -288,7 +288,8 @@ CREATE TABLE public.catalog_items (
     production_start_year integer,
     production_end_year integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    item_category_id bigint NOT NULL
 );
 
 
@@ -375,6 +376,37 @@ CREATE SEQUENCE public.gallery_items_id_seq
 --
 
 ALTER SEQUENCE public.gallery_items_id_seq OWNED BY public.gallery_items.id;
+
+
+--
+-- Name: item_categories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.item_categories (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: item_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.item_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: item_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.item_categories_id_seq OWNED BY public.item_categories.id;
 
 
 --
@@ -530,6 +562,13 @@ ALTER TABLE ONLY public.gallery_items ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: item_categories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.item_categories ALTER COLUMN id SET DEFAULT nextval('public.item_categories_id_seq'::regclass);
+
+
+--
 -- Name: nodes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -621,6 +660,14 @@ ALTER TABLE ONLY public.countries
 
 ALTER TABLE ONLY public.gallery_items
     ADD CONSTRAINT gallery_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: item_categories item_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.item_categories
+    ADD CONSTRAINT item_categories_pkey PRIMARY KEY (id);
 
 
 --
@@ -725,6 +772,13 @@ CREATE INDEX index_catalog_items_on_country_id ON public.catalog_items USING btr
 
 
 --
+-- Name: index_catalog_items_on_item_category_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_catalog_items_on_item_category_id ON public.catalog_items USING btree (item_category_id);
+
+
+--
 -- Name: index_catalog_items_on_title_tsvector; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -750,6 +804,13 @@ CREATE INDEX index_gallery_items_on_gallery_type_and_gallery_id ON public.galler
 --
 
 CREATE INDEX index_gallery_items_on_gallery_type_and_gallery_id_and_cover ON public.gallery_items USING btree (gallery_type, gallery_id, cover);
+
+
+--
+-- Name: index_item_categories_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_item_categories_on_name ON public.item_categories USING btree (name);
 
 
 --
@@ -843,6 +904,14 @@ ALTER TABLE ONLY public.catalog_items
 
 
 --
+-- Name: catalog_items fk_rails_ef2530293f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.catalog_items
+    ADD CONSTRAINT fk_rails_ef2530293f FOREIGN KEY (item_category_id) REFERENCES public.item_categories(id);
+
+
+--
 -- Name: catalog_item_nodes fk_rails_f02a8148a5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -854,11 +923,13 @@ ALTER TABLE ONLY public.catalog_item_nodes
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 2LchmhFNO2h04YRl4jKmhBwGWbcmdF9ed4aFJ5LAAOJ0chyw35ESZl9HfhCf3IV
+\unrestrict YOjqKJjl4L4QgczaDWlUtSY1npeHUSlepPBMpwvG6MyJvW9ydFUmQTeyfKzOzUd
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260729122825'),
+('20260729122801'),
 ('20260728161100'),
 ('20260728161000'),
 ('20260728160000'),
