@@ -1,4 +1,10 @@
 class CatalogItemPolicy < ApplicationPolicy
+  # CatalogItemsController requires authentication for every action, so any
+  # signed-in user may view a catalog item.
+  def show?
+    user.present?
+  end
+
   def new?
     moderator_or_admin?
   end

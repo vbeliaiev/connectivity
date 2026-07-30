@@ -8,34 +8,35 @@ class ApplicationPolicy
     @record = record
   end
 
-  # Temporary development policy: allow all actions and records.
-  # Replace with role/ownership checks before deploying.
+  # Deny by default. Every model's policy should explicitly override the
+  # methods it needs to allow; a subclass that forgets to override one of
+  # these falls back to denying the action rather than silently allowing it.
   def index?
-    true
+    false
   end
 
   def show?
-    true
+    false
   end
 
   def create?
-    true
+    false
   end
 
   def new?
-    true
+    create?
   end
 
   def update?
-    true
+    false
   end
 
   def edit?
-    true
+    update?
   end
 
   def destroy?
-    true
+    false
   end
 
   class Scope
