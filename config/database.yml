@@ -80,5 +80,3 @@ test:
 production:
   <<: *default
   database: connectivity_production
-  username: connectivity
-  password: <%= ENV["CONNECTIVITY_PASSWORD"] %>
