@@ -3,25 +3,26 @@
 <div class="w-full">
   <%= render 'shared/breadcrumb', node: @folder %>
 
-  <div class='flex flex-col sm:flex-row justify-between mt-3'>
-    <div class='flex gap-2 flex-col sm:flex-row'>
-      <% if policy(@folder).edit? %>
-      <div class="flex items-center gap-1" data-controller="catalog-item-link" data-catalog-item-link-base-url-value="<%= catalog_items_path %>">
-        <span class="underline text-gray-500">Outils de modération:</span>
-        <%= edit_icon_button(edit_folder_path(@folder), label: "(Modifier)") %>
-        <%= destroy_icon_button(@folder, label: "(Supprimer)") %>
-        <%= catalog_item_link_button(label: "Associer au catalogue numérique") %>
+  <% if policy(@folder).edit? %>
+    <div class='flex flex-col sm:flex-row justify-between mt-3 mb-3.5'>
+      <div class='flex gap-2 flex-col sm:flex-row'>
+        <div class="flex items-center gap-1" data-controller="catalog-item-link" data-catalog-item-link-base-url-value="<%= catalog_items_path %>">
+          <span class="underline text-gray-500">Outils de modération:</span>
+          <%= edit_icon_button(edit_folder_path(@folder), label: "(Modifier)") %>
+          <%= destroy_icon_button(@folder, label: "(Supprimer)") %>
+          <%= catalog_item_link_button(label: "Associer au catalogue numérique") %>
 
-        <%= render 'shared/catalog_item_link_modal', node: @folder %>
+          <%= render 'shared/catalog_item_link_modal', node: @folder %>
+        </div>
+
       </div>
-      <% end %>
+      <div class='flex flex-row'>
+        <%= render 'shared/new_item_dropdown', parent_id: @folder.id %>
+      </div>
     </div>
-    <div class='flex flex-row'>
-      <%= render 'shared/new_item_dropdown', parent_id: @folder.id %>
-    </div>
-  </div>
+  <% end %>
 
-  <div class="mt-5 p-3 border border-gray-400 rounded-md">
+  <div class="mt-3 p-3 border border-gray-400 rounded-md">
     <%= render 'folder_content' %>
   </div>
 </div>

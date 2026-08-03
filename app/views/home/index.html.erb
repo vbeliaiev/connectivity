@@ -22,13 +22,13 @@
       <%= render 'shared/new_item_dropdown', wrapper_class: "relative inline-block", select_class: "rounded-md pl-9 pr-10 py-2.5 bg-[#8eb200] hover:bg-[#d93] text-white text-base font-medium cursor-pointer appearance-none" %>
     </div>
     <% if user_signed_in? %>
-      <h1 class="font-bold text-3xl sm:order-1">Page d'accueil des adhérents AICMC</h1>
+      <h1 class="font-bold text-3xl sm:order-1 mb-5">Page d'accueil des adhérents AICMC</h1>
     <% end %>
   </div>
 
   <% if @root_folders.present? %>
     <% @root_folders.each do |folder| %>
-      <div class="mt-5 p-3 border border-gray-400 rounded-md">
+      <div class="p-3 mb-5 border border-gray-400 rounded-md">
         <%= link_to folder_path(folder), class: "flex items-center px-3.5 py-2 rounded-md font-medium bg-[#8c4e1c] text-white hover:bg-[#d93] w-full sm:w-auto sm:inline-flex" do %>
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-icon lucide-folder mr-2 flex-shrink-0"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
           <h2 class="font-bold text-lg inline-flex"><%= node_title(folder) %></h2>
