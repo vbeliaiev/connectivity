@@ -1,8 +1,12 @@
-<%= render 'shared/content_sections',
-           folders: @child_folders,
-           pdf_notes: @child_pdf_notes,
-           video_notes: @child_video_notes,
-           photo_galleries: @child_photo_galleries,
-           articles: @child_articles,
-           paginate_sections: true,
-           show_destroy_label: true %>
+<% if [@child_folders, @child_pdf_notes, @child_video_notes, @child_photo_galleries, @child_articles].all?(&:empty?) %>
+  <p class="text-gray-500 italic">Ce dossier est vide.</p>
+<% else %>
+  <%= render 'shared/content_sections',
+             folders: @child_folders,
+             pdf_notes: @child_pdf_notes,
+             video_notes: @child_video_notes,
+             photo_galleries: @child_photo_galleries,
+             articles: @child_articles,
+             paginate_sections: true,
+             show_destroy_label: true %>
+<% end %>
