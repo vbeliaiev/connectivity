@@ -3,7 +3,7 @@
 This is an **educational pet project** built to explore and learn how to integrate OpenAI's API with a Ruby on Rails web application.
 
 ## 🚀 Goal
-
+.
 The main goal is to get familiar with integrating OpenAI's services (such as ChatGPT) into a real-world app, handle form submissions, and display dynamic responses.
 
 ## ✨ Features
