@@ -15,6 +15,18 @@ module ApplicationHelper
     VISIBILITY_LABELS.fetch(level.to_s, level.to_s.capitalize)
   end
 
+  # Friendly label for a timestamp: "Aujourd'hui" for today, "il y a N
+  # jour(s)" for the last 3 days, otherwise a plain dd-mm-yyyy date.
+  def relative_update_label(date)
+    days_ago = (Date.current - date.to_date).to_i
+
+    case days_ago
+    when 0 then "Aujourd'hui"
+    when 1..3 then "il y a #{days_ago} #{"jour".pluralize(days_ago)}"
+    else date.strftime("%d-%m-%Y")
+    end
+  end
+
   # Prefixes a node's title with a globe icon when it's flagged as public
   # content, but only for moderators/admins (so they can tell at a glance
   # which content is publicly visible to signed-out users). Regular members

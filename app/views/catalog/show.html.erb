@@ -82,25 +82,23 @@
           <ul class="min-w-full divide-y divide-gray-200 border-b border-gray-200">
             <% @catalog_items.each do |catalog_item| %>
               <li class="py-1">
-                <%= link_to catalog_item_path(catalog_item), class: "flex items-start gap-3 px-2 py-2 rounded-md hover:bg-[#d93] hover:text-white" do %>
+                <%= link_to catalog_item_path(catalog_item), class: "flex items-stretch gap-3 px-2 py-2 rounded-md hover:bg-[#d93] hover:text-white" do %>
                   <% if catalog_item.cover.attached? %>
-                    <%= image_tag catalog_item.cover.variant(resize_to_fill: [96, 96]), class: "w-24 h-24 object-cover rounded-md border border-gray-300 flex-shrink-0" %>
+                    <%= image_tag catalog_item.cover.variant(resize_to_fill: [96, 96]), class: "w-24 h-full object-cover rounded-md border border-gray-300 flex-shrink-0" %>
                   <% else %>
-                    <div class="w-24 h-24 rounded-md border border-gray-300 bg-gray-100 flex-shrink-0"></div>
+                    <div class="w-24 h-full rounded-md border border-gray-300 bg-gray-100 flex-shrink-0"></div>
                   <% end %>
-                  <div>
+                  <div class="flex flex-col flex-grow">
                     <p class="font-bold text-xl"><%= catalog_item.title %></p>
                     <ul class="text-sm mt-1 space-y-0.5">
                       <% if catalog_item.production_start_year.present? || catalog_item.production_end_year.present? %>
-                        <li>Période de production : <%= [catalog_item.production_start_year, catalog_item.production_end_year].compact.join(' - ') %></li>
+                        <li><strong>Période de production :</strong> <%= [catalog_item.production_start_year, catalog_item.production_end_year].compact.join(' - ') %></li>
                       <% end %>
                       <% if catalog_item.item_category.present? %>
-                        <li>Catégorie : <%= catalog_item.item_category.name %></li>
-                      <% end %>
-                      <% if catalog_item.country.present? %>
-                        <li>Pays : <%= catalog_item.country.name %></li>
+                        <li><strong>Catégorie :</strong> <%= catalog_item.item_category.name %></li>
                       <% end %>
                     </ul>
+                    <p class="text-sm mt-auto text-right"><i>Date de dernière mise à jour : <%= relative_update_label(catalog_item.updated_at) %></i></p>
                   </div>
                 <% end %>
               </li>

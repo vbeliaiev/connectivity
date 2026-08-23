@@ -23,7 +23,7 @@ class ImportMoulins
   def call
     CSV.foreach(@csv_path, headers: true) do |row|
       brand = setup_brand(row['brand'])
-      department = setup_department(row['department_name'], brand)
+      department = setup_department(row['department'], brand)
       item_category = setup_item_category(row['category'])
       country = setup_country(row['country'])
       cover = setup_cover(row['image'])
@@ -61,7 +61,7 @@ class ImportMoulins
 
     @departments ||= Hash.new(Array.new([]))
 
-    cached_department = @departments[brand.title].select { |d| d.name == department_name }
+    cached_department = @departments[brand.title].find { |d| d.name == department_name }
     return cached_department if cached_department
 
     department = brand.departments.find_or_create_by(name: department_name)
