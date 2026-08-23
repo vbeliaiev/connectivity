@@ -82,13 +82,26 @@
           <ul class="min-w-full divide-y divide-gray-200 border-b border-gray-200">
             <% @catalog_items.each do |catalog_item| %>
               <li class="py-1">
-                <%= link_to catalog_item_path(catalog_item), class: "flex items-center gap-3 px-2 py-2 rounded-md hover:bg-[#d93] hover:text-white" do %>
+                <%= link_to catalog_item_path(catalog_item), class: "flex items-start gap-3 px-2 py-2 rounded-md hover:bg-[#d93] hover:text-white" do %>
                   <% if catalog_item.cover.attached? %>
-                    <%= image_tag catalog_item.cover.variant(resize_to_fill: [48, 48]), class: "w-12 h-12 object-cover rounded-md border border-gray-300 flex-shrink-0" %>
+                    <%= image_tag catalog_item.cover.variant(resize_to_fill: [96, 96]), class: "w-24 h-24 object-cover rounded-md border border-gray-300 flex-shrink-0" %>
                   <% else %>
-                    <div class="w-12 h-12 rounded-md border border-gray-300 bg-gray-100 flex-shrink-0"></div>
+                    <div class="w-24 h-24 rounded-md border border-gray-300 bg-gray-100 flex-shrink-0"></div>
                   <% end %>
-                  <span><%= catalog_item.title %></span>
+                  <div>
+                    <p class="font-bold text-xl"><%= catalog_item.title %></p>
+                    <ul class="text-sm mt-1 space-y-0.5">
+                      <% if catalog_item.production_start_year.present? || catalog_item.production_end_year.present? %>
+                        <li>Période de production : <%= [catalog_item.production_start_year, catalog_item.production_end_year].compact.join(' - ') %></li>
+                      <% end %>
+                      <% if catalog_item.item_category.present? %>
+                        <li>Catégorie : <%= catalog_item.item_category.name %></li>
+                      <% end %>
+                      <% if catalog_item.country.present? %>
+                        <li>Pays : <%= catalog_item.country.name %></li>
+                      <% end %>
+                    </ul>
+                  </div>
                 <% end %>
               </li>
             <% end %>
