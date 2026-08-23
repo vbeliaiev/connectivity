@@ -5,21 +5,44 @@ class CatalogItemNodesController < ApplicationController
   before_action :set_node, only: :create
   before_action :set_catalog_item_node, only: :destroy
 
+  # Accepts one or more catalog item ids (submitted as catalog_item_ids[]
+  # by the "Associer au catalogue numérique" modal, which lets moderators
+  # queue up several links before submitting the form once) and links each
+  # of them to @node in a single request.
   def create
-    catalog_item = CatalogItem.find_by(id: params[:catalog_item_id])
-    @catalog_item_node = CatalogItemNode.new(node: @node, catalog_item: catalog_item)
-    authorize @catalog_item_node
+    authorize CatalogItemNode.new(node: @node)
 
-    if catalog_item.nil?
-      redirect_to redirect_path_for(@node), alert: "Aucun élément du catalogue trouvé avec cet identifiant."
+    catalog_item_ids = Array(params[:catalog_item_ids]).reject(&:blank?)
+
+    if catalog_item_ids.empty?
+      redirect_to redirect_path_for(@node), alert: "Veuillez ajouter au moins un élément du catalogue à associer."
       return
     end
 
-    if @catalog_item_node.save
-      redirect_to redirect_path_for(@node), notice: "Le contenu a été associé au catalogue numérique avec succès."
-    else
-      redirect_to redirect_path_for(@node), alert: @catalog_item_node.errors.full_messages.to_sentence
+    linked_count = 0
+    error_messages = []
+
+    catalog_item_ids.each do |catalog_item_id|
+      catalog_item = CatalogItem.find_by(id: catalog_item_id)
+
+      if catalog_item.nil?
+        error_messages << "Aucun élément du catalogue trouvé avec l'identifiant #{catalog_item_id}."
+        next
+      end
+
+      catalog_item_node = CatalogItemNode.new(node: @node, catalog_item: catalog_item)
+
+      if catalog_item_node.save
+        linked_count += 1
+      else
+        error_messages << catalog_item_node.errors.full_messages.to_sentence
+      end
     end
+
+    notice = "#{linked_count} élément(s) du catalogue associé(s) avec succès." if linked_count.positive?
+    alert = error_messages.to_sentence if error_messages.any?
+
+    redirect_to redirect_path_for(@node), notice: notice, alert: alert
   end
 
   def destroy
@@ -40,17 +63,11 @@ class CatalogItemNodesController < ApplicationController
     @catalog_item_node = CatalogItemNode.find(params[:id])
   end
 
-  # PdfNote and VideoNote are shown inline in their parent folder's (or the
-  # home page's) content list rather than being browsed as standalone pages,
-  # so after linking/unlinking a catalog item we send the user back there
-  # instead of to the note's own show page. Every other node type (Article,
-  # Folder, PhotoGallery) keeps its own show page as the redirect target.
+  # Every node subtype (Folder, Article, PhotoGallery, PdfNote, VideoNote)
+  # has its own `show` route and controller action, so after linking or
+  # unlinking a catalog item we always send the user back to the node's own
+  # show page.
   def redirect_path_for(node)
-    case node
-    when PdfNote, VideoNote
-      node.parent_id ? folder_path(node.parent_id) : root_path
-    else
-      node
-    end
+    node
   end
 end
