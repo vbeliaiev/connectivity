@@ -1,7 +1,7 @@
 class CatalogController < ApplicationController
   layout 'catalog'
 
-  before_action :authenticate_user!
+  before_action :redirect_unauthenticated_to_home
 
   CATALOG_ITEMS_MAX_COUNT = 10
 
@@ -23,5 +23,9 @@ class CatalogController < ApplicationController
 
   def filter_params
     params.fetch(:filter, {}).permit(:brand_id, :item_category_id, :country_id, :department_id, :production_start_year, :production_end_year)
+  end
+
+  def redirect_unauthenticated_to_home
+    redirect_to library_path unless user_signed_in?
   end
 end

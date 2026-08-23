@@ -1,4 +1,4 @@
-class HomeController < ApplicationController
+class LibraryController < ApplicationController
   after_action :verify_pundit_authorization
 
   def index
