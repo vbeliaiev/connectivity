@@ -82,25 +82,41 @@
           <ul class="min-w-full divide-y divide-gray-200 border-b border-gray-200">
             <% @catalog_items.each do |catalog_item| %>
               <li class="py-1">
-                <%= link_to catalog_item_path(catalog_item), class: "flex items-stretch gap-3 px-2 py-2 rounded-md hover:bg-[#d93] hover:text-white" do %>
-                  <% if catalog_item.cover.attached? %>
-                    <%= image_tag catalog_item.cover.variant(resize_to_fill: [96, 96]), class: "w-24 h-full object-cover rounded-md border border-gray-300 flex-shrink-0" %>
-                  <% else %>
-                    <div class="w-24 h-full rounded-md border border-gray-300 bg-gray-100 flex-shrink-0"></div>
+                <div class="flex items-stretch">
+                  <%= link_to catalog_item_path(catalog_item), class: "flex items-stretch gap-3 px-2 py-2 rounded-md hover:bg-[#d93] hover:text-white flex-grow" do %>
+                    <% if catalog_item.cover.attached? %>
+                      <%= image_tag catalog_item.cover.variant(resize_to_fill: [96, 96]), class: "w-24 h-full object-cover rounded-md border border-gray-300 flex-shrink-0" %>
+                    <% else %>
+                      <div class="w-24 h-full rounded-md border border-gray-300 bg-gray-100 flex-shrink-0"></div>
+                    <% end %>
+                    <div class="flex flex-col flex-grow">
+                      <p class="font-bold text-xl"><%= catalog_item.title %></p>
+                      <ul class="text-sm mt-1 space-y-0.5">
+                        <% if catalog_item.production_start_year.present? || catalog_item.production_end_year.present? %>
+                          <li><strong>Période de production :</strong> <%= [catalog_item.production_start_year, catalog_item.production_end_year].compact.join(' - ') %></li>
+                        <% end %>
+                        <% if catalog_item.item_category.present? %>
+                          <li><strong>Catégorie :</strong> <%= catalog_item.item_category.name %></li>
+                        <% end %>
+                      </ul>
+                      <p class="text-sm mt-auto text-right"><i>Date de dernière mise à jour : <%= relative_update_label(catalog_item.updated_at) %></i></p>
+                    </div>
                   <% end %>
-                  <div class="flex flex-col flex-grow">
-                    <p class="font-bold text-xl"><%= catalog_item.title %></p>
-                    <ul class="text-sm mt-1 space-y-0.5">
-                      <% if catalog_item.production_start_year.present? || catalog_item.production_end_year.present? %>
-                        <li><strong>Période de production :</strong> <%= [catalog_item.production_start_year, catalog_item.production_end_year].compact.join(' - ') %></li>
-                      <% end %>
-                      <% if catalog_item.item_category.present? %>
-                        <li><strong>Catégorie :</strong> <%= catalog_item.item_category.name %></li>
-                      <% end %>
-                    </ul>
-                    <p class="text-sm mt-auto text-right"><i>Date de dernière mise à jour : <%= relative_update_label(catalog_item.updated_at) %></i></p>
-                  </div>
-                <% end %>
+
+                  <% if current_user&.admin? || current_user&.moderator? %>
+                    <div class="relative flex items-stretch" data-controller="clipboard" data-clipboard-text-value="<%= catalog_item_url(catalog_item) %>">
+                      <span data-clipboard-target="message" class="hidden absolute right-full top-1/2 -translate-y-1/2 mr-2 whitespace-nowrap rounded-md bg-[#8eb200] px-2 py-1 text-xs font-medium text-white shadow">Le lien a été copié dans le presse-papiers</span>
+                      <button type="button"
+                              data-action="clipboard#copy"
+                              title="Copier le lien de l'élément"
+                              aria-label="Copier le lien de l'élément"
+                              class="flex items-center justify-center w-14 flex-shrink-0 ml-1 rounded-md text-gray-500 hover:text-white hover:bg-[#d93] cursor-pointer">
+                        <svg data-clipboard-target="default" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy pointer-events-none"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                        <svg data-clipboard-target="success" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check hidden pointer-events-none text-green-600"><path d="M20 6 9 17l-5-5"/></svg>
+                      </button>
+                    </div>
+                  <% end %>
+                </div>
               </li>
             <% end %>
           </ul>
