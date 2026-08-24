@@ -68,19 +68,17 @@ class CatalogItem < ApplicationRecord
     department_id.present? ? where(department_id: department_id) : all
   }
 
-  # These two scopes are meant to be combined: they let users filter catalog
-  # items whose production period overlaps with the [start_year, end_year]
-  # range picked in the filters, rather than requiring an exact match.
+
   scope :by_production_start_year, lambda { |year|
     next all if year.blank?
 
-    where('catalog_items.production_end_year >= ? OR catalog_items.production_end_year IS NULL', year)
+    where('catalog_items.production_start_year >= ?', year)
   }
 
   scope :by_production_end_year, lambda { |year|
     next all if year.blank?
 
-    where('catalog_items.production_start_year <= ? OR catalog_items.production_start_year IS NULL', year)
+    where('catalog_items.production_end_year <= ?', year)
   }
 
   # Associated content (folders/documents/videos/galleries/pages) linked to
