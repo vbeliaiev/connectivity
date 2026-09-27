@@ -43,6 +43,90 @@ fr:
       title: "Politique de confidentialité"
       body: "En cours de rédaction."
 
+  catalog:
+    show:
+      search_placeholder: "Rechercher dans le catalogue…"
+      search: "Rechercher"
+      library_link: "Naviguer vers la bibliothèque"
+      clear_filters: "Effacer les filtres"
+      filters_title: "Filtres:"
+      brand: "Marque"
+      brand_prompt: "Choisir une marque"
+      department: "Département"
+      department_prompt: "Choisir un département"
+      department_hint: "Sélectionnez d'abord une marque."
+      category: "Catégorie"
+      category_prompt: "Choisir une catégorie"
+      production_start_year: "Année de début de production"
+      production_start_year_placeholder: "Choisir une année de début"
+      production_end_year: "Année de fin de production"
+      production_end_year_placeholder: "Choisir une année de fin"
+      country: "Pays"
+      country_prompt: "Choisir un pays"
+      add_to_catalog: "Ajouter au catalogue"
+      heading: "Catalogue numérique des adhérents AICMC"
+      production_period: "Période de production :"
+      category_label: "Catégorie :"
+      last_updated: "Date de dernière mise à jour :"
+      copy_link: "Copier le lien de l'élément"
+      link_copied: "Le lien a été copié dans le presse-papiers"
+      no_results: "Aucun élément trouvé."
+
+  catalog_items:
+    show:
+      back: "Retour"
+      catalog_link: "Naviguer vers catalogue numérique"
+      library_link: "Naviguer vers la bibliothèque"
+      moderation_tools: "Outils de modération:"
+      edit: "(Modifier)"
+      destroy: "(Supprimer)"
+      zoom_hint: "Cliquez sur l'image pour zoomer"
+      brand: "Marque :"
+      department: "Département :"
+      category: "Catégorie :"
+      model: "Modèle :"
+      production_period: "Période de production :"
+      country: "Pays :"
+      description: "Description"
+      close: "Fermer"
+      related_content: "Contenu associé"
+      no_related_content: "Aucun contenu associé."
+    flash:
+      created: "L'élément du catalogue a été créé avec succès."
+      updated: "L'élément du catalogue a été mis à jour avec succès."
+      destroyed: "L'élément du catalogue a été supprimé avec succès."
+      destroy_failed: "L'élément du catalogue n'a pas pu être supprimé. Veuillez réessayer et prévenir l'administrateur."
+
+  shared:
+    content_sections:
+      folders: "Dossiers:"
+      pdf_notes: "Documents:"
+      video_notes: "Vidéos:"
+      photo_galleries: "Galeries photos:"
+      articles: "Pages:"
+      administer: "Administrer"
+      destroy: "(Supprimer)"
+      close: "Fermer"
+      video_unsupported: "Votre navigateur ne prend pas en charge la lecture de vidéos."
+
+  views:
+    pagination:
+      first: "Première"
+      last: "Dernière"
+      previous: "Précédent"
+      next: "Suivant"
+
+  application_helper:
+    edit: "Modifier"
+    destroy: "Supprimer"
+    destroy_confirm: "Êtes-vous sûr ?"
+    administer: "Administrer"
+    relative_update_label:
+      today: "Aujourd'hui"
+      days_ago:
+        one: "il y a %{count} jour"
+        other: "il y a %{count} jours"
+
   devise:
     sessions:
       new:

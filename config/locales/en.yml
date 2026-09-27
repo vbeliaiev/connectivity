@@ -43,6 +43,90 @@ en:
       title: "Privacy policy"
       body: "In progress."
 
+  catalog:
+    show:
+      search_placeholder: "Search the catalog…"
+      search: "Search"
+      library_link: "Go to the library"
+      clear_filters: "Clear filters"
+      filters_title: "Filters:"
+      brand: "Brand"
+      brand_prompt: "Choose a brand"
+      department: "Department"
+      department_prompt: "Choose a department"
+      department_hint: "Select a brand first."
+      category: "Category"
+      category_prompt: "Choose a category"
+      production_start_year: "Production start year"
+      production_start_year_placeholder: "Choose a start year"
+      production_end_year: "Production end year"
+      production_end_year_placeholder: "Choose an end year"
+      country: "Country"
+      country_prompt: "Choose a country"
+      add_to_catalog: "Add to catalog"
+      heading: "AICMC members' digital catalog"
+      production_period: "Production period:"
+      category_label: "Category:"
+      last_updated: "Last updated:"
+      copy_link: "Copy item link"
+      link_copied: "Link copied to clipboard"
+      no_results: "No items found."
+
+  catalog_items:
+    show:
+      back: "Back"
+      catalog_link: "Go to the digital catalog"
+      library_link: "Go to the library"
+      moderation_tools: "Moderation tools:"
+      edit: "(Edit)"
+      destroy: "(Delete)"
+      zoom_hint: "Click the image to zoom in"
+      brand: "Brand:"
+      department: "Department:"
+      category: "Category:"
+      model: "Model:"
+      production_period: "Production period:"
+      country: "Country:"
+      description: "Description"
+      close: "Close"
+      related_content: "Related content"
+      no_related_content: "No related content."
+    flash:
+      created: "The catalog item was successfully created."
+      updated: "The catalog item was successfully updated."
+      destroyed: "The catalog item was successfully deleted."
+      destroy_failed: "The catalog item could not be deleted. Please try again and notify the administrator."
+
+  shared:
+    content_sections:
+      folders: "Folders:"
+      pdf_notes: "Documents:"
+      video_notes: "Videos:"
+      photo_galleries: "Photo galleries:"
+      articles: "Pages:"
+      administer: "Manage"
+      destroy: "(Delete)"
+      close: "Close"
+      video_unsupported: "Your browser does not support video playback."
+
+  views:
+    pagination:
+      first: "First"
+      last: "Last"
+      previous: "Previous"
+      next: "Next"
+
+  application_helper:
+    edit: "Edit"
+    destroy: "Delete"
+    destroy_confirm: "Are you sure?"
+    administer: "Manage"
+    relative_update_label:
+      today: "Today"
+      days_ago:
+        one: "%{count} day ago"
+        other: "%{count} days ago"
+
   devise:
     sessions:
       new:
