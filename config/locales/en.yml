@@ -19,6 +19,10 @@ en:
       label: "Application language:"
       en: "English"
       fr: "Français"
+    hero_carousel:
+      previous: "Previous image"
+      next: "Next image"
+      go_to_slide: "Go to image %{number}"
     sidebar:
       guest_banner_title: "You are currently browsing the site as a guest."
       guest_banner_body: "To access content reserved for AICMC members, please sign in with your account."

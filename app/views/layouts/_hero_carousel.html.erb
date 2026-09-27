@@ -1,0 +1,36 @@
+<%
+  hero_carousel_images = %w[catalog-hero.png catalog-hero_1.png catalog-hero_2.png]
+%>
+<div class="relative w-full h-72 sm:h-96 rounded-lg overflow-hidden mt-0 mb-4"
+     data-controller="hero-carousel"
+     data-action="mouseenter->hero-carousel#pause mouseleave->hero-carousel#resume">
+  <% hero_carousel_images.each_with_index do |image, index| %>
+    <%= image_tag image,
+                  class: "absolute inset-0 w-full h-full object-cover transition-opacity duration-700 #{'opacity-0' unless index.zero?}",
+                  data: { hero_carousel_target: "slide" } %>
+  <% end %>
+
+  <button type="button"
+          data-action="hero-carousel#prev"
+          aria-label="<%= t('layouts.hero_carousel.previous') %>"
+          class="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 rounded-full bg-black/40 text-white hover:bg-black/60 cursor-pointer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pointer-events-none"><path d="m15 18-6-6 6-6"/></svg>
+  </button>
+  <button type="button"
+          data-action="hero-carousel#next"
+          aria-label="<%= t('layouts.hero_carousel.next') %>"
+          class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 rounded-full bg-black/40 text-white hover:bg-black/60 cursor-pointer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pointer-events-none"><path d="m9 18 6-6-6-6"/></svg>
+  </button>
+
+  <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+    <% hero_carousel_images.each_index do |index| %>
+      <button type="button"
+              data-action="hero-carousel#select"
+              data-index="<%= index %>"
+              data-hero-carousel-target="dot"
+              aria-label="<%= t('layouts.hero_carousel.go_to_slide', number: index + 1) %>"
+              class="w-2 h-2 rounded-full cursor-pointer <%= index.zero? ? 'bg-white' : 'bg-white/50' %>"></button>
+    <% end %>
+  </div>
+</div>

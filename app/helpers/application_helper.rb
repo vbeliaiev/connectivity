@@ -1,4 +1,20 @@
 module ApplicationHelper
+  # The hero carousel is a welcoming banner for the two landing pages
+  # (digital catalog and library indexes) only. It's hidden as soon as the
+  # visitor is doing something more specific than browsing the first page:
+  # searching, or paging past the first page of either listing.
+  def show_hero_carousel?
+    on_catalog_or_library_index = (controller_name == "catalog" && action_name == "show") ||
+                                   (controller_name == "library" && action_name == "index")
+    return false unless on_catalog_or_library_index
+    return false if params[:query].present?
+    return false if params[:catalog_items_page].present? && params[:catalog_items_page].to_i > 1
+    return false if params[:folders_page].present? && params[:folders_page].to_i > 1
+    return false if params.fetch(:filter, {}).values.any?(&:present?)
+
+    true
+  end
+
   VISIBILITY_LABELS = {
     "internal" => "Privé (réservé aux adhérents connectés)",
     "public_visibility" => "Public (visible sans connexion)"
