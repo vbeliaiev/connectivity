@@ -37,7 +37,7 @@ class CatalogItemsController < ApplicationController
     authorize @catalog_item
 
     if @catalog_item.save
-      redirect_to @catalog_item, notice: "L'élément du catalogue a été créé avec succès."
+      redirect_to @catalog_item, notice: t("catalog_items.flash.created")
     else
       render :new, status: :unprocessable_entity
     end
@@ -49,7 +49,7 @@ class CatalogItemsController < ApplicationController
     @catalog_item.cover.purge if params.dig(:catalog_item, :remove_cover) == '1'
 
     if @catalog_item.update(catalog_item_params)
-      redirect_to @catalog_item, notice: "L'élément du catalogue a été mis à jour avec succès."
+      redirect_to @catalog_item, notice: t("catalog_items.flash.updated")
     else
       render :edit, status: :unprocessable_entity
     end
@@ -59,9 +59,9 @@ class CatalogItemsController < ApplicationController
     authorize @catalog_item
 
     if @catalog_item.destroy!
-      redirect_to catalog_path, notice: "L'élément du catalogue a été supprimé avec succès."
+      redirect_to catalog_path, notice: t("catalog_items.flash.destroyed")
     else
-      redirect_to @catalog_item, alert: "L'élément du catalogue n'a pas pu être supprimé. Veuillez réessayer et prévenir l'administrateur."
+      redirect_to @catalog_item, alert: t("catalog_items.flash.destroy_failed")
     end
   end
 

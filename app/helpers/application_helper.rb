@@ -15,14 +15,14 @@ module ApplicationHelper
     VISIBILITY_LABELS.fetch(level.to_s, level.to_s.capitalize)
   end
 
-  # Friendly label for a timestamp: "Aujourd'hui" for today, "il y a N
-  # jour(s)" for the last 3 days, otherwise a plain dd-mm-yyyy date.
+  # Friendly, localized label for a timestamp: "today" for today, "N day(s)
+  # ago" for the last 3 days, otherwise a plain dd-mm-yyyy date.
   def relative_update_label(date)
     days_ago = (Date.current - date.to_date).to_i
 
     case days_ago
-    when 0 then "Aujourd'hui"
-    when 1..3 then "il y a #{days_ago} #{"jour".pluralize(days_ago)}"
+    when 0 then t("application_helper.relative_update_label.today")
+    when 1..3 then t("application_helper.relative_update_label.days_ago", count: days_ago)
     else date.strftime("%d-%m-%Y")
     end
   end
@@ -47,7 +47,7 @@ module ApplicationHelper
   # also render a text label inside the same clickable link.
   def edit_icon_button(path, extra_class: "", label: nil)
     classes = label.present? ? "inline-flex items-center gap-1 px-2 h-9 rounded-full text-gray-500 hover:text-gray-900 hover:bg-gray-100 #{extra_class}" : "inline-flex items-center justify-center w-9 h-9 rounded-full text-gray-500 hover:text-gray-900 hover:bg-gray-100 #{extra_class}"
-    link_to path, class: classes, title: "Edit", "aria-label": "Edit" do
+    link_to path, class: classes, title: t("application_helper.edit"), "aria-label": t("application_helper.edit") do
       safe_join([
         content_tag(:svg, xmlns: "http://www.w3.org/2000/svg", width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round", class: "lucide lucide-pencil") do
           raw('<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/>')
@@ -121,9 +121,9 @@ module ApplicationHelper
   # point to that node's admin tools (visibility toggle, catalog item link,
   # destroy), which live on the show page itself. Pass `label` to also
   # render a text label inside the same clickable link.
-  def administer_icon_button(path, extra_class: "", label: "Administrer")
+  def administer_icon_button(path, extra_class: "", label: t("application_helper.administer"))
     classes = label.present? ? "inline-flex items-center gap-1 px-2 h-9 rounded-full text-gray-500 hover:text-gray-900 hover:bg-gray-100 #{extra_class}" : "inline-flex items-center justify-center w-9 h-9 rounded-full text-gray-500 hover:text-gray-900 hover:bg-gray-100 #{extra_class}"
-    link_to path, class: classes, title: "Administrer", "aria-label": "Administrer" do
+    link_to path, class: classes, title: t("application_helper.administer"), "aria-label": t("application_helper.administer") do
       safe_join([
         content_tag(:svg, xmlns: "http://www.w3.org/2000/svg", width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round", class: "lucide lucide-settings-icon lucide-settings") do
           raw('<path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/>')
@@ -138,7 +138,7 @@ module ApplicationHelper
   # to also render a text label inside the same clickable button.
   def destroy_icon_button(record_or_path, extra_class: "", label: nil)
     classes = label.present? ? "inline-flex items-center gap-1 px-2 h-9 rounded-full text-gray-500 hover:text-red-600 hover:bg-red-50 cursor-pointer #{extra_class}" : "inline-flex items-center justify-center w-9 h-9 rounded-full text-gray-500 hover:text-red-600 hover:bg-red-50 cursor-pointer #{extra_class}"
-    button_to record_or_path, method: :delete, form_class: "inline-flex items-center", class: classes, title: "Destroy", "aria-label": "Destroy", data: { turbo_confirm: "Are you sure?" } do
+    button_to record_or_path, method: :delete, form_class: "inline-flex items-center", class: classes, title: t("application_helper.destroy"), "aria-label": t("application_helper.destroy"), data: { turbo_confirm: t("application_helper.destroy_confirm") } do
       safe_join([
         content_tag(:svg, xmlns: "http://www.w3.org/2000/svg", width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round", class: "lucide lucide-trash-2") do
           raw('<path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>')
