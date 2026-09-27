@@ -16,7 +16,7 @@ RSpec.describe 'Authentication', type: :request do
   describe 'Forgot password/reset password' do
     it 'sends reset password instructions and allows password reset' do
       post user_password_path, params: { user: { email: user.email } }
-      expect(ActionMailer::Base.deliveries.last.subject).to include('Reset password')
+      expect(ActionMailer::Base.deliveries.last.subject).to include('Instructions de réinitialisation du mot de passe')
       # Simulate password reset (token extraction would be needed for full test)
     end
   end
@@ -62,7 +62,7 @@ RSpec.describe 'Authentication', type: :request do
 
     it 'shows a message to contact administrator to update email' do
       get edit_user_registration_path
-      expect(response.body).to include("Pour changer votre e-mail, veuillez contacter l'administrateur.")
+      expect(response.body).to include("Pour changer votre e-mail, veuillez contacter l&#39;administrateur.")
     end
   end
 end

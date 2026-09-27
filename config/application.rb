@@ -23,6 +23,14 @@ module Connectivity
     # through and leave the database in an inconsistent state.
     config.active_record.schema_format = :sql
 
+    # French is the default, unprefixed UI locale; English is available via
+    # the `/en` URL prefix. Fallbacks ensure a missing English translation
+    # falls back to French rather than raising or rendering a "translation
+    # missing" marker.
+    config.i18n.default_locale = :fr
+    config.i18n.available_locales = [:fr, :en]
+    config.i18n.fallbacks = [:fr]
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

@@ -1,31 +1,101 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
+# English UI strings for layouts, static pages, and Devise views.
 #
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
+# This file covers view-level keys only (`layouts`, `static_pages`, `devise`).
+# Devise's own gem-provided flash/validation keys live in
+# `config/locales/devise.en.yml`, not here.
 en:
-  hello: "Hello world"
+  layouts:
+    application:
+      title: "AICMC - Library"
+    catalog:
+      title: "AICMC - Digital Catalog"
+    header:
+      sign_in: "Log in"
+      my_account: "My account"
+      sign_out: "Log out"
+      org_name: "International Association of Coffee Mill Collectors"
+      org_tagline: "Digital catalog complementing the AICMC, dedicated to collections, archives, and the history of coffee mills."
+    language_switcher:
+      en: "English"
+      fr: "Français"
+    sidebar:
+      guest_banner_title: "You are currently browsing the site as a guest."
+      guest_banner_body: "To access content reserved for AICMC members, please sign in with your account."
+      library_link: "Go to the library"
+      catalog_link: "Digital catalog"
+      sections_title: "Main sections:"
+      admin_sections_title: "Admin sections:"
+      members_link: "Members"
+    search:
+      placeholder: "Search the library..."
+      submit: "Search"
+    footer:
+      rights: "All rights reserved"
+      mentions_legales: "Legal notice"
+      politique_confidentialite: "Privacy policy"
+
+  static_pages:
+    mentions_legales:
+      title: "Legal notice"
+      body: "In progress."
+    politique_confidentialite:
+      title: "Privacy policy"
+      body: "In progress."
+
+  devise:
+    sessions:
+      new:
+        heading: "Members sign in"
+        email_label: "Email address"
+        email_placeholder: "Email address"
+        password_label: "Password"
+        password_placeholder: "Password"
+        remember_me: "Remember me"
+        submit: "Log in"
+    registrations:
+      new:
+        heading: "Sign up"
+        display_name_placeholder: "Display name (optional)"
+        email_placeholder: "Email address"
+        password_placeholder: "Password"
+        password_confirmation_placeholder: "Password confirmation"
+        privacy_policy_link: "View the privacy policy"
+        privacy_policy_accept: "I accept the privacy policy"
+        minimum_password_length: "%{count} characters minimum"
+        submit: "Sign up"
+      edit:
+        heading: "Edit profile"
+        display_name_placeholder: "Display name"
+        email_disabled_title: "Contact the administrator to change your email"
+        email_help: "To change your email, please contact the administrator."
+        password_placeholder: "New password (leave blank if unchanged)"
+        password_confirmation_placeholder: "Confirm new password"
+        current_password_placeholder: "Current password (to confirm changes)"
+        minimum_password_length: "%{count} characters minimum"
+        submit: "Update"
+        home_link: "Back to home"
+      _privacy_policy_modal:
+        close: "Close"
+        heading: "Privacy Policy"
+        body_html: "<p>Your privacy is important to us. We only collect the minimal information necessary to provide our services. Your data will not be shared with third parties, unless required by law or to support essential functionality (such as authentication and sending emails).</p><p>By using this service, you consent to the collection and use of your information in accordance with this policy.</p>"
+    passwords:
+      new:
+        heading: "Forgot your password?"
+        email_label: "Email address"
+        email_placeholder: "Email address"
+        submit: "Send instructions"
+      edit:
+        heading: "Change your password"
+        password_label: "New password"
+        password_confirmation_label: "Confirm new password"
+        minimum_password_length: "(%{count} characters minimum)"
+        submit: "Change my password"
+    shared:
+      links:
+        sign_in: "Log in"
+        forgot_password: "Forgot your password?"
+        sign_in_with_provider: "Sign in with %{provider}"
+      error_messages:
+        heading:
+          one: "1 error prevented this from being saved:"
+          other: "%{count} errors prevented this from being saved:"

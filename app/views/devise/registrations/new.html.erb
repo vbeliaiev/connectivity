@@ -1,6 +1,6 @@
 <div class="w-full max-w-md mx-auto">
   <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-    Sign up
+    <%= t("devise.registrations.new.heading") %>
   </h2>
 
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "mt-8 space-y-6" }) do |f| %>
@@ -9,41 +9,41 @@
     <div class="rounded-md shadow-sm -space-y-px">
       <div>
         <%= f.label :display_name, class: "sr-only" %>
-        <%= f.text_field :display_name, autofocus: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Display name (optional)" %>
+        <%= f.text_field :display_name, autofocus: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: t("devise.registrations.new.display_name_placeholder") %>
       </div>
       <div>
         <%= f.label :email, class: "sr-only" %>
-        <%= f.email_field :email, autocomplete: "email", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Email address" %>
+        <%= f.email_field :email, autocomplete: "email", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: t("devise.registrations.new.email_placeholder") %>
       </div>
       <div>
         <%= f.label :password, class: "sr-only" %>
-        <%= f.password_field :password, autocomplete: "new-password", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Password" %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: t("devise.registrations.new.password_placeholder") %>
       </div>
       <div>
         <%= f.label :password_confirmation, class: "sr-only" %>
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Password confirmation" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: t("devise.registrations.new.password_confirmation_placeholder") %>
       </div>
     </div>
 
     <div class="flex items-center mt-4">
       <button type="button" id="privacy-policy-link" class="text-xs text-indigo-600 hover:underline focus:outline-none">
-        View Privacy Policy
+        <%= t("devise.registrations.new.privacy_policy_link") %>
       </button>
     </div>
 
     <div class="flex items-center mt-2">
       <%= check_box_tag :privacy_policy, '1', false, required: true, class: "mr-2" %>
-      <%= label_tag :privacy_policy, "I accept the Privacy Policy", class: "text-xs text-gray-700" %>
+      <%= label_tag :privacy_policy, t("devise.registrations.new.privacy_policy_accept"), class: "text-xs text-gray-700" %>
     </div>
 
     <% if @minimum_password_length %>
       <p class="mt-2 text-xs text-gray-500">
-        <%= @minimum_password_length %> characters minimum
+        <%= t("devise.registrations.new.minimum_password_length", count: @minimum_password_length) %>
       </p>
     <% end %>
 
     <div>
-      <%= f.submit "Sign up", class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+      <%= f.submit t("devise.registrations.new.submit"), class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
     </div>
   <% end %>
 

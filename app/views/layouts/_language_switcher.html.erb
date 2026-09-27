@@ -1,0 +1,4 @@
+<% other_locale = I18n.locale == :fr ? :en : :fr %>
+<%= link_to t("layouts.language_switcher.#{other_locale}"),
+      url_for(params.to_unsafe_h.merge(locale: (other_locale == I18n.default_locale ? nil : other_locale))),
+      class: "sm:text-base text-sm block font-medium text-gray-500 hover:text-gray-900 pr-3" %>

@@ -1,38 +1,41 @@
 Rails.application.routes.draw do
-  devise_for :users, skip: [:registrations, :confirmations], controllers: {
-    sessions: 'users/sessions',
-    passwords: 'users/passwords'
-  }
-  as :user do
-    get 'users/edit' => 'users/registrations#edit', as: :edit_user_registration
-    put 'users' => 'users/registrations#update', as: :user_registration
-  end
-  resources :folders, except: [:index]
-  resources :articles
-  resources :pdf_notes, only: %i[new create show edit update destroy] do
-    patch :toggle_visibility, on: :member
-  end
-  resources :video_notes, only: %i[new create show destroy] do
-    patch :toggle_visibility, on: :member
-  end
-  resources :photo_galleries, only: %i[new create show edit update destroy]
+  scope "(:locale)", locale: /en/ do
+    devise_for :users, skip: [:registrations, :confirmations], controllers: {
+      sessions: 'users/sessions',
+      passwords: 'users/passwords'
+    }
+    as :user do
+      get 'users/edit' => 'users/registrations#edit', as: :edit_user_registration
+      put 'users' => 'users/registrations#update', as: :user_registration
+    end
+    resources :folders, except: [:index]
+    resources :articles
+    resources :pdf_notes, only: %i[new create show edit update destroy] do
+      patch :toggle_visibility, on: :member
+    end
+    resources :video_notes, only: %i[new create show destroy] do
+      patch :toggle_visibility, on: :member
+    end
+    resources :photo_galleries, only: %i[new create show edit update destroy]
 
-  resource :catalog, only: :show, controller: 'catalog'
-  resources :catalog_items, except: [:index]
-  resources :catalog_item_nodes, only: %i[create destroy]
+    resource :catalog, only: :show, controller: 'catalog'
+    resources :catalog_items, except: [:index]
+    resources :catalog_item_nodes, only: %i[create destroy]
 
-  resources :users, except: [:show]
+    resources :users, except: [:show]
 
-  get 'mentions-legales' => 'static_pages#mentions_legales', as: :mentions_legales
-  get 'politique-de-confidentialite' => 'static_pages#politique_confidentialite', as: :politique_confidentialite
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+    get 'mentions-legales' => 'static_pages#mentions_legales', as: :mentions_legales
+    get 'politique-de-confidentialite' => 'static_pages#politique_confidentialite', as: :politique_confidentialite
+
+    get 'library' => 'library#index', as: :library
+
+    # Defines the root path route ("/")
+    root "catalog#show"
+  end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Not locale-scoped: this is an infrastructure endpoint probed by load balancers
+  # and uptime monitors at a fixed path regardless of locale.
   get "up" => "rails/health#show", as: :rails_health_check
-
-  get 'library' => 'library#index', as: :library
-
-  # Defines the root path route ("/")
-  root "catalog#show"
 end

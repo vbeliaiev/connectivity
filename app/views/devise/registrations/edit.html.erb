@@ -1,6 +1,6 @@
 <div class="w-full max-w-md mx-auto border border-gray-400 rounded-md p-8">
   <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-    Modifier le profil
+    <%= t("devise.registrations.edit.heading") %>
   </h2>
 
   <%= form_for(resource, as: resource_name, url: user_registration_path, html: { method: :put, class: "mt-8 space-y-6" }) do |f| %>
@@ -9,42 +9,42 @@
     <div class="space-y-2 mb-2">
       <div>
         <%= f.label :display_name, class: "sr-only" %>
-        <%= f.text_field :display_name, class: "block w-full px-3 py-2 border border-gray-300 rounded-md text-sm", placeholder: "Nom d'affichage" %>
+        <%= f.text_field :display_name, class: "block w-full px-3 py-2 border border-gray-300 rounded-md text-sm", placeholder: t("devise.registrations.edit.display_name_placeholder") %>
       </div>
       <div>
         <%= f.label :email, class: "sr-only" %>
-        <%= f.email_field :email, autocomplete: "email", disabled: true, class: "block w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-gray-100 text-gray-500", title: "Contactez l'administrateur pour changer votre e-mail" %>
-        <p class="text-xs text-red-500 mt-1">Pour changer votre e-mail, veuillez contacter l'administrateur.</p>
+        <%= f.email_field :email, autocomplete: "email", disabled: true, class: "block w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-gray-100 text-gray-500", title: t("devise.registrations.edit.email_disabled_title") %>
+        <p class="text-xs text-red-500 mt-1"><%= t("devise.registrations.edit.email_help") %></p>
       </div>
       <div class="mt-4">
         <%= f.label :password, class: "sr-only" %>
-        <%= f.password_field :password, autocomplete: "off", class: "block w-full px-3 py-2 border border-gray-300 rounded-md text-sm", placeholder: "Nouveau mot de passe (laisser vide si inchangé)" %>
+        <%= f.password_field :password, autocomplete: "off", class: "block w-full px-3 py-2 border border-gray-300 rounded-md text-sm", placeholder: t("devise.registrations.edit.password_placeholder") %>
       </div>
       <div>
         <%= f.label :password_confirmation, class: "sr-only" %>
-        <%= f.password_field :password_confirmation, autocomplete: "off", class: "block w-full px-3 py-2 border border-gray-300 rounded-md text-sm", placeholder: "Confirmer le nouveau mot de passe" %>
+        <%= f.password_field :password_confirmation, autocomplete: "off", class: "block w-full px-3 py-2 border border-gray-300 rounded-md text-sm", placeholder: t("devise.registrations.edit.password_confirmation_placeholder") %>
       </div>
       <div>
         <%= f.label :current_password, class: "sr-only" %>
-        <%= f.password_field :current_password, autocomplete: "off", class: "block w-full px-3 py-2 border border-gray-300 rounded-md text-sm", placeholder: "Mot de passe actuel (pour confirmer les changements)" %>
+        <%= f.password_field :current_password, autocomplete: "off", class: "block w-full px-3 py-2 border border-gray-300 rounded-md text-sm", placeholder: t("devise.registrations.edit.current_password_placeholder") %>
       </div>
     </div>
 
     <% if @minimum_password_length %>
       <p class="text-xs text-gray-500">
-        <%= @minimum_password_length %> caractères minimum
+        <%= t("devise.registrations.edit.minimum_password_length", count: @minimum_password_length) %>
       </p>
     <% end %>
 
     <div>
-      <%= f.submit "Mettre à jour", class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#8c4e1c] hover:bg-[#d93] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8c4e1c] cursor-pointer" %>
+      <%= f.submit t("devise.registrations.edit.submit"), class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#8c4e1c] hover:bg-[#d93] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8c4e1c] cursor-pointer" %>
     </div>
   <% end %>
 
   <div class="text-sm text-center mt-2">
     <%= link_to root_path, class: "flex items-center justify-center w-full py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" do %>
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house mr-1 flex-shrink-0"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-      Naviguer vers l'accueil
+      <%= t("devise.registrations.edit.home_link") %>
     <% end %>
   </div>
 </div>
