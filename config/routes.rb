@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
-  scope "(:locale)", locale: /en/ do
+  # Every non-default locale gets a URL prefix (/en/...); the default (fr)
+  # stays unprefixed. Derived from config so adding a locale to
+  # `config.i18n.available_locales` is enough to route it.
+  i18n_config = Rails.application.config.i18n
+  prefixed_locales = (i18n_config.available_locales - [i18n_config.default_locale]).map(&:to_s)
+
+  scope "(:locale)", locale: Regexp.union(prefixed_locales) do
     devise_for :users, skip: [:registrations, :confirmations], controllers: {
       sessions: 'users/sessions',
       passwords: 'users/passwords'

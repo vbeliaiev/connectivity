@@ -16,6 +16,7 @@ fr:
       org_name: "Association internationale des collectionneurs de moulins à café"
       org_tagline: "Catalogue numérique complémentaire de l'AICMC, dédié aux collections, aux archives et à l'histoire des moulins à café."
     language_switcher:
+      label: "Langue de l'application :"
       en: "English"
       fr: "Français"
     sidebar:
