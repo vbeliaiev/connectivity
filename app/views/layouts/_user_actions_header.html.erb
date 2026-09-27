@@ -1,16 +1,12 @@
 <header class="flex flex-col w-full sm:py-2">
-  <% if user_signed_in? %>
-    <div class="container flex justify-center sm:justify-end items-center">
-      <%= render "layouts/language_switcher" %>
+  <div class="container flex justify-center sm:justify-end items-center">
+    <% if user_signed_in? %>
       <%= link_to t("layouts.header.my_account"), edit_user_registration_path, class: "sm:text-base text-sm block font-medium text-gray-500 hover:text-gray-900 pr-3" %>
       <%= button_to t("layouts.header.sign_out"), destroy_user_session_path, method: :delete, class: "sm:text-base block text-sm font-medium text-gray-500 hover:text-gray-900" %>
-    </div>
-  <% else %>
-    <div class="container flex justify-center sm:justify-end items-center">
-      <%= render "layouts/language_switcher" %>
+    <% else %>
       <%= link_to t("layouts.header.sign_in"), new_user_session_path, class: "sm:text-base text-sm block font-medium text-gray-500 hover:text-gray-900" %>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 
   <div class="flex items-center mt-0 gap-4">
     <%= link_to root_path, class: "flex-shrink-0" do %>

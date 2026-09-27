@@ -16,6 +16,7 @@ en:
       org_name: "International Association of Coffee Mill Collectors"
       org_tagline: "Digital catalog complementing the AICMC, dedicated to collections, archives, and the history of coffee mills."
     language_switcher:
+      label: "Application language:"
       en: "English"
       fr: "Français"
     sidebar:

@@ -1,4 +1,52 @@
-<% other_locale = I18n.locale == :fr ? :en : :fr %>
-<%= link_to t("layouts.language_switcher.#{other_locale}"),
-      url_for(params.to_unsafe_h.merge(locale: (other_locale == I18n.default_locale ? nil : other_locale))),
-      class: "sm:text-base text-sm block font-medium text-gray-500 hover:text-gray-900 pr-3" %>
+<%# Language dropdown. Lists every locale in I18n.available_locales; see
+    LanguageSwitcherHelper for how to add a new language. %>
+<% current_locale = I18n.locale %>
+<div class="flex flex-wrap items-center justify-center gap-2"
+     data-controller="dropdown"
+     data-action="keydown->dropdown#closeOnEscape turbo:before-cache@document->dropdown#close">
+  <span id="language-switcher-label" class="text-sm text-gray-500 underline underline-offset-2">
+    <%= t("layouts.language_switcher.label") %>
+  </span>
+
+  <div class="relative">
+    <button type="button"
+            id="language-switcher-button"
+            class="inline-flex items-center gap-1.5 rounded-md border border-gray-300 bg-white px-2 py-0.5 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8c4e1c] cursor-pointer"
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-controls="language-switcher-menu"
+            aria-labelledby="language-switcher-label language-switcher-button"
+            data-dropdown-target="button"
+            data-action="dropdown#toggle">
+      <%= language_flag_tag(current_locale) %>
+      <span><%= language_name(current_locale) %></span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500" aria-hidden="true">
+        <path d="m6 9 6 6 6-6"/>
+      </svg>
+    </button>
+
+    <ul id="language-switcher-menu"
+        class="absolute left-0 bottom-full z-50 mb-1 min-w-full rounded-md border border-gray-200 bg-white py-1 text-left shadow-lg"
+        data-dropdown-target="menu"
+        hidden>
+      <% I18n.available_locales.each do |locale| %>
+        <% active = locale == current_locale %>
+        <li>
+          <%= link_to switch_locale_path(locale),
+                lang: locale,
+                hreflang: locale,
+                aria: { current: (active ? "true" : nil) },
+                class: "flex items-center gap-1.5 whitespace-nowrap px-2 py-1 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none #{'font-semibold' if active}" do %>
+            <%= language_flag_tag(locale) %>
+            <span class="flex-1"><%= language_name(locale) %></span>
+            <% if active %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#8c4e1c]" aria-hidden="true">
+                <path d="M20 6 9 17l-5-5"/>
+              </svg>
+            <% end %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
