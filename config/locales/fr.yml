@@ -1,0 +1,101 @@
+# French (default) UI strings for layouts, static pages, and Devise views.
+#
+# This file covers view-level keys only (`layouts`, `static_pages`, `devise`).
+# Devise's own gem-provided flash/validation keys live in
+# `config/locales/devise.fr.yml`, not here.
+fr:
+  layouts:
+    application:
+      title: "AICMC - Bibliothèque"
+    catalog:
+      title: "AICMC - Catalogue numérique"
+    header:
+      sign_in: "Se connecter"
+      my_account: "Mon compte"
+      sign_out: "Se déconnecter"
+      org_name: "Association internationale des collectionneurs de moulins à café"
+      org_tagline: "Catalogue numérique complémentaire de l'AICMC, dédié aux collections, aux archives et à l'histoire des moulins à café."
+    language_switcher:
+      en: "English"
+      fr: "Français"
+    sidebar:
+      guest_banner_title: "Vous consultez actuellement le site en mode visiteur."
+      guest_banner_body: "Pour accéder aux contenus réservés aux adhérents de l'AICMC, connectez-vous avec votre compte."
+      library_link: "Naviguer vers la bibliothèque"
+      catalog_link: "Catalogue numérique"
+      sections_title: "Sections principales:"
+      admin_sections_title: "Sections administrateur:"
+      members_link: "Adhérents"
+    search:
+      placeholder: "Rechercher dans la bibliothèque..."
+      submit: "Rechercher"
+    footer:
+      rights: "Tous droits réservés"
+      mentions_legales: "Mentions légales"
+      politique_confidentialite: "Politique de confidentialité"
+
+  static_pages:
+    mentions_legales:
+      title: "Mentions légales"
+      body: "En cours de rédaction."
+    politique_confidentialite:
+      title: "Politique de confidentialité"
+      body: "En cours de rédaction."
+
+  devise:
+    sessions:
+      new:
+        heading: "Connexion sur l'espace adhérents"
+        email_label: "Adresse e-mail"
+        email_placeholder: "Adresse e-mail"
+        password_label: "Mot de passe"
+        password_placeholder: "Mot de passe"
+        remember_me: "Se souvenir de moi"
+        submit: "Se connecter"
+    registrations:
+      new:
+        heading: "Inscription"
+        display_name_placeholder: "Nom d'affichage (facultatif)"
+        email_placeholder: "Adresse e-mail"
+        password_placeholder: "Mot de passe"
+        password_confirmation_placeholder: "Confirmation du mot de passe"
+        privacy_policy_link: "Consulter la politique de confidentialité"
+        privacy_policy_accept: "J'accepte la politique de confidentialité"
+        minimum_password_length: "%{count} caractères minimum"
+        submit: "S'inscrire"
+      edit:
+        heading: "Modifier le profil"
+        display_name_placeholder: "Nom d'affichage"
+        email_disabled_title: "Contactez l'administrateur pour changer votre e-mail"
+        email_help: "Pour changer votre e-mail, veuillez contacter l'administrateur."
+        password_placeholder: "Nouveau mot de passe (laisser vide si inchangé)"
+        password_confirmation_placeholder: "Confirmer le nouveau mot de passe"
+        current_password_placeholder: "Mot de passe actuel (pour confirmer les changements)"
+        minimum_password_length: "%{count} caractères minimum"
+        submit: "Mettre à jour"
+        home_link: "Naviguer vers l'accueil"
+      _privacy_policy_modal:
+        close: "Fermer"
+        heading: "Politique de confidentialité"
+        body_html: "<p>Votre vie privée est importante pour nous. Nous ne collectons que les informations minimales nécessaires pour fournir nos services. Vos données ne seront pas partagées avec des tiers, sauf si la loi l'exige ou pour assurer les fonctionnalités essentielles (comme l'authentification et l'envoi d'e-mails).</p><p>En utilisant ce service, vous consentez à la collecte et à l'utilisation de vos informations conformément à cette politique.</p>"
+    passwords:
+      new:
+        heading: "Mot de passe oublié ?"
+        email_label: "Adresse e-mail"
+        email_placeholder: "Adresse e-mail"
+        submit: "Envoyer les instructions"
+      edit:
+        heading: "Modifier votre mot de passe"
+        password_label: "Nouveau mot de passe"
+        password_confirmation_label: "Confirmer le nouveau mot de passe"
+        minimum_password_length: "(%{count} caractères minimum)"
+        submit: "Modifier mon mot de passe"
+    shared:
+      links:
+        sign_in: "Se connecter"
+        forgot_password: "Mot de passe oublié ?"
+        sign_in_with_provider: "Sign in with %{provider}"
+      error_messages:
+        heading:
+          one: "1 erreur a empêché l'enregistrement :"
+          other: "%{count} erreurs ont empêché l'enregistrement :"

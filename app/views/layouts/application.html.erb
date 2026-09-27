@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>AICMC - Bibliothèque</title>
+    <title><%= t("layouts.application.title") %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -25,14 +25,14 @@
         <% if user_signed_in? %>
           <%= form_with url: library_path, method: :get, local: true, class: "w-full mt-3 sm:mt-0 mb-5" do %>
             <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden shadow-sm">
-              <%= text_field_tag :query, params[:query], placeholder: "Rechercher dans la bibliothèque...", class: "w-2/3 sm:flex-grow px-4 py-2 text-gray-700 focus:outline-none" %>
-              <%= submit_tag "Rechercher", class: "w-1/3 sm:w-auto bg-[#8c4e1c] text-white px-4 py-2 hover:bg-[#d93]" %>
+              <%= text_field_tag :query, params[:query], placeholder: t("layouts.search.placeholder"), class: "w-2/3 sm:flex-grow px-4 py-2 text-gray-700 focus:outline-none" %>
+              <%= submit_tag t("layouts.search.submit"), class: "w-1/3 sm:w-auto bg-[#8c4e1c] text-white px-4 py-2 hover:bg-[#d93]" %>
             </div>
           <% end %>
         <% else %>
           <div class="w-full mt-3 sm:mt-0 mb-5 px-4 py-3 bg-[#8eb200]/30 text-black text-center rounded-lg shadow-sm">
-            <p class="font-bold">Vous consultez actuellement le site en mode visiteur.</p>
-            <p class="text-sm mt-1">Pour accéder aux contenus réservés aux adhérents de l'AICMC, connectez-vous avec votre compte.</p>
+            <p class="font-bold"><%= t("layouts.sidebar.guest_banner_title") %></p>
+            <p class="text-sm mt-1"><%= t("layouts.sidebar.guest_banner_body") %></p>
           </div>
         <% end %>
 
@@ -40,14 +40,14 @@
           <div class="lg:block lg:w-1/4 lg:pr-7 mb-3 lg:mb-0">
             <%= link_to library_path, class: "flex items-center justify-center w-full px-4 py-2.5 mb-3 rounded-md font-medium text-balance lg:text-sm xl:text-base bg-[#8eb200] text-white hover:bg-[#d93]" do %>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-text mr-1 flex-shrink-0"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><path d="M8 11h8"/><path d="M8 7h6"/></svg>
-              Naviguer vers la bibliothèque
+              <%= t("layouts.sidebar.library_link") %>
             <% end %>
             <%= link_to catalog_path, class: "flex items-center justify-center w-full px-4 py-2.5 mb-3 border border-gray-300 rounded-md font-medium text-balance lg:text-sm xl:text-base text-gray-700 bg-white hover:bg-[#d93]" do %>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-landmark mr-1 flex-shrink-0"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg>
-              Catalogue numérique
+              <%= t("layouts.sidebar.catalog_link") %>
             <% end %>
             <div class="p-3 border border-gray-400 rounded-md mt-2">
-              <h1 class="font-bold text-2xl text-center lg:text-left pl-2 mt-1 underline">Sections principales:</h1>
+              <h1 class="font-bold text-2xl text-center lg:text-left pl-2 mt-1 underline"><%= t("layouts.sidebar.sections_title") %></h1>
               <div id="folders" class="min-w-full divide-y divide-gray-200 space-y-2 lg:mt-5 mb-2">
                 <%= render 'shared/folder_list' %>
               </div>
@@ -55,7 +55,7 @@
 
             <% if current_user&.admin? %>
               <div class="p-3 border border-gray-400 rounded-md mt-2">
-                <h1 class="font-bold text-2xl text-center lg:text-left pl-2 mt-1 underline">Sections administrateur:</h1>
+                <h1 class="font-bold text-2xl text-center lg:text-left pl-2 mt-1 underline"><%= t("layouts.sidebar.admin_sections_title") %></h1>
                 <div id="admin-sections" class="min-w-full divide-y divide-gray-200 space-y-2 lg:mt-5 mb-2">
                   <% active = params[:controller] == "users" %>
                   <%= link_to users_path, class: "flex w-full pr-2 pl-2 pt-2 pb-1 hover:bg-[#d93] hover:text-white hover:rounded-md #{'bg-[#8c4e1c] text-white rounded-md' if active}" do %>
@@ -63,7 +63,7 @@
                       <div class="w-full mb-1">
                         <div class="flex">
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users mr-1"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                          Adhérents
+                          <%= t("layouts.sidebar.members_link") %>
                         </div>
                       </div>
                     </div>
@@ -85,20 +85,20 @@
         <div class="flex lg:flex-row flex-col w-full">
           <div class="hidden lg:block lg:w-1/4 lg:pr-7"></div>
           <footer class="w-full lg:w-3/4 text-center text-sm font-semibold text-gray-500 py-4 ">
-            &copy; AICMC <%= Date.current.year %> Tous droits réservés
+            &copy; AICMC <%= Date.current.year %> <%= t("layouts.footer.rights") %>
             &middot;
-            <%= link_to "Mentions légales", mentions_legales_path, class: "hover:underline" %>
+            <%= link_to t("layouts.footer.mentions_legales"), mentions_legales_path, class: "hover:underline" %>
             &middot;
-            <%= link_to "Politique de confidentialité", politique_confidentialite_path, class: "hover:underline" %>
+            <%= link_to t("layouts.footer.politique_confidentialite"), politique_confidentialite_path, class: "hover:underline" %>
           </footer>
         </div>
       <% else %>
         <footer class="w-full text-center text-sm font-semibold text-gray-500 py-4">
-          &copy; AICMC <%= Date.current.year %> Tous droits réservés
+          &copy; AICMC <%= Date.current.year %> <%= t("layouts.footer.rights") %>
           &middot;
-          <%= link_to "Mentions légales", mentions_legales_path, class: "hover:underline" %>
+          <%= link_to t("layouts.footer.mentions_legales"), mentions_legales_path, class: "hover:underline" %>
           &middot;
-          <%= link_to "Politique de confidentialité", politique_confidentialite_path, class: "hover:underline" %>
+          <%= link_to t("layouts.footer.politique_confidentialite"), politique_confidentialite_path, class: "hover:underline" %>
         </footer>
       <% end %>
     </main>

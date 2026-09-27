@@ -1,15 +1,15 @@
 <div class="flex flex-col items-center space-y-1">
   <%- if controller_name != 'sessions' %>
-    <%= link_to "Se connecter", new_session_path(resource_name), class: "block w-full text-center py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" %>
+    <%= link_to t("devise.shared.links.sign_in"), new_session_path(resource_name), class: "block w-full text-center py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" %>
   <% end %>
 
   <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-    <%= link_to "Mot de passe oublié ?", new_password_path(resource_name), class: "text-gray-500 underline hover:text-gray-700" %><br />
+    <%= link_to t("devise.shared.links.forgot_password"), new_password_path(resource_name), class: "text-gray-500 underline hover:text-gray-700" %><br />
   <% end %>
 
   <%- if devise_mapping.omniauthable? %>
     <%- resource_class.omniauth_providers.each do |provider| %>
-      <%= button_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), data: { turbo: false }, class: "font-medium text-indigo-600 hover:text-indigo-500" %><br />
+      <%= button_to t("devise.shared.links.sign_in_with_provider", provider: OmniAuth::Utils.camelize(provider)), omniauth_authorize_path(resource_name, provider), data: { turbo: false }, class: "font-medium text-indigo-600 hover:text-indigo-500" %><br />
     <% end %>
   <% end %>
 </div>
