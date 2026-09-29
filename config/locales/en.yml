@@ -101,6 +101,10 @@ en:
       destroyed: "The catalog item was successfully deleted."
       destroy_failed: "The catalog item could not be deleted. Please try again and notify the administrator."
 
+  library:
+    index:
+      heading: "AICMC Members' Digital Library"
+
   shared:
     content_sections:
       folders: "Folders:"
@@ -112,6 +116,14 @@ en:
       destroy: "(Delete)"
       close: "Close"
       video_unsupported: "Your browser does not support video playback."
+    new_item_dropdown:
+      placeholder: "Add content"
+    moderation_tools:
+      label: "Moderation tools:"
+      edit: "(Edit)"
+      destroy: "(Delete)"
+    catalog_item_link:
+      title: "Link to digital catalog"
 
   views:
     pagination:

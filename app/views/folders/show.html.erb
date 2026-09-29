@@ -7,10 +7,10 @@
     <div class='flex flex-col sm:flex-row justify-between mt-3 mb-3.5'>
       <div class='flex gap-2 flex-col sm:flex-row'>
         <div class="flex items-center gap-1" data-controller="catalog-item-link" data-catalog-item-link-base-url-value="<%= catalog_items_path %>">
-          <span class="underline text-gray-500">Outils de modération:</span>
-          <%= edit_icon_button(edit_folder_path(@folder), label: "(Modifier)") %>
-          <%= destroy_icon_button(@folder, label: "(Supprimer)") %>
-          <%= catalog_item_link_button(label: "Associer au catalogue numérique") %>
+          <span class="underline text-gray-500"><%= t("shared.moderation_tools.label") %></span>
+          <%= edit_icon_button(edit_folder_path(@folder), label: t("shared.moderation_tools.edit")) %>
+          <%= destroy_icon_button(@folder, label: t("shared.moderation_tools.destroy")) %>
+          <%= catalog_item_link_button(label: t("shared.catalog_item_link.title")) %>
 
           <%= render 'shared/catalog_item_link_modal', node: @folder %>
         </div>

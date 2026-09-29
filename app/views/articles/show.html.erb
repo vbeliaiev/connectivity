@@ -5,10 +5,10 @@
 
   <% if policy(@article).edit? %>
   <div class="flex items-center gap-1 mt-3" data-controller="catalog-item-link" data-catalog-item-link-base-url-value="<%= catalog_items_path %>">
-    <span class="underline text-gray-500">Outils de modération:</span>
-    <%= edit_icon_button(edit_article_path(@article), label: "(Modifier)") %>
-    <%= destroy_icon_button(@article, label: "(Supprimer)") %>
-    <%= catalog_item_link_button(label: "Associer au catalogue numérique") %>
+    <span class="underline text-gray-500"><%= t("shared.moderation_tools.label") %></span>
+    <%= edit_icon_button(edit_article_path(@article), label: t("shared.moderation_tools.edit")) %>
+    <%= destroy_icon_button(@article, label: t("shared.moderation_tools.destroy")) %>
+    <%= catalog_item_link_button(label: t("shared.catalog_item_link.title")) %>
 
     <%= render 'shared/catalog_item_link_modal', node: @article %>
   </div>

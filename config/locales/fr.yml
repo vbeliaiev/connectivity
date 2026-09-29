@@ -101,6 +101,10 @@ fr:
       destroyed: "L'élément du catalogue a été supprimé avec succès."
       destroy_failed: "L'élément du catalogue n'a pas pu être supprimé. Veuillez réessayer et prévenir l'administrateur."
 
+  library:
+    index:
+      heading: "Bibliothèque numérique des adhérents AICMC"
+
   shared:
     content_sections:
       folders: "Dossiers:"
@@ -112,6 +116,14 @@ fr:
       destroy: "(Supprimer)"
       close: "Fermer"
       video_unsupported: "Votre navigateur ne prend pas en charge la lecture de vidéos."
+    new_item_dropdown:
+      placeholder: "Ajouter du contenu"
+    moderation_tools:
+      label: "Outils de modération:"
+      edit: "(Modifier)"
+      destroy: "(Supprimer)"
+    catalog_item_link:
+      title: "Associer au catalogue numérique"
 
   views:
     pagination:

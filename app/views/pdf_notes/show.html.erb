@@ -6,13 +6,13 @@
     <%= render 'shared/breadcrumb', node: @pdf_note %>
     <% if policy(@pdf_note).update? || policy(@pdf_note).destroy? %>
     <div class="flex items-center gap-1" data-controller="catalog-item-link" data-catalog-item-link-base-url-value="<%= catalog_items_path %>">
-      <span class="underline text-gray-500">Outils de modération:</span>
+      <span class="underline text-gray-500"><%= t("shared.moderation_tools.label") %></span>
       <% if policy(@pdf_note).update? %>
-        <%= edit_icon_button(edit_pdf_note_path(@pdf_note), label: "(Modifier)") %>
+        <%= edit_icon_button(edit_pdf_note_path(@pdf_note), label: t("shared.moderation_tools.edit")) %>
         <%= toggle_visibility_button(@pdf_note, label: (@pdf_note.public_visibility? ? "Rendre privé" : "Rendre public")) %>
-        <%= catalog_item_link_button(label: "Associer au catalogue numérique") %>
+        <%= catalog_item_link_button(label: t("shared.catalog_item_link.title")) %>
       <% end %>
-      <%= destroy_icon_button(@pdf_note, label: "Supprimer") if policy(@pdf_note).destroy? %>
+      <%= destroy_icon_button(@pdf_note, label: t("shared.moderation_tools.destroy")) if policy(@pdf_note).destroy? %>
 
       <%= render 'shared/catalog_item_link_modal', node: @pdf_note if policy(@pdf_note).update? %>
     </div>
