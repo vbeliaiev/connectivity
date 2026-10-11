@@ -1,0 +1,34 @@
+<%# Site footer: legal links, social media row, and language switcher.
+    Shared by every HTML layout (application, catalog, auth).
+
+    Locals:
+      sidebar_offset - when true, the footer is indented by the width of the
+        left sidebar and capped at 3/4 width on large screens, so it lines
+        up with the content column of pages that have a sidebar (library
+        and catalog listings, folder pages). When false (the default) the
+        footer spans the full width and is centered, which is what pages
+        without a sidebar need (catalog item show, new/edit forms, Devise
+        pages). See ApplicationHelper#sidebar_offset_footer?. %>
+<% sidebar_offset = local_assigns.fetch(:sidebar_offset, false) %>
+<% footer_classes = class_names("w-full text-center text-sm font-semibold text-gray-500 py-4", "lg:w-3/4" => sidebar_offset) %>
+
+<% footer = capture do %>
+  <footer class="<%= footer_classes %>">
+    &copy; AICMC <%= Date.current.year %> <%= t("layouts.footer.rights") %>
+    &middot;
+    <%= link_to t("layouts.footer.mentions_legales"), mentions_legales_path, class: "hover:underline" %>
+    &middot;
+    <%= link_to t("layouts.footer.politique_confidentialite"), politique_confidentialite_path, class: "hover:underline" %>
+    <div class="mt-2"><%= render "layouts/social_links" %></div>
+    <div class="mt-2"><%= render "layouts/language_switcher" %></div>
+  </footer>
+<% end %>
+
+<% if sidebar_offset %>
+  <div class="flex lg:flex-row flex-col w-full">
+    <div class="hidden lg:block lg:w-1/4 lg:pr-7"></div>
+    <%= footer %>
+  </div>
+<% else %>
+  <%= footer %>
+<% end %>

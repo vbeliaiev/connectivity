@@ -15,6 +15,15 @@ module ApplicationHelper
     true
   end
 
+  # The catalog listing is the only page using the `catalog` layout that
+  # renders a left sidebar (the filter panel in catalog/show). The catalog
+  # item page and the item forms are full width, so the layout uses this to
+  # decide whether the footer lines up with a content column or spans the
+  # whole width, centered.
+  def catalog_filters_sidebar?
+    controller_name == "catalog" && action_name == "show"
+  end
+
   VISIBILITY_LABELS = {
     "internal" => "Privé (réservé aux adhérents connectés)",
     "public_visibility" => "Public (visible sans connexion)"

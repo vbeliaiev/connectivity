@@ -82,28 +82,9 @@
         <%= yield %>
       <% end %>
 
-      <% if @sidebar_folders %>
-        <div class="flex lg:flex-row flex-col w-full">
-          <div class="hidden lg:block lg:w-1/4 lg:pr-7"></div>
-          <footer class="w-full lg:w-3/4 text-center text-sm font-semibold text-gray-500 py-4 ">
-            &copy; AICMC <%= Date.current.year %> <%= t("layouts.footer.rights") %>
-            &middot;
-            <%= link_to t("layouts.footer.mentions_legales"), mentions_legales_path, class: "hover:underline" %>
-            &middot;
-            <%= link_to t("layouts.footer.politique_confidentialite"), politique_confidentialite_path, class: "hover:underline" %>
-            <div class="mt-2"><%= render "layouts/language_switcher" %></div>
-          </footer>
-        </div>
-      <% else %>
-        <footer class="w-full text-center text-sm font-semibold text-gray-500 py-4">
-          &copy; AICMC <%= Date.current.year %> <%= t("layouts.footer.rights") %>
-          &middot;
-          <%= link_to t("layouts.footer.mentions_legales"), mentions_legales_path, class: "hover:underline" %>
-          &middot;
-          <%= link_to t("layouts.footer.politique_confidentialite"), politique_confidentialite_path, class: "hover:underline" %>
-          <div class="mt-2"><%= render "layouts/language_switcher" %></div>
-        </footer>
-      <% end %>
+      <%# Offset matches the sidebar rendered by the `if @sidebar_folders`
+          branch above. %>
+      <%= render "layouts/footer", sidebar_offset: !@sidebar_folders.nil? %>
     </main>
   </body>
 </html>

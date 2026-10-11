@@ -14,7 +14,8 @@ en:
       my_account: "My account"
       sign_out: "Log out"
       org_name: "International Association of Coffee Mill Collectors"
-      org_tagline: "Digital catalog complementing the AICMC, dedicated to collections, archives, and the history of coffee mills."
+      org_circle: "The Circle of Mylokaphephiles"
+      org_tagline: "Digital catalog dedicated to collections, archives, and the history of coffee mills."
     language_switcher:
       label: "Application language:"
       en: "English"
@@ -36,6 +37,9 @@ en:
       submit: "Search"
     footer:
       rights: "All rights reserved"
+      follow_us: "Follow us:"
+      facebook: "Facebook"
+      instagram: "Instagram"
       mentions_legales: "Legal notice"
       politique_confidentialite: "Privacy policy"
 
@@ -80,7 +84,6 @@ en:
     show:
       back: "Back"
       catalog_link: "Go to the digital catalog"
-      library_link: "Go to the library"
       moderation_tools: "Moderation tools:"
       edit: "(Edit)"
       destroy: "(Delete)"
