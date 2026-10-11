@@ -2,6 +2,7 @@ class CatalogController < ApplicationController
   layout 'catalog'
 
   before_action :redirect_unauthenticated_to_home
+  before_action :current_sort
 
   CATALOG_ITEMS_MAX_COUNT = 10
 
@@ -14,12 +15,18 @@ class CatalogController < ApplicationController
                       .by_country(filter_params[:country_id])
                       .by_production_start_year(filter_params[:production_start_year])
                       .by_production_end_year(filter_params[:production_end_year])
-                      .order(updated_at: :desc)
+                      .sorted_by(@sort)
                       .page(params[:catalog_items_page])
                       .per(CATALOG_ITEMS_MAX_COUNT)
   end
 
   private
+
+  # Normalized here (rather than in the view) so the dropdown always shows a
+  # selected option, even when the URL carries no or an unknown `sort` value.
+  def current_sort
+    @sort = CatalogItem::SORT_OPTIONS.key?(params[:sort]) ? params[:sort] : CatalogItem::DEFAULT_SORT
+  end
 
   def filter_params
     params.fetch(:filter, {}).permit(:brand_id, :item_category_id, :country_id, :production_start_year, :production_end_year)

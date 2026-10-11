@@ -70,6 +70,12 @@ en:
       country_prompt: "Choose a country"
       add_to_catalog: "Add to catalog"
       heading: "AICMC members' digital catalog"
+      sort_label: "Sort by:"
+      sort_options:
+        recently_updated: "Most recently updated"
+        least_recently_updated: "Least recently updated"
+        title_asc: "Title (A → Z)"
+        title_desc: "Title (Z → A)"
       production_period: "Production period:"
       category_label: "Category:"
       last_updated: "Last updated:"

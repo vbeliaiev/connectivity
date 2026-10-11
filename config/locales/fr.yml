@@ -70,6 +70,12 @@ fr:
       country_prompt: "Choisir un pays"
       add_to_catalog: "Ajouter au catalogue"
       heading: "Catalogue numérique des adhérents AICMC"
+      sort_label: "Trier par :"
+      sort_options:
+        recently_updated: "Mise à jour la plus récente"
+        least_recently_updated: "Mise à jour la plus ancienne"
+        title_asc: "Titre (A → Z)"
+        title_desc: "Titre (Z → A)"
       production_period: "Période de production :"
       category_label: "Catégorie :"
       last_updated: "Date de dernière mise à jour :"

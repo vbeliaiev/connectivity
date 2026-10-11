@@ -12,6 +12,25 @@ class CatalogItem < ApplicationRecord
   MAX_COVER_SIZE = 60.megabytes
   MAX_FIELD_LENGTH = 180
 
+  # Sort options offered on the catalog page, keyed by the value of the
+  # `sort` query param. Whitelisting them here keeps user input out of the
+  # ORDER BY clause and gives the view a single place to build the dropdown.
+  #
+  # Titles are sorted on LOWER(immutable_unaccent(title)) so that case and
+  # accents don't scatter related entries ("Élan" sits next to "Elan"
+  # instead of after "Zéphyr"), using the same unaccent function as the
+  # title search. `title` is NOT NULL, so no NULLS handling is needed.
+  TITLE_SORT_EXPRESSION = 'LOWER(public.immutable_unaccent(catalog_items.title))'.freeze
+
+  SORT_OPTIONS = {
+    'recently_updated' => Arel.sql('catalog_items.updated_at DESC'),
+    'least_recently_updated' => Arel.sql('catalog_items.updated_at ASC'),
+    'title_asc' => Arel.sql("#{TITLE_SORT_EXPRESSION} ASC"),
+    'title_desc' => Arel.sql("#{TITLE_SORT_EXPRESSION} DESC")
+  }.freeze
+
+  DEFAULT_SORT = 'recently_updated'.freeze
+
   # Let the form offer a "add a new brand/country" text field instead of
   # forcing the user to pick one that already exists in the list.
   attr_accessor :new_brand_title, :new_country_name, :new_item_category_name
@@ -72,6 +91,14 @@ class CatalogItem < ApplicationRecord
     next all if year.blank?
 
     where('catalog_items.production_end_year <= ?', year)
+  }
+
+  # Unknown or missing sort keys fall back to the default so a hand-edited
+  # URL can never inject SQL nor leave the list unordered (an unordered
+  # relation would make pagination return duplicates across pages).
+  # `id` breaks ties so paging stays stable when titles or timestamps match.
+  scope :sorted_by, lambda { |key|
+    order(SORT_OPTIONS.fetch(key.to_s, SORT_OPTIONS[DEFAULT_SORT]), id: :desc)
   }
 
   # Associated content (folders/documents/videos/galleries/pages) linked to
