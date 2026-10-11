@@ -46,14 +46,6 @@
             <hr class="border-gray-300">
           <% end %>
 
-          <% if @catalog_item.department %>
-            <div class="flex items-center gap-1">
-              <dt class="font-semibold"><%= t(".department") %></dt>
-              <dd class="pt-0.5"><%= link_to @catalog_item.department.name, catalog_path(filter: { department_id: @catalog_item.department.id }), class: "text-blue-600 font-semibold underline" %></dd>
-            </div>
-            <hr class="border-gray-300">
-          <% end %>
-
           <% if @catalog_item.item_category %>
             <div class="flex items-center gap-1">
               <dt class="font-semibold"><%= t(".category") %></dt>

@@ -18,18 +18,12 @@
         <%= t(".clear_filters") %>
       <% end %>
 
-      <div class="p-3 border border-gray-400 rounded-md mt-2" data-controller="department-filter">
+      <div class="p-3 border border-gray-400 rounded-md mt-2">
         <h1 class="font-bold text-2xl text-center lg:text-left mt-1 underline"><%= t(".filters_title") %></h1>
         <div class="space-y-3 mt-3">
           <div>
             <%= label_tag "filter_brand_id", t(".brand"), class: "block text-sm font-medium text-gray-700 mb-1" %>
-            <%= select_tag "filter[brand_id]", options_for_select(Brand.all.pluck(:title, :id), params.dig(:filter, :brand_id)), include_blank: t(".brand_prompt"), data: { department_filter_target: "brandSelect", action: "change->department-filter#filterOptions" }, class: "w-full border border-gray-300 rounded-md px-2 py-1.5 text-gray-700" %>
-          </div>
-
-          <div>
-            <%= label_tag "filter_department_id", t(".department"), class: "block text-sm font-medium text-gray-700 mb-1" %>
-            <%= select_tag "filter[department_id]", options_for_select(Department.all.order(:name).map { |d| [d.name, d.id, { data: { brand_id: d.brand_id } }] }, params.dig(:filter, :department_id)), include_blank: t(".department_prompt"), data: { department_filter_target: "departmentSelect" }, class: "w-full border border-gray-300 rounded-md px-2 py-1.5 text-gray-700 disabled:bg-gray-100 disabled:text-gray-400" %>
-            <p class="text-xs text-gray-500 mt-1"><%= t(".department_hint") %></p>
+            <%= select_tag "filter[brand_id]", options_for_select(Brand.all.pluck(:title, :id), params.dig(:filter, :brand_id)), include_blank: t(".brand_prompt"), class: "w-full border border-gray-300 rounded-md px-2 py-1.5 text-gray-700" %>
           </div>
 
           <div>

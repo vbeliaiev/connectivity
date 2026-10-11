@@ -11,7 +11,6 @@ class ImportMoulins
 
   def clear_data
     CatalogItem.destroy_all
-    Department.destroy_all
     Brand.destroy_all
     Country.destroy_all
     ItemCategory.destroy_all
@@ -23,7 +22,6 @@ class ImportMoulins
   def call
     CSV.foreach(@csv_path, headers: true) do |row|
       brand = setup_brand(row['brand'])
-      department = setup_department(row['department'], brand)
       item_category = setup_item_category(row['category'])
       country = setup_country(row['country'])
       cover = setup_cover(row['image'])
@@ -31,7 +29,6 @@ class ImportMoulins
       CatalogItem.create(
         title: [brand&.title, row['model']].join(' - '),
         brand: brand,
-        department: department,
         item_category: item_category,
         country: country,
         production_start_year: row['production_start_year'],
@@ -54,20 +51,6 @@ class ImportMoulins
     @brands[brand_name] = brand
 
     brand
-  end
-
-  def setup_department(department_name, brand)
-    return unless department_name
-
-    @departments ||= Hash.new(Array.new([]))
-
-    cached_department = @departments[brand.title].find { |d| d.name == department_name }
-    return cached_department if cached_department
-
-    department = brand.departments.find_or_create_by(name: department_name)
-    @departments[brand.title] << department
-
-    department
   end
 
   def setup_item_category(item_category_name)
