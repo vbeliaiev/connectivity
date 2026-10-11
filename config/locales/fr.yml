@@ -69,7 +69,7 @@ fr:
       country: "Pays"
       country_prompt: "Choisir un pays"
       add_to_catalog: "Ajouter au catalogue"
-      heading: "Catalogue numérique des adhérents AICMC"
+      heading: "Catalogue numérique des moulins à café"
       sort_label: "Trier par :"
       sort_options:
         recently_updated: "Mise à jour la plus récente"

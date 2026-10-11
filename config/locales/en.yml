@@ -69,7 +69,7 @@ en:
       country: "Country"
       country_prompt: "Choose a country"
       add_to_catalog: "Add to catalog"
-      heading: "AICMC members' digital catalog"
+      heading: "Digital catalog of coffee grinders"
       sort_label: "Sort by:"
       sort_options:
         recently_updated: "Most recently updated"
