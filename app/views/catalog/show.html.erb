@@ -115,7 +115,7 @@
                           <li><strong><%= t(".production_period") %></strong> <%= [catalog_item.production_start_year, catalog_item.production_end_year].compact.join(' - ') %></li>
                         <% end %>
                         <% if catalog_item.item_category.present? %>
-                          <li><strong><%= t(".category_label") %></strong> <%= catalog_item.item_category.name %></li>
+                          <li><strong><%= t(".category_label") %></strong> <%= [catalog_item.item_category.name, catalog_item.item_subcategory&.name].compact.join(' - ') %></li>
                         <% end %>
                       </ul>
                       <p class="text-sm mt-auto text-right"><i><%= t(".last_updated") %> <%= relative_update_label(catalog_item.updated_at) %></i></p>

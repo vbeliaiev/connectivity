@@ -8,7 +8,7 @@ class CatalogController < ApplicationController
 
   def show
     @catalog_items = CatalogItem
-                      .includes(:item_category)
+                      .includes(:item_category, :item_subcategory)
                       .search_by_title(params[:query])
                       .by_brand(filter_params[:brand_id])
                       .by_item_category(filter_params[:item_category_id])

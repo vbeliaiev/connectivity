@@ -1,6 +1,23 @@
 require 'rails_helper'
 
 RSpec.describe CatalogController, type: :request do
+  describe 'GET /catalog item cards' do
+    before { sign_in create(:user) }
+
+    it 'shows "Category - Subcategory" when the item has a subcategory, and just the category otherwise' do
+      bois = create(:item_category, name: 'Bois')
+      fonte = create(:item_category, name: 'Fonte')
+      exterieure = create(:item_category, name: 'Trémie extérieure', parent: bois)
+      create(:catalog_item, item_category: bois, item_subcategory: exterieure)
+      create(:catalog_item, item_category: fonte)
+
+      get catalog_path
+
+      expect(response.body).to include('</strong> Bois - Trémie extérieure</li>')
+      expect(response.body).to include('</strong> Fonte</li>')
+    end
+  end
+
   describe 'GET /catalog with a subcategory filter' do
     let(:bois) { create(:item_category, name: 'Bois') }
     let(:exterieure) { create(:item_category, name: 'Moulin avec trémie extérieure', parent: bois) }
