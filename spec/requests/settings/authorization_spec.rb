@@ -101,7 +101,7 @@ RSpec.describe 'Settings authorization', type: :request do
     end
   end
 
-  context 'the admin sections box (members + settings links)' do
+  context 'the admin sections box' do
     it 'is shown to admins only, on both the library and the catalog pages' do
       [library_path, catalog_path].each do |path|
         sign_in create(:user, :moderator)
@@ -112,8 +112,18 @@ RSpec.describe 'Settings authorization', type: :request do
         sign_in create(:user, :admin)
         get path
         expect(response.body).to include('id="admin-sections"'), "expected the admin box on #{path} for an admin"
-        expect(response.body).to include(%(href="#{settings_path}"), %(href="#{users_path}"))
+        expect(response.body).to include(%(href="#{users_path}"))
       end
+    end
+
+    it 'links to settings from the catalog page only, not from the library' do
+      sign_in create(:user, :admin)
+
+      get catalog_path
+      expect(response.body).to include(%(href="#{settings_path}"))
+
+      get library_path
+      expect(response.body).not_to include(%(href="#{settings_path}"))
     end
   end
 end

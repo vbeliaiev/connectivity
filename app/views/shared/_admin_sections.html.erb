@@ -1,6 +1,12 @@
 <%# "Sections administrateur" box of the left sidebar (members, settings).
     Rendered for admins only, on the library pages (application layout)
-    and on the catalog listing (catalog/show). %>
+    and on the catalog listing (catalog/show).
+
+    Locals:
+      show_settings - whether to include the "Paramètres" link (default
+        true). The library sidebar passes false: settings are reached from
+        the catalog page. %>
+<% show_settings = local_assigns.fetch(:show_settings, true) %>
 <% if current_user&.admin? %>
   <div class="p-3 border border-gray-400 rounded-md mt-2">
     <h1 class="font-bold text-2xl text-center lg:text-left pl-2 mt-1 underline"><%= t("layouts.sidebar.admin_sections_title") %></h1>
@@ -16,6 +22,7 @@
           </div>
         </div>
       <% end %>
+      <% if show_settings %>
       <%= link_to settings_path, class: "flex w-full pr-2 pl-2 pt-2 pb-1 hover:bg-[#d93] hover:text-white hover:rounded-md" do %>
         <div class="flex w-full flex-col sm:flex-row justify-between items-center">
           <div class="w-full mb-1">
@@ -25,6 +32,7 @@
             </div>
           </div>
         </div>
+      <% end %>
       <% end %>
       <div class="flex"></div>
     </div>
