@@ -30,6 +30,15 @@ Rails.application.routes.draw do
 
     resources :users, except: [:show]
 
+    # Admin-only settings area. /settings opens its first section, the
+    # category manager.
+    get 'settings' => 'settings/item_categories#index', as: :settings
+    namespace :settings do
+      resources :item_categories, only: %i[create edit update destroy]
+      resources :brands, only: %i[index create edit update destroy]
+      resources :countries, only: %i[index create edit update destroy]
+    end
+
     get 'mentions-legales' => 'static_pages#mentions_legales', as: :mentions_legales
     get 'politique-de-confidentialite' => 'static_pages#politique_confidentialite', as: :politique_confidentialite
 

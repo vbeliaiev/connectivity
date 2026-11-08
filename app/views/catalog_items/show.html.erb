@@ -53,6 +53,13 @@
             </div>
             <hr class="border-gray-300">
           <% end %>
+          <% if @catalog_item.item_subcategory %>
+            <div class="flex items-center gap-1">
+              <dt class="font-semibold"><%= t(".subcategory") %></dt>
+              <dd class="pt-0.5"><%= link_to @catalog_item.item_subcategory.name, catalog_path(filter: { item_category_id: @catalog_item.item_category_id, item_subcategory_id: @catalog_item.item_subcategory_id }), class: "text-blue-600 font-semibold underline" %></dd>
+            </div>
+            <hr class="border-gray-300">
+          <% end %>
 
           <% if @catalog_item.model.present? %>
             <div class="flex gap-1">

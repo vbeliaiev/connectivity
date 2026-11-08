@@ -33,34 +33,37 @@
     <p class="text-sm text-gray-500 mt-1">Image uniquement, 60 Mo maximum.</p>
   </div>
 
-  <div class="my-5" data-controller="option-picker" data-option-picker-add-label-value="+ Ajouter une nouvelle marque" data-option-picker-choose-label-value="Choisir dans la liste">
-    <div class="flex items-center justify-between">
-      <%= form.label :brand_id, "Marque", class: "font-semibold" %>
-      <button type="button" data-option-picker-target="toggleButton" data-action="option-picker#toggle" class="text-sm text-blue-600 hover:underline cursor-pointer">+ Ajouter une nouvelle marque</button>
-    </div>
+  <div class="my-5">
+    <%= form.label :brand_id, "Marque", class: "font-semibold" %>
 
     <%= form.collection_select :brand_id, Brand.order(:title), :id, :title,
       { prompt: "Sélectionner une marque" },
-      { data: { option_picker_target: "select" }, class: ["rounded-md border bg-white text-gray-900 shadow-sm focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full", {"border-gray-300 focus:border-blue-500": catalog_item.errors[:brand].none? && catalog_item.errors[:brand_id].none?, "border-red-400 focus:border-red-600": catalog_item.errors[:brand].any? || catalog_item.errors[:brand_id].any?}] } %>
-
-    <div data-option-picker-target="newField" class="mt-2">
-      <%= form.text_field :new_brand_title, maxlength: CatalogItem::MAX_FIELD_LENGTH, placeholder: "Entrez le nom de la nouvelle marque", class: "block shadow-sm rounded-md border border-gray-400 px-3 py-2 w-full" %>
-    </div>
+      { class: ["rounded-md border bg-white text-gray-900 shadow-sm focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full", {"border-gray-300 focus:border-blue-500": catalog_item.errors[:brand].none? && catalog_item.errors[:brand_id].none?, "border-red-400 focus:border-red-600": catalog_item.errors[:brand].any? || catalog_item.errors[:brand_id].any?}] } %>
   </div>
 
-  <div class="my-5" data-controller="option-picker" data-option-picker-add-label-value="+ Ajouter une nouvelle catégorie" data-option-picker-choose-label-value="Choisir dans la liste">
-    <div class="flex items-center justify-between">
-      <%= form.label :item_category_id, "Catégorie", class: "font-semibold" %>
-      <button type="button" data-option-picker-target="toggleButton" data-action="option-picker#toggle" class="text-sm text-blue-600 hover:underline cursor-pointer">+ Ajouter une nouvelle catégorie</button>
-    </div>
+  <%
+    root_categories = ItemCategory.roots.order(:name).includes(:subcategories).to_a
+    subcategories_by_category = root_categories.to_h { |category| [category.id, category.subcategories.map { |sub| [sub.name, sub.id] }] }
+    current_subcategories = subcategories_by_category.fetch(catalog_item.item_category_id, [])
+  %>
+  <div data-controller="subcategory-select" data-subcategory-select-options-value="<%= subcategories_by_category.to_json %>">
+  <div class="my-5">
+    <%= form.label :item_category_id, "Catégorie", class: "font-semibold" %>
 
-    <%= form.collection_select :item_category_id, ItemCategory.order(:name), :id, :name,
+    <%= form.collection_select :item_category_id, root_categories, :id, :name,
       { prompt: "Sélectionner une catégorie" },
-      { data: { option_picker_target: "select" }, class: ["rounded-md border bg-white text-gray-900 shadow-sm focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full", {"border-gray-300 focus:border-blue-500": catalog_item.errors[:item_category].none? && catalog_item.errors[:item_category_id].none?, "border-red-400 focus:border-red-600": catalog_item.errors[:item_category].any? || catalog_item.errors[:item_category_id].any?}] } %>
+      { data: { subcategory_select_target: "category", action: "change->subcategory-select#refresh" }, class: ["rounded-md border bg-white text-gray-900 shadow-sm focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full", {"border-gray-300 focus:border-blue-500": catalog_item.errors[:item_category].none? && catalog_item.errors[:item_category_id].none?, "border-red-400 focus:border-red-600": catalog_item.errors[:item_category].any? || catalog_item.errors[:item_category_id].any?}] } %>
+  </div>
 
-    <div data-option-picker-target="newField" class="mt-2">
-      <%= form.text_field :new_item_category_name, maxlength: CatalogItem::MAX_FIELD_LENGTH, placeholder: "Entrez le nom de la nouvelle catégorie", class: "block shadow-sm rounded-md border border-gray-400 px-3 py-2 w-full" %>
-    </div>
+  <div class="my-5">
+    <%= form.label :item_subcategory_id, "Sous-catégorie", class: "font-semibold" %>
+    <%# A disabled <select> isn't submitted, so this hidden field makes sure
+        the subcategory is cleared when the chosen category has none. %>
+    <%= hidden_field_tag "catalog_item[item_subcategory_id]", "", id: nil %>
+    <%= form.select :item_subcategory_id, current_subcategories,
+      { include_blank: "Sélectionner une sous-catégorie" },
+      { disabled: current_subcategories.empty?, data: { subcategory_select_target: "subcategory" }, class: ["rounded-md border bg-white text-gray-900 shadow-sm focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed", {"border-gray-300 focus:border-blue-500": catalog_item.errors[:item_subcategory].none?, "border-red-400 focus:border-red-600": catalog_item.errors[:item_subcategory].any?}] } %>
+  </div>
   </div>
 
   <div class="my-5">
@@ -80,19 +83,13 @@
     </div>
   </div>
 
-  <div class="my-5" data-controller="option-picker" data-option-picker-add-label-value="+ Ajouter un nouveau pays" data-option-picker-choose-label-value="Choisir dans la liste">
-    <div class="flex items-center justify-between">
-      <%= form.label :country_id, "Pays", class: "font-semibold" %>
-      <button type="button" data-option-picker-target="toggleButton" data-action="option-picker#toggle" class="text-sm text-blue-600 hover:underline cursor-pointer">+ Ajouter un nouveau pays</button>
-    </div>
+  <div class="my-5">
+    <%= form.label :country_id, "Pays", class: "font-semibold" %>
 
+    <%# The country is optional, so the blank option stays selectable to clear it on edit. %>
     <%= form.collection_select :country_id, Country.order(:name), :id, :name,
-      { prompt: "Sélectionner un pays" },
-      { data: { option_picker_target: "select" }, class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full" } %>
-
-    <div data-option-picker-target="newField" class="mt-2">
-      <%= form.text_field :new_country_name, maxlength: CatalogItem::MAX_FIELD_LENGTH, placeholder: "Entrez le nom du nouveau pays", class: "block shadow-sm rounded-md border border-gray-400 px-3 py-2 w-full" %>
-    </div>
+      { include_blank: "Sélectionner un pays" },
+      { class: "rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-3 py-1 block mt-2 w-full" } %>
   </div>
 
   <div class="my-5">

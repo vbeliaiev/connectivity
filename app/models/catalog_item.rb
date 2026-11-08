@@ -1,6 +1,10 @@
 class CatalogItem < ApplicationRecord
   belongs_to :brand
   belongs_to :item_category
+  # Optional finer classification inside item_category; must be one of its
+  # subcategories (see #item_subcategory_matches_category).
+  belongs_to :item_subcategory, class_name: 'ItemCategory', optional: true,
+                                inverse_of: :subcategorized_catalog_items
   belongs_to :country, optional: true
 
   has_many :catalog_item_nodes, dependent: :destroy
@@ -31,16 +35,11 @@ class CatalogItem < ApplicationRecord
 
   DEFAULT_SORT = 'recently_updated'.freeze
 
-  # Let the form offer a "add a new brand/country" text field instead of
-  # forcing the user to pick one that already exists in the list.
-  attr_accessor :new_brand_title, :new_country_name, :new_item_category_name
-
-  before_validation :assign_new_brand, :assign_new_country, :assign_new_item_category
-
   validates :title, presence: true, length: { maximum: MAX_FIELD_LENGTH }
   validates :model, length: { maximum: MAX_FIELD_LENGTH }
   validates :production_start_year, :production_end_year, numericality: { only_integer: true }, allow_nil: true
   validate :acceptable_cover
+  validate :item_subcategory_matches_category
 
   # Full text search on title, using PostgreSQL's tsvector/tsquery.
   #
@@ -75,6 +74,10 @@ class CatalogItem < ApplicationRecord
 
   scope :by_item_category, lambda { |item_category_id|
     item_category_id.present? ? where(item_category_id: item_category_id) : all
+  }
+
+  scope :by_item_subcategory, lambda { |item_subcategory_id|
+    item_subcategory_id.present? ? where(item_subcategory_id: item_subcategory_id) : all
   }
 
   scope :by_country, lambda { |country_id|
@@ -131,25 +134,15 @@ class CatalogItem < ApplicationRecord
     NodePolicy::Scope.new(user, nodes).resolve
   end
 
-  def assign_new_brand
-    title = new_brand_title.to_s.strip
-    return if title.blank?
+  def item_subcategory_matches_category
+    if item_category && !item_category.root?
+      errors.add(:item_category, "doit être une catégorie principale")
+    end
 
-    self.brand = Brand.find_or_create_by(title: title)
-  end
+    return if item_subcategory.nil?
+    return if item_subcategory.parent_id.present? && item_subcategory.parent_id == item_category_id
 
-  def assign_new_country
-    name = new_country_name.to_s.strip
-    return if name.blank?
-
-    self.country = Country.find_or_create_by(name: name)
-  end
-
-  def assign_new_item_category
-    name = new_item_category_name.to_s.strip
-    return if name.blank?
-
-    self.item_category = ItemCategory.find_or_create_by(name: name)
+    errors.add(:item_subcategory, "doit être une sous-catégorie de la catégorie choisie")
   end
 
   def acceptable_cover

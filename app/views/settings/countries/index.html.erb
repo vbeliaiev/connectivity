@@ -1,0 +1,34 @@
+<% content_for :title, "Paramètres - Pays" %>
+<% failed = @new_country if @new_country&.errors&.any? %>
+
+<h1 class="font-bold text-3xl mb-5">Pays</h1>
+
+<div class="p-3 border border-gray-400 rounded-md mb-5">
+  <h2 class="font-semibold text-lg mb-2">Nouveau pays</h2>
+  <%= form_with model: (failed || Country.new), url: settings_countries_path, scope: :country, class: "flex flex-col sm:flex-row gap-2" do |form| %>
+    <%= form.text_field :name, maxlength: Country::MAX_NAME_LENGTH, required: true, placeholder: "Nom du pays (ex. France)", class: "block shadow-sm rounded-md border border-gray-400 px-3 py-2 w-full focus:outline-blue-600", "aria-label": "Nom du pays" %>
+    <%= form.submit "Ajouter le pays", class: "w-full sm:w-auto rounded-md px-3.5 py-2 bg-[#8eb200] hover:bg-[#d93] text-white font-medium cursor-pointer whitespace-nowrap" %>
+  <% end %>
+  <% if failed %>
+    <p class="text-sm text-red-500 mt-1"><%= failed.errors.map(&:message).join('. ') %></p>
+  <% end %>
+</div>
+
+<div id="countries" class="p-3 border border-gray-400 rounded-md divide-y divide-gray-200">
+  <% if @countries.any? %>
+    <% @countries.each do |country| %>
+      <div id="<%= dom_id country %>" class="flex justify-between items-center py-2 gap-2">
+        <div>
+          <span class="font-semibold"><%= country.name %></span>
+          <span class="text-sm text-gray-500">(<%= pluralize(@items_count_by_country.fetch(country.id, 0), "élément", plural: "éléments") %>)</span>
+        </div>
+        <div class="flex items-center -space-x-1">
+          <%= edit_icon_button(edit_settings_country_path(country)) %>
+          <%= destroy_icon_button(settings_country_path(country)) %>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="text-center my-10">Aucun pays trouvé.</p>
+  <% end %>
+</div>

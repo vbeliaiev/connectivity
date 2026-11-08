@@ -1,0 +1,25 @@
+<% content_for :title, "Paramètres - Modifier « #{@brand.title_was} »" %>
+
+<h1 class="font-bold text-3xl mb-5">Modifier la marque</h1>
+
+<div class="p-3 border border-gray-400 rounded-md">
+  <%= form_with model: @brand, url: settings_brand_path(@brand), scope: :brand do |form| %>
+    <% if @brand.errors.any? %>
+      <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mb-3">
+        <ul class="list-disc ml-6">
+          <% @brand.errors.map(&:message).each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form.label :title, "Nom", class: "font-semibold" %>
+    <%= form.text_field :title, maxlength: Brand::MAX_TITLE_LENGTH, required: true, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": @brand.errors[:title].none?, "border-red-400 focus:outline-red-600": @brand.errors[:title].any?}] %>
+
+    <div class="flex flex-col sm:flex-row mt-5">
+      <%= form.submit "Enregistrer", class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-[#8c4e1c] hover:bg-[#d93] text-white inline-block font-medium cursor-pointer" %>
+      <%= link_to "Annuler", settings_brands_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+    </div>
+  <% end %>
+</div>

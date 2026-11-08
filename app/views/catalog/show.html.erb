@@ -26,9 +26,24 @@
             <%= select_tag "filter[brand_id]", options_for_select(Brand.all.pluck(:title, :id), params.dig(:filter, :brand_id)), include_blank: t(".brand_prompt"), class: "w-full border border-gray-300 rounded-md px-2 py-1.5 text-gray-700" %>
           </div>
 
-          <div>
-            <%= label_tag "filter_item_category_id", t(".category"), class: "block text-sm font-medium text-gray-700 mb-1" %>
-            <%= select_tag "filter[item_category_id]", options_for_select(ItemCategory.all.pluck(:name, :id), params.dig(:filter, :item_category_id)), include_blank: t(".category_prompt"), class: "w-full border border-gray-300 rounded-md px-2 py-1.5 text-gray-700" %>
+          <%
+            root_categories = ItemCategory.roots.order(:name).includes(:subcategories).to_a
+            subcategories_by_category = root_categories.to_h { |category| [category.id, category.subcategories.map { |sub| [sub.name, sub.id] }] }
+            current_subcategories = subcategories_by_category.fetch(params.dig(:filter, :item_category_id).to_i, [])
+          %>
+          <%# The subcategory list follows the chosen category client-side (see
+              subcategory_select_controller.js) and stays disabled, hence not
+              submitted, until a category with subcategories is selected. %>
+          <div class="space-y-3" data-controller="subcategory-select" data-subcategory-select-options-value="<%= subcategories_by_category.to_json %>">
+            <div>
+              <%= label_tag "filter_item_category_id", t(".category"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= select_tag "filter[item_category_id]", options_for_select(root_categories.map { |category| [category.name, category.id] }, params.dig(:filter, :item_category_id)), include_blank: t(".category_prompt"), data: { subcategory_select_target: "category", action: "change->subcategory-select#refresh" }, class: "w-full border border-gray-300 rounded-md px-2 py-1.5 text-gray-700" %>
+            </div>
+
+            <div>
+              <%= label_tag "filter_item_subcategory_id", t(".subcategory"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= select_tag "filter[item_subcategory_id]", options_for_select(current_subcategories, params.dig(:filter, :item_subcategory_id)), include_blank: t(".subcategory_prompt"), disabled: current_subcategories.empty?, data: { subcategory_select_target: "subcategory" }, class: "w-full border border-gray-300 rounded-md px-2 py-1.5 text-gray-700 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed" %>
+            </div>
           </div>
 
           <div>
@@ -49,6 +64,8 @@
           <%= submit_tag t(".search"), class: "w-full bg-[#8c4e1c] text-white px-4 py-2 rounded-md font-medium hover:bg-[#d93] cursor-pointer" %>
         </div>
       </div>
+
+      <%= render 'shared/admin_sections' %>
     </div>
 
     <div class="w-full lg:w-3/4">

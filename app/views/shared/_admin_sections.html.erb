@@ -1,0 +1,32 @@
+<%# "Sections administrateur" box of the left sidebar (members, settings).
+    Rendered for admins only, on the library pages (application layout)
+    and on the catalog listing (catalog/show). %>
+<% if current_user&.admin? %>
+  <div class="p-3 border border-gray-400 rounded-md mt-2">
+    <h1 class="font-bold text-2xl text-center lg:text-left pl-2 mt-1 underline"><%= t("layouts.sidebar.admin_sections_title") %></h1>
+    <div id="admin-sections" class="min-w-full divide-y divide-gray-200 space-y-2 lg:mt-5 mb-2">
+      <% active = params[:controller] == "users" %>
+      <%= link_to users_path, class: "flex w-full pr-2 pl-2 pt-2 pb-1 hover:bg-[#d93] hover:text-white hover:rounded-md #{'bg-[#8c4e1c] text-white rounded-md' if active}" do %>
+        <div class="flex w-full flex-col sm:flex-row justify-between items-center">
+          <div class="w-full mb-1">
+            <div class="flex">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users mr-1"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <%= t("layouts.sidebar.members_link") %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <%= link_to settings_path, class: "flex w-full pr-2 pl-2 pt-2 pb-1 hover:bg-[#d93] hover:text-white hover:rounded-md" do %>
+        <div class="flex w-full flex-col sm:flex-row justify-between items-center">
+          <div class="w-full mb-1">
+            <div class="flex">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings mr-1"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+              <%= t("layouts.sidebar.settings_link") %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <div class="flex"></div>
+    </div>
+  </div>
+<% end %>

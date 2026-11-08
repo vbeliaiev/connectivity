@@ -1,4 +1,4 @@
-\restrict nr0EGux2CH7yMKKNlAen46nO99phbyYpVFDRc4gkjjk8D6FBaTrMAhaxkgxATSi
+\restrict mYMJpkdwTjUu9DUizlYilXUikm8JdBULPkIIdTxQqflcdTa8SIzPYf44Ri6FImZ
 
 -- Dumped from database version 17.10 (Homebrew)
 -- Dumped by pg_dump version 17.10 (Homebrew)
@@ -289,7 +289,8 @@ CREATE TABLE public.catalog_items (
     production_end_year integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    item_category_id bigint NOT NULL
+    item_category_id bigint NOT NULL,
+    item_subcategory_id bigint
 );
 
 
@@ -386,7 +387,8 @@ CREATE TABLE public.item_categories (
     id bigint NOT NULL,
     name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    parent_id bigint
 );
 
 
@@ -779,6 +781,13 @@ CREATE INDEX index_catalog_items_on_item_category_id ON public.catalog_items USI
 
 
 --
+-- Name: index_catalog_items_on_item_subcategory_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_catalog_items_on_item_subcategory_id ON public.catalog_items USING btree (item_subcategory_id);
+
+
+--
 -- Name: index_catalog_items_on_title_tsvector; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -807,10 +816,24 @@ CREATE INDEX index_gallery_items_on_gallery_type_and_gallery_id_and_cover ON pub
 
 
 --
--- Name: index_item_categories_on_name; Type: INDEX; Schema: public; Owner: -
+-- Name: index_item_categories_on_name_for_roots; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_item_categories_on_name ON public.item_categories USING btree (name);
+CREATE UNIQUE INDEX index_item_categories_on_name_for_roots ON public.item_categories USING btree (name) WHERE (parent_id IS NULL);
+
+
+--
+-- Name: index_item_categories_on_parent_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_item_categories_on_parent_id ON public.item_categories USING btree (parent_id);
+
+
+--
+-- Name: index_item_categories_on_parent_id_and_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_item_categories_on_parent_id_and_name ON public.item_categories USING btree (parent_id, name) WHERE (parent_id IS NOT NULL);
 
 
 --
@@ -880,6 +903,14 @@ ALTER TABLE ONLY public.catalog_items
 
 
 --
+-- Name: catalog_items fk_rails_8673199fff; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.catalog_items
+    ADD CONSTRAINT fk_rails_8673199fff FOREIGN KEY (item_subcategory_id) REFERENCES public.item_categories(id);
+
+
+--
 -- Name: active_storage_variant_records fk_rails_993965df05; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -893,6 +924,14 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 ALTER TABLE ONLY public.active_storage_attachments
     ADD CONSTRAINT fk_rails_c3b3935057 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
+
+
+--
+-- Name: item_categories fk_rails_cbba8bc8a5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.item_categories
+    ADD CONSTRAINT fk_rails_cbba8bc8a5 FOREIGN KEY (parent_id) REFERENCES public.item_categories(id);
 
 
 --
@@ -923,11 +962,12 @@ ALTER TABLE ONLY public.catalog_item_nodes
 -- PostgreSQL database dump complete
 --
 
-\unrestrict nr0EGux2CH7yMKKNlAen46nO99phbyYpVFDRc4gkjjk8D6FBaTrMAhaxkgxATSi
+\unrestrict mYMJpkdwTjUu9DUizlYilXUikm8JdBULPkIIdTxQqflcdTa8SIzPYf44Ri6FImZ
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261108120000'),
 ('20261011120000'),
 ('20260730120100'),
 ('20260730120000'),

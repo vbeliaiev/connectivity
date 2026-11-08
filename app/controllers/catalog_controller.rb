@@ -12,6 +12,7 @@ class CatalogController < ApplicationController
                       .search_by_title(params[:query])
                       .by_brand(filter_params[:brand_id])
                       .by_item_category(filter_params[:item_category_id])
+                      .by_item_subcategory(filter_params[:item_subcategory_id])
                       .by_country(filter_params[:country_id])
                       .by_production_start_year(filter_params[:production_start_year])
                       .by_production_end_year(filter_params[:production_end_year])
@@ -29,7 +30,7 @@ class CatalogController < ApplicationController
   end
 
   def filter_params
-    params.fetch(:filter, {}).permit(:brand_id, :item_category_id, :country_id, :production_start_year, :production_end_year)
+    params.fetch(:filter, {}).permit(:brand_id, :item_category_id, :item_subcategory_id, :country_id, :production_start_year, :production_end_year)
   end
 
   def redirect_unauthenticated_to_home
