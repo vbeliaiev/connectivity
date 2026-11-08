@@ -1,8 +1,10 @@
 class CatalogItem < ApplicationRecord
   belongs_to :brand
-  belongs_to :item_category
+  # Optional, so it can be removed from the edit form.
+  belongs_to :item_category, optional: true
   # Optional finer classification inside item_category; must be one of its
-  # subcategories (see #item_subcategory_matches_category).
+  # subcategories (see #item_subcategory_matches_category), so an item
+  # without a category can't have a subcategory either.
   belongs_to :item_subcategory, class_name: 'ItemCategory', optional: true,
                                 inverse_of: :subcategorized_catalog_items
   belongs_to :country, optional: true

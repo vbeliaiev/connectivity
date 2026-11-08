@@ -1,4 +1,4 @@
-\restrict mYMJpkdwTjUu9DUizlYilXUikm8JdBULPkIIdTxQqflcdTa8SIzPYf44Ri6FImZ
+\restrict 9E2zM0t4m1uSnjRRHHBufYDEx4i8jaRAeDHOH7FDaKj4ewCSILbUagCfSTeu03p
 
 -- Dumped from database version 17.10 (Homebrew)
 -- Dumped by pg_dump version 17.10 (Homebrew)
@@ -289,7 +289,7 @@ CREATE TABLE public.catalog_items (
     production_end_year integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    item_category_id bigint NOT NULL,
+    item_category_id bigint,
     item_subcategory_id bigint
 );
 
@@ -962,11 +962,12 @@ ALTER TABLE ONLY public.catalog_item_nodes
 -- PostgreSQL database dump complete
 --
 
-\unrestrict mYMJpkdwTjUu9DUizlYilXUikm8JdBULPkIIdTxQqflcdTa8SIzPYf44Ri6FImZ
+\unrestrict 9E2zM0t4m1uSnjRRHHBufYDEx4i8jaRAeDHOH7FDaKj4ewCSILbUagCfSTeu03p
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261108130000'),
 ('20261108120000'),
 ('20261011120000'),
 ('20260730120100'),

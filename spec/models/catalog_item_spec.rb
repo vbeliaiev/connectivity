@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe CatalogItem, type: :model do
   describe 'associations' do
     it { should belong_to(:brand) }
-    it { should belong_to(:item_category) }
+    it { should belong_to(:item_category).optional }
     it { should belong_to(:item_subcategory).class_name('ItemCategory').optional }
     it { should belong_to(:country).optional }
     it { should have_many(:catalog_item_nodes).dependent(:destroy) }
@@ -23,6 +23,16 @@ RSpec.describe CatalogItem, type: :model do
 
       it 'rejects a subcategory of another category' do
         item = build(:catalog_item, item_category: create(:item_category), item_subcategory: sub)
+        expect(item).not_to be_valid
+        expect(item.errors[:item_subcategory]).to be_present
+      end
+
+      it 'accepts an item without category nor subcategory' do
+        expect(build(:catalog_item, item_category: nil, item_subcategory: nil)).to be_valid
+      end
+
+      it 'rejects a subcategory without a category' do
+        item = build(:catalog_item, item_category: nil, item_subcategory: sub)
         expect(item).not_to be_valid
         expect(item.errors[:item_subcategory]).to be_present
       end
