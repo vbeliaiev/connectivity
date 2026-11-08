@@ -1,9 +1,21 @@
-<%# Footer row with links to the association's social media accounts.
-    Rendered by every layout's footer, between the legal links and the
-    language switcher. Icons are inline stroke SVGs so they inherit the
-    footer's text color. %>
-<div class="flex flex-wrap items-center justify-center gap-2">
-  <span class="text-sm text-gray-500"><%= t("layouts.footer.follow_us") %></span>
+<%# Row with links to the association's social media accounts. Rendered
+    in every layout's footer (centered, between the legal links and the
+    language switcher) and at the far left of the top bar, on the same row
+    as the "Mon compte" / "Se déconnecter" links. Icons are inline stroke
+    SVGs so they inherit the surrounding text color.
+
+    Locals:
+      justify - flexbox justify class for the row (default
+        "justify-center", the footer layout).
+      label_class - classes of the "Suivez-nous :" label (default matches
+        the footer text; the top bar passes the account links' font).
+      icon_size - icon width/height in px (default 22, the footer size;
+        the top bar uses 26). %>
+<% justify = local_assigns.fetch(:justify, "justify-center") %>
+<% icon_size = local_assigns.fetch(:icon_size, 22) %>
+<% label_class = local_assigns.fetch(:label_class, "text-sm text-gray-500") %>
+<div class="flex flex-wrap items-center <%= justify %> gap-2">
+  <span class="<%= label_class %>"><%= t("layouts.footer.follow_us") %></span>
 
   <%= link_to "https://www.facebook.com/groups/3364278690412063",
         target: "_blank",
@@ -11,7 +23,7 @@
         title: t("layouts.footer.facebook"),
         class: "text-gray-500 hover:text-[#1877F2] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8c4e1c] rounded" do %>
     <span class="sr-only"><%= t("layouts.footer.facebook") %></span>
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="<%= icon_size %>" height="<%= icon_size %>" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <rect x="3" y="3" width="18" height="18" rx="5"/>
       <path d="M15.5 8H14a2.5 2.5 0 0 0-2.5 2.5V21"/>
       <path d="M9.5 13.5h5"/>
@@ -24,7 +36,7 @@
         title: t("layouts.footer.instagram"),
         class: "text-gray-500 hover:text-[#E4405F] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8c4e1c] rounded" do %>
     <span class="sr-only"><%= t("layouts.footer.instagram") %></span>
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="<%= icon_size %>" height="<%= icon_size %>" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <rect x="3" y="3" width="18" height="18" rx="5"/>
       <circle cx="12" cy="12" r="3.75"/>
       <circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/>
